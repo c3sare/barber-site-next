@@ -12,10 +12,10 @@ const NavLinkHeader: React.FC<NavLinkHeaderProps> = ({
   label,
 }) => {
   return (
-    <li>
+    <li className="m-4">
       <Link
         href={href}
-        className="uppercase leading-4 relative tracking-normal p-4 hover:text-primary transition-colors duration-500"
+        className="uppercase leading-4 relative tracking-normal hover:text-primary transition-colors duration-500"
       >
         {title}
         {label && (

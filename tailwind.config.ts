@@ -30,6 +30,7 @@ module.exports = {
         header: {
           DEFAULT: "rgba(var(--header))",
           foreground: "hsl(var(--header-foreground))",
+          full: "rgb(var(--header-full))",
         },
         primary: {
           DEFAULT: "hsl(var(--primary))",

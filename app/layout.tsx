@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { ThemeProvider } from "@/providers/ThemeProvider";
+// import { ThemeProvider } from "@/providers/ThemeProvider";
 
 const fontSans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -24,14 +24,14 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <ThemeProvider
+        {/* <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
+        > */}
+        {children}
+        {/* </ThemeProvider> */}
       </body>
     </html>
   );

@@ -1,10 +1,10 @@
-import { ThemeModeToggle } from "./_components/ThemeModeToggle";
-
 import Image from "next/image";
 
 import logo from "@/public/images/logo.png";
 import Link from "next/link";
 import NavLinkHeader from "./_components/NavLinkHeader";
+import Header from "./_components/Header";
+import Navigation from "./_components/Navigation";
 
 const routing = [
   {
@@ -44,21 +44,18 @@ const routing = [
 
 const LayoutHeader = () => {
   return (
-    <header className="sticky top-0 py-4 bg-header text-header-foreground">
-      <nav className="max-w-7xl mx-auto flex justify-between items-center px-4">
+    <Header>
+      <nav className="max-w-7xl mx-auto flex justify-between items-center px-4 flex-wrap">
         <Link href="/">
           <Image src={logo} alt="Logo" className="dark:invert" height={50} />
         </Link>
-        <ul className="flex text-sm uppercase pl-3 items-center">
+        <Navigation>
           {routing.map((route, i) => (
             <NavLinkHeader key={i} {...route} />
           ))}
-          <li>
-            <ThemeModeToggle />
-          </li>
-        </ul>
+        </Navigation>
       </nav>
-    </header>
+    </Header>
   );
 };
 

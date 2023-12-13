@@ -5,6 +5,7 @@ import Link from "next/link";
 import NavLinkHeader from "./_components/NavLinkHeader";
 import Header from "./_components/Header";
 import Navigation from "./_components/Navigation";
+import NavLinkHeaderChild from "./_components/NavLinkHeaderChild";
 
 const routing = [
   {
@@ -22,10 +23,54 @@ const routing = [
   {
     href: "/shop",
     title: "Shop",
+    children: [
+      {
+        href: "/shop-catalog",
+        title: "Shop Catalog",
+      },
+      {
+        href: "/shop-sidebar",
+        title: "Shop Sidebar",
+      },
+      {
+        href: "/shop-single",
+        title: "Shop Single",
+      },
+      {
+        href: "/shop-single-alt",
+        title: "Shop Single Alt",
+      },
+    ],
   },
   {
     href: "/gallery",
     title: "Gallery",
+    children: [
+      {
+        href: "/masonry-style",
+        title: "Masonry Style",
+      },
+      {
+        href: "/fullwidth-grid",
+        title: "Fullwidth grid",
+      },
+      {
+        href: "/2-columns",
+        title: "2 Columns",
+      },
+      {
+        href: "/3-columns",
+        title: "3 Columns",
+      },
+      {
+        href: "/3-columns",
+        title: "3 Columns",
+      },
+      {
+        href: "/single-gallery",
+        title: "Single Gallery",
+      },
+    ],
   },
   {
     href: "/blog",
@@ -51,7 +96,13 @@ const LayoutHeader = () => {
         </Link>
         <Navigation>
           {routing.map((route, i) => (
-            <NavLinkHeader key={i} {...route} />
+            <NavLinkHeader key={i} {...route}>
+              {route.children
+                ? route.children?.map((child, childI) => (
+                    <NavLinkHeaderChild key={childI} {...child} />
+                  ))
+                : null}
+            </NavLinkHeader>
           ))}
         </Navigation>
       </nav>

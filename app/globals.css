@@ -8,7 +8,8 @@
     --foreground: 0 0% 0%;
 
     --header: 0, 0, 0, 0.6;
-    --header-full: 0, 0, 0;
+    --header-full: 36, 36, 36;
+    --header-sticky: 0, 0, 0;
     --header-foreground: 0 0% 100%;
 
     --card: 0 0% 100%;
@@ -17,10 +18,10 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 0%;
 
-    --primary: 35, 13%, 61%;
+    --primary: 35 13% 61%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
+    --secondary: 35 72% 93%;
     --secondary-foreground: 0 0% 0%;
 
     --muted: 210 40% 96.1%;

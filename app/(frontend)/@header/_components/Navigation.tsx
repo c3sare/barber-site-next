@@ -21,8 +21,8 @@ const Navigation: React.FC<React.PropsWithChildren> = ({ children }) => {
       </Button>
       <ul
         className={cn(
-          "max-h-0 mx-auto md:mx-0 w-full md:w-auto overflow-hidden md:overflow-auto md:max-h-none flex text-sm uppercase md:pl-3 items-between flex-col md:flex-row items-center md:flex-wrap transition-all duration-700",
-          isVisibleMenu && "max-h-[100em]"
+          "max-h-0 mx-auto md:mx-0 w-full overflow-hidden md:overflow-visible md:w-auto md:max-h-none flex text-sm uppercase md:pl-3 items-between flex-col md:flex-row items-center md:flex-wrap transition-all duration-700",
+          isVisibleMenu && "max-h-[100vh] md:max-h-none"
         )}
       >
         {children}

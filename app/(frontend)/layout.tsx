@@ -1,21 +1,16 @@
+import LayoutFooter from "./_footer/LayoutFooter";
+import LayoutHeader from "./_header/LayoutHeader";
+
 type SiteLayoutProps = {
   children?: React.ReactNode;
-  header?: React.ReactNode;
-  footer?: React.ReactNode;
 };
 
-export default function SiteLayout({
-  children,
-  header,
-  footer,
-}: SiteLayoutProps) {
+export default function SiteLayout({ children }: SiteLayoutProps) {
   return (
     <>
-      {header}
-      <main className="w-full">
-        <div className="max-w-7xl mx-auto">{children}</div>
-      </main>
-      {footer}
+      <LayoutHeader />
+      <main className="w-full">{children}</main>
+      <LayoutFooter />
     </>
   );
 }

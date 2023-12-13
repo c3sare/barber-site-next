@@ -44,7 +44,7 @@ const NavLinkHeader: React.FC<NavLinkHeaderProps> = ({
           opacity: 0,
           delay: 100,
         },
-    duration: 100,
+    ...(isPhone ? {} : { duration: 100 }),
   });
 
   useEffect(() => {

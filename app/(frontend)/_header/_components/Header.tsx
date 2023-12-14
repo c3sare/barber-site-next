@@ -7,7 +7,6 @@ import { socials } from "../_data/socials";
 import SocialLinkButton from "./SocialLink";
 import { contacts } from "../_data/contacts";
 import TopBarLinkButton from "./TopBarLinkButton";
-import { animated, useSpring, useTransition } from "react-spring";
 
 const HeaderHeightContext = createContext<number>(0);
 
@@ -40,7 +39,7 @@ const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <div
       className={cn(
-        "z-[9999] fixed w-full top-0 transition-all",
+        "z-[9999] sticky w-full top-0 transition-all",
         isHomePage && "md:fixed md:w-full"
       )}
     >
@@ -72,8 +71,8 @@ const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
       <header
         ref={headerRef}
         className={cn(
-          "w-full py-4 bg-header-sticky text-header-foreground transition-colors duration-300",
-          isHomePage && "md:bg-header bg-header-full"
+          "w-full py-4 text-header-foreground transition-colors duration-300 delay-200",
+          isHomePage ? "md:bg-header bg-header-full" : "bg-header-sticky"
         )}
       >
         <HeaderHeightContext.Provider value={headerHeight}>

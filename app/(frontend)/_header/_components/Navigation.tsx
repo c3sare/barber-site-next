@@ -3,10 +3,16 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const Navigation: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const pathname = usePathname();
   const [isVisibleMenu, setIsVisibleMenu] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsVisibleMenu(false);
+  }, [pathname]);
 
   const handleToggleMenuVisibility = () => setIsVisibleMenu((prev) => !prev);
 

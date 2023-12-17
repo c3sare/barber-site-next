@@ -14,7 +14,7 @@ import { socials } from "../_data/socials";
 import SocialLinkButton from "./SocialLink";
 import { contacts } from "../_data/contacts";
 import TopBarLinkButton from "./TopBarLinkButton";
-import { animated, useTransition } from "react-spring";
+import { animated, useTransition } from "@react-spring/web";
 
 const HeaderHeightContext = createContext(0);
 

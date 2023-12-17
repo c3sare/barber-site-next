@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useTransition, animated } from "react-spring";
+import { useTransition, animated } from "@react-spring/web";
 import { useHeaderHeight } from "./Header";
 import useMediaQuery from "@/hooks/useMediaQuery";
 import { ChevronDown } from "lucide-react";

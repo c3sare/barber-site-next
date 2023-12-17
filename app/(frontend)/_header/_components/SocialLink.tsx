@@ -1,7 +1,7 @@
 import { IconProps } from "@radix-ui/react-icons/dist/types";
 import { ChevronUp, LucideIcon } from "lucide-react";
 import { useState } from "react";
-import { animated, useTransition } from "react-spring";
+import { animated, useTransition } from "@react-spring/web";
 
 type SocialLinkButtonProps = {
   icon:

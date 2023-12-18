@@ -1,74 +1,10 @@
 import Slider from "./_components/Slider";
 import SlideItem from "./_components/SlideItem";
+import { sliderData } from "./_data/sliderData";
+import Container from "@/components/container";
 import Image from "next/image";
-import SlideItemHeading from "./_components/sliderItemElements/SlideItemHeading";
-import SlideItemParagraph from "./_components/sliderItemElements/SlideItemParagraph";
-import SlideItemText from "./_components/sliderItemElements/SlideItemText";
-import SlideItemLinkButton from "./_components/sliderItemElements/SlideItemLinkButton";
-
-const sliderData = [
-  {
-    position: "left",
-    image: "/images/slider/slider_01.jpg",
-    align: "left",
-    components: [
-      <Image
-        key={0}
-        alt="Slide image 1"
-        width={152}
-        height={211}
-        src="/images/slider_logo_01.png"
-      />,
-      <SlideItemHeading key={1}>
-        Best Barber & hair shop Template for ever!
-      </SlideItemHeading>,
-      <SlideItemParagraph key={2}>
-        We care about your beauty, We offer you the best service! Get an
-        appointment now and meet us!
-      </SlideItemParagraph>,
-    ],
-  },
-  {
-    position: "left",
-    image: "/images/slider/slider_02.jpg",
-    align: "left",
-    components: [
-      <Image
-        key={0}
-        alt="Slider Image 02"
-        src="/images/slider_logo_02.png"
-        width={106}
-        height={129}
-      />,
-      <SlideItemHeading key={1}>
-        Achieve a style of your dreams! Just imagine
-      </SlideItemHeading>,
-      <SlideItemLinkButton key={2} href="/book-now">
-        Book now
-      </SlideItemLinkButton>,
-    ],
-  },
-  {
-    position: "center",
-    image: "/images/slider/slider_03.jpg",
-    align: "center",
-    components: [
-      <SlideItemText key={0}>Since 1989</SlideItemText>,
-      <Image
-        key={1}
-        src="/images/slider_logo_03.png"
-        alt="Slider logo 03"
-        width={118}
-        height={29}
-      />,
-      <SlideItemHeading key={2}>Barberia</SlideItemHeading>,
-      <SlideItemParagraph key={3}>
-        Most popular, creative, super responsive, retina ready hight-quality
-        HTML5 barber site template!
-      </SlideItemParagraph>,
-    ],
-  },
-];
+import { prosData } from "./_data/prosData";
+import AppoitnmentForm from "./_components/AppoitmentForm";
 
 export default function Home() {
   return (
@@ -85,6 +21,41 @@ export default function Home() {
           </SlideItem>
         ))}
       </Slider>
+      <Container bgImageUrl="/images/white-bg.png">
+        <div>
+          <div className="p-5 my-8 w-full flex-1 md:flex-auto md:w-2/3 float-left bg-white shadow-[0_3px_0_#f0f1f3]">
+            <h4>Welcome to the Barberia</h4>
+            <p className="italic pb-1 leading-8 relative w-auto text-base mb-5">
+              The Barberia opened in the fall of 1989. We specialize in cutting
+              mens hair and shaving their faces. Let{"'"}s see all our awesome
+              features below! Thanks for choose us!
+            </p>
+            <p className="pb-1 mb-3">
+              Lorem Ipsum, you need to be sure there isn{"'"}t anything emb. All
+              the Lorem Ipsum on the Internet tend to repeat predefined chunks
+              as necessary, making this the first true generator on the
+              Internet.
+            </p>
+            <div className="w-full flex">
+              {prosData.map((pro, i) => (
+                <div key={i} className="w-1/3">
+                  <Image
+                    className="float-left m-[6px_20px_6px_0] block align-middle"
+                    alt="Cutters"
+                    src={pro.icon}
+                    width={60}
+                    height={60}
+                  />
+                  {pro.text}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="w-full md:w-1/3 float-left">
+            <AppoitnmentForm />
+          </div>
+        </div>
+      </Container>
     </main>
   );
 }

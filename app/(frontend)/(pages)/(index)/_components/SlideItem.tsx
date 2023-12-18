@@ -55,12 +55,13 @@ const SlideItem: React.FC<SlideItemProps> = ({
     if (slider && slider.slideHeight !== null && contentRef.current) {
       const header = document.querySelector("body > div > header");
       const headerHeight = isMobile ? 0 : header?.clientHeight ?? 0;
-      const slideHeight = (slider.slideHeight ?? 0) - headerHeight;
+      const slideHeight = slider.slideHeight - headerHeight;
       const contentHeight = contentRef.current.offsetHeight;
+      console.log(slideHeight / contentHeight);
       if (slideHeight <= contentHeight) {
         const value = slideHeight / contentHeight - 0.05;
         contentRef.current.style.scale = `${value.toFixed(2)}`;
-      }
+      } else contentRef.current.style.scale = "1";
     }
   }, [slider, isMobile]);
 
@@ -89,7 +90,7 @@ const SlideItem: React.FC<SlideItemProps> = ({
         src={backgroundUrl}
         fill
         sizes="100vw"
-        className="object-cover object-right z-[-1]"
+        className="object-cover object-right z-[-1] select-none"
       />
       <div
         className="flex flex-col justify-center items-center gap-4 max-w-[750px]"

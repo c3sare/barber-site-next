@@ -81,4 +81,8 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  h4 {
+    @apply text-2xl mb-7 uppercase my-2 font-bold text-foreground leading-5 relative after:bg-foreground after:block after:h-[2px] after:m-[10px_0_-2px] after:absolute after:left-0 after:top-full after:w-[40px];
+  }
 }

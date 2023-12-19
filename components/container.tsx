@@ -1,11 +1,17 @@
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 
 type ContainerProps = {
   children?: React.ReactNode;
   bgImageUrl?: string;
+  className?: string;
 };
 
-const Container: React.FC<ContainerProps> = ({ children, bgImageUrl }) => {
+const Container: React.FC<ContainerProps> = ({
+  children,
+  bgImageUrl,
+  className,
+}) => {
   return (
     <div className="w-full relative">
       {!!bgImageUrl && (
@@ -17,7 +23,9 @@ const Container: React.FC<ContainerProps> = ({ children, bgImageUrl }) => {
           className="object-cover object-right z-[-1] select-none"
         />
       )}
-      <div className="max-w-7xl mx-auto px-4 w-full">{children}</div>
+      <div className={cn("max-w-7xl mx-auto px-4 w-full", className)}>
+        {children}
+      </div>
     </div>
   );
 };

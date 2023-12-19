@@ -8,6 +8,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const AppoitnmentForm = () => {
   return (
@@ -16,7 +19,7 @@ const AppoitnmentForm = () => {
         <ScheduleIcon className="text-[#a89d8e]" height={30} width={30} />{" "}
         Appoitment form
       </header>
-      <form className="bg-white p-5 w-full flex flex-col gap-3">
+      <form className="bg-white p-5 w-full flex flex-col gap-3 border-x border-b border-gray-100">
         <DatePicker placeholder="Appoitment time" />
         <Input placeholder="Your full name *" type="text" />
         <Input placeholder="Phone number *" type="tel" />
@@ -30,6 +33,32 @@ const AppoitnmentForm = () => {
             <SelectItem value="female">Female</SelectItem>
           </SelectContent>
         </Select>
+        <div className="flex items-center space-x-2">
+          <Checkbox id="newsletter" />
+          <label
+            htmlFor="newsletter"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            Subscribe to our newsletter. We won{"'"}t spam!
+          </label>
+        </div>
+        <div className="flex items-center space-x-2">
+          <Checkbox id="terms" />
+          <label
+            htmlFor="terms"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            I agree with the{" "}
+            <Link className="underline" href="/terms">
+              terms and conditions
+            </Link>
+            .
+          </label>
+        </div>
+        <div className="py-4 flex gap-x-2 justify-center mx-[-20px] border-t border-t-gray-100">
+          <Button type="submit">SUBMIT</Button>
+          <Button type="reset">RESET</Button>
+        </div>
       </form>
     </div>
   );

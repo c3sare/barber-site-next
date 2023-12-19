@@ -4,16 +4,18 @@ import Image from "next/image";
 type ContainerProps = {
   children?: React.ReactNode;
   bgImageUrl?: string;
+  wrapperClassName?: string;
   className?: string;
 };
 
 const Container: React.FC<ContainerProps> = ({
   children,
   bgImageUrl,
+  wrapperClassName,
   className,
 }) => {
   return (
-    <div className="w-full relative">
+    <div className={cn("w-full relative", wrapperClassName)}>
       {!!bgImageUrl && (
         <Image
           src={bgImageUrl}

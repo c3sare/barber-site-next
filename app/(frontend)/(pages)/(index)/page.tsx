@@ -126,6 +126,20 @@ export default function Home() {
           </div>
         </div>
       </Container>
+      <Container wrapperClassName="bg-zinc-100" className="py-20">
+        <div className="text-center">
+          <Image
+            alt="Dark hair"
+            src="/images/dark-hr.png"
+            className="mx-auto"
+            width={100}
+            height={33}
+          />
+          <h4 className="after:content-none before:content-none text-3xl">
+            Our Services
+          </h4>
+        </div>
+      </Container>
     </main>
   );
 }

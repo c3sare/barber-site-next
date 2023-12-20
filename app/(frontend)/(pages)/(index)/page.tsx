@@ -8,6 +8,21 @@ import AppoitnmentForm from "./_components/AppoitmentForm";
 import { stylesData } from "./_data/stylesData";
 import { ZoomIcon } from "@/components/icons/ZoomIcon";
 import { expData } from "./_data/expData";
+import { servicesData } from "./_data/servicesData";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { openData } from "./_data/openData";
+import { cn } from "@/lib/utils";
+import { barbersData } from "./_data/barbersData";
+import {
+  A11y,
+  Navigation,
+  Pagination,
+  Scrollbar,
+  Swiper,
+  SwiperSlide,
+} from "@/components/Swiper";
+import { testimonialsData } from "./_data/testimonialsData";
 
 export default function Home() {
   return (
@@ -111,12 +126,12 @@ export default function Home() {
                   <Icon width={16} height={16} />
                   <span className="text-xs">{title}</span>
                 </div>
-                <div className="h-[10px] w-full bg-[#f7f8fa]">
+                <div className="h-[24px] w-full bg-[#f7f8fa]">
                   <div
-                    className="h-[10px] bg-[#486b71] relative"
+                    className="h-[24px] bg-[#486b71] relative"
                     style={{ width: `${value}%` }}
                   >
-                    <div className="absolute bottom-[calc(100%_+_10px)] text-xs py-1 w-8 text-center text-white right-0 bg-[#486b71]">
+                    <div className="absolute bottom-0 h-full text-xs py-1 w-8 text-center text-white right-0">
                       {value}
                     </div>
                   </div>
@@ -138,6 +153,158 @@ export default function Home() {
           <h4 className="after:content-none before:content-none text-3xl">
             Our Services
           </h4>
+        </div>
+        <div className="w-full">
+          {servicesData.map((service, i) => (
+            <div key={i} className="w-full md:w-1/3 float-left pb-6">
+              <div className="bg-white p-6 border-b-2 border-b-gray-300 flex flex-col items-center mx-6 shadow-sm pb-8 relative">
+                <h4 className="text-center w-full after:left-1/2 after:-translate-x-1/2">
+                  {service.title}
+                </h4>
+                <Image
+                  className="max-w-full h-auto"
+                  src={service.image}
+                  alt={service.title}
+                  width={320}
+                  height={213}
+                />
+                <p className="text-xs">{service.description}</p>
+
+                <Button
+                  asChild
+                  className="absolute top-full -translate-y-1/2 rounded-none"
+                >
+                  <Link href={service.href}>READ MORE</Link>
+                </Button>
+              </div>
+            </div>
+          ))}
+          <div className="clear-both" />
+        </div>
+      </Container>
+      <Container
+        bgImageUrl="/images/parallax/parallax_01.jpg"
+        parallax
+        className="py-24"
+      >
+        <div className="z-10 flex justify-center items-center flex-col">
+          <Image
+            src="/images/white-hr.png"
+            alt="Beard image"
+            width={126}
+            height={45}
+          />
+          <h4 className="after:content-none text-white before:content-none text-center text-3xl">
+            Our opening hours
+          </h4>
+        </div>
+        <div className="flex flex-wrap items-center justify-center gap-6">
+          {openData.map((item) => (
+            <div
+              key={item.shortDay}
+              className={cn(
+                "text-white border-b-[3px] border-b-[rgba(255,_255,_255,_0.3)] flex items-center gap-4 justify-center flex-col aspect-square min-w-[150px]",
+                item.open ? "bg-[#486b71]" : "bg-[#a89d8e]"
+              )}
+            >
+              <span className="text-3xl font-bold">{item.shortDay}</span>
+              <span>
+                {item.open ? `${item.start} - ${item.end}` : "CLOSED"}
+              </span>
+            </div>
+          ))}
+        </div>
+        <div className="mt-8 flex items-center justify-center">
+          <Button asChild variant="ghost">
+            <Link
+              className="mx-auto block text-white rounded-none border border-white"
+              href="/book-now"
+            >
+              Book now
+            </Link>
+          </Button>
+        </div>
+      </Container>
+      <Container wrapperClassName="bg-zinc-100" className="py-24">
+        <div className="z-10 flex justify-center items-center flex-col">
+          <Image
+            src="/images/dark-hr-2.png"
+            alt="Cutter image"
+            width={100}
+            height={33}
+          />
+          <h4 className="after:content-none text-black before:content-none text-center text-3xl">
+            LICENSED BARBERS
+          </h4>
+        </div>
+        <div>
+          {barbersData.map((item) => (
+            <div className="w-full md:w-1/2 xl:w-1/4 float-left" key={item.id}>
+              <div className="flex flex-col items-center justify-center mx-4 bg-white shadow-sm gap-4 pt-6">
+                <h4 className="w-full text-center after:left-1/2 after:-translate-x-1/2">
+                  {item.name}
+                </h4>
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  width={222}
+                  height={222}
+                />
+                <span className="text-2xl">AVAILABILITY</span>
+                <div className="flex flex-col gap-2 items-center justify-center">
+                  {item.availability.map((work) => (
+                    <span key={work.day}>
+                      {work.day} {work.start} {work.end}
+                    </span>
+                  ))}
+                </div>
+                <Button asChild>
+                  <Link
+                    href="/book-now"
+                    className="translate-y-1/2 rounded-none"
+                  >
+                    BOOK NOW
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          ))}
+          <div className="clear-both" />
+        </div>
+      </Container>
+      <Container
+        bgImageUrl="/images/parallax_02.jpg"
+        parallax
+        className="py-24 relative max-w-full"
+      >
+        <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,_0,_0,_.4)]" />
+        <div className="mx-auto max-w-7xl">
+          <h4 className="text-4xl text-center text-white after:content-none before:content-none drop-shadow-xs opacity-90">
+            Happy Testimonials
+          </h4>
+          <Swiper
+            spaceBetween={50}
+            slidesPerView={1}
+            aria-orientation="vertical"
+            modules={[Navigation, Pagination, Scrollbar, A11y]}
+            navigation
+            pagination={{ clickable: true }}
+            scrollbar={{ draggable: true }}
+          >
+            {testimonialsData.map((item) => (
+              <SwiperSlide key={item.id}>
+                <Image
+                  src={item.avatar}
+                  alt={item.name}
+                  width={100}
+                  height={100}
+                  className="rounded-full"
+                />
+                <h4>{item.name}</h4>
+                <p>{item.content}</p>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
       </Container>
     </main>

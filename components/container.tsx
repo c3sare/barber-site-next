@@ -1,11 +1,15 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { ParallaxBanner, ParallaxBannerLayer } from "react-scroll-parallax";
 
 type ContainerProps = {
   children?: React.ReactNode;
-  bgImageUrl?: string;
   wrapperClassName?: string;
   className?: string;
+  bgImageUrl?: string;
+  parallax?: boolean;
 };
 
 const Container: React.FC<ContainerProps> = ({
@@ -13,21 +17,44 @@ const Container: React.FC<ContainerProps> = ({
   bgImageUrl,
   wrapperClassName,
   className,
+  parallax,
 }) => {
+  const wrapper = (
+    <div
+      className={cn("max-w-7xl mx-auto px-4 w-full relative z-10", className)}
+    >
+      {children}
+    </div>
+  );
+
   return (
-    <div className={cn("w-full relative", wrapperClassName)}>
-      {!!bgImageUrl && (
-        <Image
-          src={bgImageUrl}
-          fill
-          sizes="100vw"
-          alt="Background Image"
-          className="object-cover object-right z-[-1] select-none"
-        />
-      )}
-      <div className={cn("max-w-7xl mx-auto px-4 w-full", className)}>
-        {children}
-      </div>
+    <div className={cn("w-full h-full relative", wrapperClassName)}>
+      {!!bgImageUrl &&
+        (parallax ? (
+          <ParallaxBanner>
+            <ParallaxBannerLayer className="relative" speed={-30}>
+              <Image
+                src={bgImageUrl}
+                fill
+                sizes="100vw"
+                alt="Background Image"
+                className="object-cover select-none"
+              />
+            </ParallaxBannerLayer>
+            {wrapper}
+          </ParallaxBanner>
+        ) : (
+          <div className="w-full h-full relative">
+            <Image
+              src={bgImageUrl}
+              fill
+              sizes="100vw"
+              alt="Background Image"
+              className="object-cover select-none"
+            />
+          </div>
+        ))}
+      {!bgImageUrl && !parallax && wrapper}
     </div>
   );
 };

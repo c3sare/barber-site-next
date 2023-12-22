@@ -14,15 +14,9 @@ import { Button } from "@/components/ui/button";
 import { openData } from "./_data/openData";
 import { cn } from "@/lib/utils";
 import { barbersData } from "./_data/barbersData";
-import {
-  A11y,
-  Navigation,
-  Pagination,
-  Scrollbar,
-  Swiper,
-  SwiperSlide,
-} from "@/components/Swiper";
 import { testimonialsData } from "./_data/testimonialsData";
+import SliderComments from "@/components/Slider";
+import SliderCommentsItem from "@/components/SliderItem";
 
 export default function Home() {
   return (
@@ -282,17 +276,9 @@ export default function Home() {
           <h4 className="text-4xl text-center text-white after:content-none before:content-none drop-shadow-xs opacity-90">
             Happy Testimonials
           </h4>
-          <Swiper
-            spaceBetween={50}
-            slidesPerView={1}
-            aria-orientation="vertical"
-            modules={[Navigation, Pagination, Scrollbar, A11y]}
-            navigation
-            pagination={{ clickable: true }}
-            scrollbar={{ draggable: true }}
-          >
+          <SliderComments>
             {testimonialsData.map((item) => (
-              <SwiperSlide key={item.id}>
+              <SliderCommentsItem key={item.id}>
                 <Image
                   src={item.avatar}
                   alt={item.name}
@@ -302,9 +288,9 @@ export default function Home() {
                 />
                 <h4>{item.name}</h4>
                 <p>{item.content}</p>
-              </SwiperSlide>
+              </SliderCommentsItem>
             ))}
-          </Swiper>
+          </SliderComments>
         </div>
       </Container>
     </main>

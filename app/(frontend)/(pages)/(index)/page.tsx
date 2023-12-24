@@ -17,6 +17,10 @@ import { barbersData } from "./_data/barbersData";
 import { testimonialsData } from "./_data/testimonialsData";
 import SliderComments from "@/components/Slider";
 import SliderCommentsItem from "@/components/SliderItem";
+import { blogData } from "./_data/blogData";
+import { MessageCircleIcon, PenLineIcon, SearchIcon } from "lucide-react";
+import { shopData } from "./_data/shopData";
+import { StarFilledIcon, StarIcon } from "@radix-ui/react-icons";
 
 export default function Home() {
   return (
@@ -279,19 +283,179 @@ export default function Home() {
           <SliderComments>
             {testimonialsData.map((item) => (
               <SliderCommentsItem key={item.id}>
-                <Image
-                  src={item.avatar}
-                  alt={item.name}
-                  width={100}
-                  height={100}
-                  className="rounded-full"
-                />
-                <h4>{item.name}</h4>
-                <p>{item.content}</p>
+                <div className="max-w-4xl mx-auto text-white">
+                  <Image
+                    src={item.avatar}
+                    alt={item.name}
+                    width={100}
+                    height={100}
+                    className="rounded-full mx-auto"
+                  />
+                  <h4 className="text-center text-2xl after:content-none before:content-none text-white my-6">
+                    {item.name}
+                  </h4>
+                  <p className="text-center text-base">{item.content}</p>
+                </div>
               </SliderCommentsItem>
             ))}
           </SliderComments>
         </div>
+      </Container>
+      <Container wrapperClassName="bg-zinc-100" className="py-24">
+        <div className="z-10 flex justify-center items-center flex-col">
+          <Image
+            src="/images/dark-hr-2.png"
+            alt="Cutter image"
+            width={100}
+            height={33}
+          />
+          <h4 className="after:content-none text-black before:content-none text-center text-3xl">
+            FROM THE BLOG
+          </h4>
+        </div>
+        <div className="w-full">
+          {blogData.map((post) => (
+            <div
+              key={post.id}
+              className="float-left w-full sm:w-1/2 md:w-1/2 lg:w-1/4 mb-8 self-stretch"
+            >
+              <div className="mx-2 p-1 bg-[#f7f8fa] flex flex-col items-center text-center shadow-sm self-stretch">
+                <h4 className="before:content-none after:left-1/2 after:-translate-x-1/2 text-lg">
+                  {post.title}
+                </h4>
+                <Image
+                  src={post.image}
+                  alt={post.title}
+                  width={250}
+                  height={149}
+                />
+                <div className="flex items-center justify-center gap-4 w-full my-2 text-xs">
+                  <div className="flex items-center gap-1">
+                    <MessageCircleIcon width={20} height={20} /> {post.comments}{" "}
+                    Comments
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <PenLineIcon width={20} height={20} /> by {post.author}
+                  </div>
+                </div>
+                <p className="my-2 text-sm">{post.description}</p>
+                <Button className="rounded-none relative top-2 translate-y-1/2">
+                  READ MORE
+                </Button>
+              </div>
+            </div>
+          ))}
+          <div className="clear-both" />
+        </div>
+      </Container>
+      <Container
+        bgImageUrl="/images/parallax_03.jpg"
+        parallax
+        wrapperClassName="after:absolute after:w-full after:h-full after:top-0 after:left-0 after:bg-black after:opacity-60"
+        className="py-24 font-bold text-center"
+      >
+        <div className="text-white text-2xl uppercase py-4 max-w-lg text-center mx-auto">
+          support@barberia.com
+        </div>
+        <div className="text-[#242424] text-4xl uppercase py-4 bg-[rgba(255,_255,_255,_.5)] max-w-lg text-center mx-auto">
+          +90 1234-567-890
+        </div>
+        <div className="text-white text-2xl uppercase py-4 max-w-lg text-center mx-auto">
+          Envato inc 22 Elizabeth str. melbourne.
+        </div>
+        <div className="text-white text-2xl uppercase py-4 max-w-lg text-center mx-auto">
+          victoria 8777. Australia
+        </div>
+      </Container>
+      <Container className="py-24" wrapperClassName="bg-[#f7f8fa]">
+        <div className="z-10 flex justify-center items-center flex-col">
+          <Image
+            src="/images/dark-hr-3.png"
+            alt="Shop text"
+            width={100}
+            height={33}
+          />
+          <h4 className="after:content-none text-black before:content-none text-center text-3xl">
+            FROM THE SHOP
+          </h4>
+        </div>
+        <div className="w-full mb-6">
+          {shopData.map((product) => (
+            <div
+              key={product.id}
+              className="float-left w-full px-2 md:w-1/2 lg:w-1/4"
+            >
+              <div className="p-1 bg-white shadow-sm w-full flex flex-col items-center justify-between">
+                <Image
+                  src={product.image}
+                  alt={product.name}
+                  width={243}
+                  height={243}
+                />
+                <span className="text-lg">{product.name}</span>
+                <div className="flex gap-3 text-xs my-1">
+                  {!!product.promo_cost && <span>${product.promo_cost}</span>}
+                  <span className={cn(product.promo_cost && "line-through")}>
+                    ${product.cost}
+                  </span>
+                </div>
+                <div className="flex justify-center items-center gap-1 text-[#eabe12]">
+                  {[...Array(5)].map((_star, i) =>
+                    i + 1 <= product.stars ? (
+                      <StarFilledIcon width={16} height={16} key={i} />
+                    ) : (
+                      <StarIcon width={16} height={16} key={i} />
+                    )
+                  )}
+                </div>
+                <Button className="uppercase rounded-none flex items-center justify-center gap-3 relative top-1 translate-y-1/2">
+                  <SearchIcon />
+                  <span>|</span>
+                  <span>Quick View</span>
+                </Button>
+              </div>
+            </div>
+          ))}
+          <div className="clear-both" />
+        </div>
+        <div className="flex items-center justify-center my-14">
+          <Button
+            variant="outline"
+            className="rounded-none max-w-full mx-auto px-8"
+          >
+            VIEW ALL ITEMS
+          </Button>
+        </div>
+      </Container>
+      <Container className="my-24">
+        <div className="w-full flex items-end">
+          <div className="float-left w-1/3 hidden lg:block">
+            <div className="w-full relative block h-1">
+              <Image
+                alt="Award"
+                src="/images/award.png"
+                width={1170}
+                height={1624}
+                className="absolute bottom-[calc(100%_-_100px)] w-full block"
+              />
+            </div>
+          </div>
+          <div className="float-left w-full lg:w-2/3">
+            <h2 className="text-[#242424] text-2xl font-bold upperacase pb-2">
+              DO YOU LIKE OUR HAIRDRESSER?
+            </h2>
+            <p className="mb-4 leading-10">
+              Integer orci enim varius vel accumsan vel porttitor tellus.
+              Vivamus odio. Donec metus libero semper quis suscipit ut aliquam
+              metus. Phasellus ut lacus vel nisi donec molestie arcu quis neque
+              Phasellus ut lacus vel nisi donec mole.
+            </p>
+            <Button className="rounded-none py-6 px-12 font-normal">
+              BOOK NOW
+            </Button>
+          </div>
+        </div>
+        <div className="clear-both" />
       </Container>
     </main>
   );

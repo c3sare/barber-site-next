@@ -1,0 +1,38 @@
+export const shopData = [
+  {
+    id: 1,
+    name: "Shave Knives",
+    cost: "311.12",
+    promo_cost: "23.00",
+    slug: "shave-knives",
+    image: "/images/shop/shop_01.png",
+    stars: 4,
+  },
+  {
+    id: 2,
+    name: "Comb Scissors",
+    cost: "311.12",
+    promo_cost: "23.00",
+    slug: "comb-scissors",
+    image: "/images/shop/shop_02.png",
+    stars: 5,
+  },
+  {
+    id: 3,
+    name: "Water Spray",
+    cost: "311.12",
+    promo_cost: "23.00",
+    slug: "water-spray",
+    image: "/images/shop/shop_03.png",
+    stars: 4,
+  },
+  {
+    id: 4,
+    name: "Electric Shaving Machine",
+    cost: "311.12",
+    promo_cost: "23.00",
+    slug: "electric-shaving-machine",
+    image: "/images/shop/shop_04.png",
+    stars: 4,
+  },
+];

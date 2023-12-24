@@ -10,7 +10,7 @@ const SliderItem: React.FC<SliderItemProps> = ({ children }) => {
   const slideWidth = useSlideWidth();
 
   return (
-    <div className="float-left" style={{ width: slideWidth + "px" }}>
+    <div className="float-left px-12" style={{ width: slideWidth + "px" }}>
       {children}
     </div>
   );

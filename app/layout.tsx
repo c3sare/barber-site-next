@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import "photoswipe/dist/photoswipe.css";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ParallaxProvider } from "@/providers/ParallaxProvider";

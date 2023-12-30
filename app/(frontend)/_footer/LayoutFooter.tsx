@@ -2,10 +2,11 @@ import Image from "next/image";
 import logo from "@/public/images/logo.png";
 import { Button } from "@/components/ui/button";
 import { ourOfficesData } from "./_data/ourOfficesData";
-import Link from "next/link";
 import { siteLinksData } from "./_data/siteLinksData";
-import { ZoomIcon } from "@/components/icons/ZoomIcon";
 import { stylesData } from "../(pages)/(index)/_data/stylesData";
+import LinkListItem from "./_components/LinkListItem";
+import ImageItem from "../../../components/LightboxImageItem";
+import { Gallery, Item } from "../../../components/lightbox";
 
 const LayoutFooter: React.FC<React.PropsWithChildren> = () => {
   return (
@@ -27,17 +28,12 @@ const LayoutFooter: React.FC<React.PropsWithChildren> = () => {
             </h4>
             <ul className="flex flex-col gap-2">
               {ourOfficesData.map((office) => (
-                <li
+                <LinkListItem
+                  id={office.id}
                   key={office.id}
-                  className="before:content-['>'] before:font-bold flex gap-1 text-sm"
-                >
-                  <Link
-                    href="/"
-                    className="hover:text-primary transition-colors duration-500"
-                  >
-                    {office.city} / {office.country}
-                  </Link>
-                </li>
+                  href={"/" + office.city}
+                  name={`${office.city} / ${office.country.toUpperCase()}`}
+                />
               ))}
             </ul>
           </div>
@@ -45,24 +41,11 @@ const LayoutFooter: React.FC<React.PropsWithChildren> = () => {
             <h4 className="text-white before:content-none after:bg-white ">
               FLICKR STREAM
             </h4>
-            <div className="w-full flex-wrap flex">
-              {stylesData.map((src, i) => (
-                <div key={i} className="w-1/4 group relative">
-                  <Image
-                    className="max-w-full"
-                    alt={`Fryzura ${i + 1}`}
-                    src={src}
-                    width={200}
-                    height={200}
-                  />
-                  <div className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 bg-[rgba(0,_0,_0,_.6)] flex items-center justify-center duration-500 transition-opacity">
-                    <div className="w-8 h-8 bg-white flex items-center justify-center">
-                      <ZoomIcon />
-                    </div>
-                  </div>
-                </div>
+            <Gallery withCaption>
+              {stylesData.map((item, i) => (
+                <ImageItem key={i} src={item} i={i} />
               ))}
-            </div>
+            </Gallery>
           </div>
           <div className="w-full md:w-1/2 lg:w-1/6 float-left px-4 mb-6">
             <h4 className="text-white before:content-none after:bg-white ">
@@ -70,17 +53,7 @@ const LayoutFooter: React.FC<React.PropsWithChildren> = () => {
             </h4>
             <ul className="flex flex-col gap-2">
               {siteLinksData.map((siteLink) => (
-                <li
-                  key={siteLink.id}
-                  className="before:content-['>'] before:font-bold flex gap-1 text-sm"
-                >
-                  <Link
-                    href={siteLink.href}
-                    className="hover:text-primary transition-colors duration-500"
-                  >
-                    {siteLink.name}
-                  </Link>
-                </li>
+                <LinkListItem key={siteLink.id} {...siteLink} />
               ))}
             </ul>
           </div>

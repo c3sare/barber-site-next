@@ -29,8 +29,8 @@ const Container: React.FC<ContainerProps> = ({
 
   return (
     <div className={cn("w-full h-full relative", wrapperClassName)}>
-      {!!bgImageUrl &&
-        (parallax ? (
+      {bgImageUrl ? (
+        parallax ? (
           <ParallaxBanner>
             <ParallaxBannerLayer className="relative" speed={-30}>
               <Image
@@ -44,7 +44,7 @@ const Container: React.FC<ContainerProps> = ({
             {wrapper}
           </ParallaxBanner>
         ) : (
-          <div className="w-full h-full relative">
+          <>
             <Image
               src={bgImageUrl}
               fill
@@ -52,9 +52,12 @@ const Container: React.FC<ContainerProps> = ({
               alt="Background Image"
               className="object-cover select-none"
             />
-          </div>
-        ))}
-      {!bgImageUrl && !parallax && wrapper}
+            {wrapper}
+          </>
+        )
+      ) : (
+        wrapper
+      )}
     </div>
   );
 };

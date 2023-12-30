@@ -20,7 +20,22 @@ const AppoitnmentForm = () => {
         Appoitment form
       </header>
       <form className="bg-white p-5 w-full flex flex-col gap-3 border-x border-b border-gray-100">
-        <DatePicker placeholder="Appoitment time" />
+        <DatePicker placeholder="Appoitment date" />
+        <Select>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Appoitment time *" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="8:00">8:00</SelectItem>
+            <SelectItem value="9:00">9:00</SelectItem>
+            <SelectItem value="10:00">10:00</SelectItem>
+            <SelectItem value="11:00">11:00</SelectItem>
+            <SelectItem value="12:00">12:00</SelectItem>
+            <SelectItem value="13:00">13:00</SelectItem>
+            <SelectItem value="14:00">14:00</SelectItem>
+            <SelectItem value="15:00">15:00</SelectItem>
+          </SelectContent>
+        </Select>
         <Input placeholder="Your full name *" type="text" />
         <Input placeholder="Phone number *" type="tel" />
         <Input placeholder="Email address *" type="email" />

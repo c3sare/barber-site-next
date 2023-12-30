@@ -80,8 +80,7 @@ const SlideItem: React.FC<SlideItemProps> = ({
   return (
     <div
       className={cn(
-        "w-full h-[80vh] max-h-[820px] overflow-hidden relative flex items-center px-[30px] text-white text-center md:pt-36",
-        align[itemsAlign]
+        "w-full h-[80vh] max-h-[820px] overflow-hidden relative flex items-center px-[30px] text-white text-center md:pt-36"
       )}
       style={style}
     >
@@ -93,14 +92,21 @@ const SlideItem: React.FC<SlideItemProps> = ({
         className="object-cover object-right z-[-1] select-none"
       />
       <div
-        className="flex flex-col justify-center items-center gap-4 max-w-[750px]"
-        ref={contentRef}
+        className={cn(
+          "max-w-7xl mx-auto w-full flex items-center",
+          align[itemsAlign]
+        )}
       >
-        {trails.map((style, i) => (
-          <animated.div key={i} style={style} className="my-2">
-            {slideItems[i]}
-          </animated.div>
-        ))}
+        <div
+          className="flex flex-col justify-center items-center gap-4 max-w-[750px]"
+          ref={contentRef}
+        >
+          {trails.map((style, i) => (
+            <animated.div key={i} style={style} className="my-2">
+              {slideItems[i]}
+            </animated.div>
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Bebas_Neue, Inter } from "next/font/google";
 import "photoswipe/dist/photoswipe.css";
 import "./globals.css";
 import { cn } from "@/lib/utils";
@@ -7,6 +7,11 @@ import { ParallaxProvider } from "@/providers/ParallaxProvider";
 // import { ThemeProvider } from "@/providers/ThemeProvider";
 
 const fontSans = Inter({ subsets: ["latin"], variable: "--font-sans" });
+const bebesNeue = Bebas_Neue({
+  subsets: ["latin"],
+  variable: "--font-bebes-neue",
+  weight: "400",
+});
 
 export const metadata: Metadata = {
   title: "Barberia",
@@ -23,7 +28,8 @@ export default function RootLayout({
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
+          fontSans.variable,
+          bebesNeue.variable
         )}
       >
         {/* <ThemeProvider

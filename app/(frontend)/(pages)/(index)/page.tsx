@@ -48,8 +48,11 @@ export default function Home() {
           </SlideItem>
         ))}
       </Slider>
-      <Container bgImageUrl="/images/white-bg.png">
-        <div className="p-5 my-8 w-full flex-1 md:flex-auto md:w-2/3 float-left bg-white shadow-[0_3px_0_#f0f1f3]">
+      <Container
+        bgImageUrl="/images/white-bg.png"
+        className="flex items-center flex-wrap"
+      >
+        <div className="p-5 my-8 w-full flex-1 flex flex-col gap-3 md:flex-auto md:w-2/3 float-left bg-white shadow-[0_3px_0_#f0f1f3]">
           <h4>Welcome to the Barberia</h4>
           <p className="italic pb-1 leading-8 relative w-auto text-base mb-5">
             The Barberia opened in the fall of 1989. We specialize in cutting
@@ -120,10 +123,7 @@ export default function Home() {
         </div>
         <div className="mt-8 flex items-center justify-center">
           <Button asChild variant="ghost">
-            <Link
-              className="mx-auto block text-white rounded-none border border-white"
-              href="/book-now"
-            >
+            <Link className="text-white border border-white" href="/book-now">
               Book now
             </Link>
           </Button>
@@ -188,10 +188,7 @@ export default function Home() {
           <div className="clear-both" />
         </div>
         <div className="flex items-center justify-center my-14">
-          <Button
-            variant="outline"
-            className="rounded-none max-w-full mx-auto px-8"
-          >
+          <Button variant="outline" size="lg">
             VIEW ALL ITEMS
           </Button>
         </div>
@@ -219,9 +216,7 @@ export default function Home() {
               metus. Phasellus ut lacus vel nisi donec molestie arcu quis neque
               Phasellus ut lacus vel nisi donec mole.
             </p>
-            <Button className="rounded-none py-6 px-12 font-normal">
-              BOOK NOW
-            </Button>
+            <Button size="lg">BOOK NOW</Button>
           </div>
         </div>
         <div className="clear-both" />

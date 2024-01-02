@@ -6,7 +6,7 @@ import { siteLinksData } from "./_data/siteLinksData";
 import { stylesData } from "../(pages)/(index)/_data/stylesData";
 import LinkListItem from "./_components/LinkListItem";
 import ImageItem from "../../../components/LightboxImageItem";
-import { Gallery, Item } from "../../../components/lightbox";
+import { Gallery } from "../../../components/lightbox";
 
 const LayoutFooter: React.FC<React.PropsWithChildren> = () => {
   return (
@@ -20,7 +20,7 @@ const LayoutFooter: React.FC<React.PropsWithChildren> = () => {
               nibh porttitor molestie. Nullam ut orci elit. Suspendisse
               tincidunt dapibus blandit. In nibh eu justo ultrices posuere.
             </p>
-            <Button className="rounded-none px-8">READ MORE</Button>
+            <Button size="lg">READ MORE</Button>
           </div>
           <div className="w-full md:w-1/2 lg:w-1/4 float-left px-4 mb-6">
             <h4 className="text-white before:content-none after:bg-white ">
@@ -48,7 +48,7 @@ const LayoutFooter: React.FC<React.PropsWithChildren> = () => {
             </Gallery>
           </div>
           <div className="w-full md:w-1/2 lg:w-1/6 float-left px-4 mb-6">
-            <h4 className="text-white before:content-none after:bg-white ">
+            <h4 className="text-white before:content-none after:bg-white">
               SITE LINKS
             </h4>
             <ul className="flex flex-col gap-2">

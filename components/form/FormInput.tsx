@@ -1,0 +1,57 @@
+"use client";
+
+import { Control, FieldValues, Path } from "react-hook-form";
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
+import { Input } from "../ui/input";
+import { InputHTMLAttributes } from "react";
+
+type FormInput<T extends FieldValues> = {
+  control: Control<T>;
+  name: Path<T>;
+  description?: string;
+  placeholder?: string;
+  label: string;
+  type?: InputHTMLAttributes<HTMLInputElement>["type"];
+  className?: string;
+};
+
+export const FormInput = <T extends FieldValues>({
+  control,
+  name,
+  description,
+  placeholder,
+  label,
+  type,
+  className,
+}: FormInput<T>) => {
+  return (
+    <FormField
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>{label}</FormLabel>
+          <FormControl>
+            <Input
+              className={className}
+              type={type}
+              placeholder={placeholder}
+              {...field}
+            />
+          </FormControl>
+          {description ? (
+            <FormDescription>{description}</FormDescription>
+          ) : null}
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  );
+};

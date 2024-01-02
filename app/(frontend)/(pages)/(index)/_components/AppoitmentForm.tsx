@@ -23,6 +23,17 @@ const AppoitnmentForm = () => {
         <DatePicker placeholder="Appoitment date" />
         <Select>
           <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select Barber *" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="1">John Doe</SelectItem>
+            <SelectItem value="2">Markus Hobbs</SelectItem>
+            <SelectItem value="3">Steve Zoer</SelectItem>
+            <SelectItem value="4">Tony Devito</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select>
+          <SelectTrigger className="w-full">
             <SelectValue placeholder="Appoitment time *" />
           </SelectTrigger>
           <SelectContent>

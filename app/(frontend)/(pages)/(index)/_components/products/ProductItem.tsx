@@ -38,8 +38,8 @@ const ProductItem: React.FC<ProductItemProps> = ({
             )
           )}
         </div>
-        <Button className="uppercase rounded-none flex items-center justify-center gap-3 relative top-1 translate-y-1/2">
-          <SearchIcon />
+        <Button className="flex items-center justify-center gap-1 relative top-1 translate-y-1/2">
+          <SearchIcon className="inline" />
           <span>|</span>
           <span>Quick View</span>
         </Button>

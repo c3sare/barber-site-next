@@ -34,9 +34,7 @@ const BlogPost: React.FC<BlogPostProps> = ({
           </div>
         </div>
         <p className="my-2 text-sm">{description}</p>
-        <Button className="rounded-none relative top-2 translate-y-1/2">
-          READ MORE
-        </Button>
+        <Button className="relative top-2 translate-y-1/2">READ MORE</Button>
       </div>
     </div>
   );

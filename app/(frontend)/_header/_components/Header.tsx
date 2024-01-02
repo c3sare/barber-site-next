@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
   useEffect,
   useRef,
@@ -15,6 +15,7 @@ import SocialLinkButton from "./SocialLink";
 import { contacts } from "../_data/contacts";
 import TopBarLinkButton from "./TopBarLinkButton";
 import { animated, useTransition } from "@react-spring/web";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const HeaderHeightContext = createContext(0);
 
@@ -84,14 +85,16 @@ const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
                   ))}
                 </div>
                 <div className="flex items-center gap-1 justify-center">
-                  {socials.map((item) => (
-                    <SocialLinkButton
-                      key={item.name}
-                      icon={item.icon}
-                      href={item.href}
-                      name={item.name}
-                    />
-                  ))}
+                  <TooltipProvider>
+                    {socials.map((item) => (
+                      <SocialLinkButton
+                        key={item.name}
+                        icon={item.icon}
+                        href={item.href}
+                        name={item.name}
+                      />
+                    ))}
+                  </TooltipProvider>
                 </div>
               </div>
             </animated.div>

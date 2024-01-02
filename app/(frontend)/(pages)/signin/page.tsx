@@ -3,7 +3,6 @@
 import { FormInput } from "@/components/form/FormInput";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { useZodForm } from "@/hooks/useZodForm";
 import { z } from "zod";
 
@@ -11,7 +10,9 @@ const SignInPage = () => {
   const form = useZodForm({
     schema: z.object({
       email: z.string().email(),
-      password: z.string().min(8),
+      password: z
+        .string()
+        .min(8, "Password must be at least 8 characters long"),
     }),
   });
 
@@ -37,6 +38,7 @@ const SignInPage = () => {
             name="password"
             className="w-[300px]"
             label="Password"
+            type="password"
           />
           <Button type="submit">Sign In</Button>
         </form>

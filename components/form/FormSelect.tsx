@@ -20,7 +20,7 @@ import {
 type FormSelectProps<T extends FieldValues> = {
   control: Control<T>;
   name: Path<T>;
-  description?: string;
+  description?: React.ReactNode;
   placeholder?: string;
   label: string;
   className?: string;

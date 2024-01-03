@@ -21,7 +21,7 @@ type FormDatePickerProps<T extends FieldValues> = {
   name: Path<T>;
   label: string;
   placeholder?: string;
-  description?: string;
+  description?: React.ReactNode;
 };
 
 const FormDatePicker = <T extends FieldValues>({

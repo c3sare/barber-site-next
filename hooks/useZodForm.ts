@@ -6,7 +6,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import { ZodSchema, z } from "zod";
 
 type PropsType<Z extends ZodSchema> = Omit<
-  NonNullable<Parameters<typeof useForm<Z>>[0]>,
+  NonNullable<Parameters<typeof useForm<z.infer<Z>>>[0]>,
   "resolver"
 > & {
   schema: Z;

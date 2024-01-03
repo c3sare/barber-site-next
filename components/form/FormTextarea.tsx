@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 type FormTextareaProps<T extends FieldValues> = {
   control: Control<T>;
   name: Path<T>;
-  description?: string;
+  description?: React.ReactNode;
   placeholder?: string;
   label: string;
   className?: string;

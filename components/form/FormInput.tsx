@@ -15,11 +15,12 @@ import { InputHTMLAttributes } from "react";
 type FormInput<T extends FieldValues> = {
   control: Control<T>;
   name: Path<T>;
-  description?: string;
+  description?: React.ReactNode;
   placeholder?: string;
   label: string;
   type?: InputHTMLAttributes<HTMLInputElement>["type"];
   className?: string;
+  autoComplete?: string;
 };
 
 export const FormInput = <T extends FieldValues>({
@@ -30,6 +31,7 @@ export const FormInput = <T extends FieldValues>({
   label,
   type,
   className,
+  autoComplete,
 }: FormInput<T>) => {
   return (
     <FormField
@@ -43,6 +45,7 @@ export const FormInput = <T extends FieldValues>({
               className={className}
               type={type}
               placeholder={placeholder}
+              autoComplete={autoComplete}
               {...field}
             />
           </FormControl>

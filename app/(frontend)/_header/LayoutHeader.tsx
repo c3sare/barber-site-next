@@ -90,9 +90,15 @@ const routing = [
 const LayoutHeader = () => {
   return (
     <Header>
-      <nav className="max-w-7xl mx-auto flex justify-between items-center px-4 flex-wrap">
+      <nav className="max-w-7xl mx-auto flex justify-between items-center px-4 flex-nowrap">
         <Link href="/">
-          <Image src={logo} alt="Logo" className="dark:invert" height={50} />
+          <Image
+            src={logo}
+            alt="Logo"
+            className="dark:invert"
+            priority
+            height={50}
+          />
         </Link>
         <Navigation>
           {routing.map((route, i) => (

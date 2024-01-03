@@ -32,7 +32,7 @@ type FormComboboxProps<T extends FieldValues> = {
   name: Path<T>;
   placeholder?: string;
   label: string;
-  description?: string;
+  description?: React.ReactNode;
   options: {
     value: FieldValue<T>;
     label: string;

@@ -9,11 +9,12 @@ import {
   FormLabel,
 } from "../ui/form";
 import { Checkbox } from "../ui/checkbox";
+import { cn } from "@/lib/utils";
 
 type FormInput<T extends FieldValues> = {
   control: Control<T>;
   name: Path<T>;
-  description?: string;
+  description?: React.ReactNode;
   label: string;
   className?: string;
 };
@@ -30,13 +31,14 @@ const FormCheckbox = <T extends FieldValues>({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
+        <FormItem
+          className={cn(
+            "flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow",
+            className
+          )}
+        >
           <FormControl>
-            <Checkbox
-              checked={field.value}
-              onCheckedChange={field.onChange}
-              className={className}
-            />
+            <Checkbox checked={field.value} onCheckedChange={field.onChange} />
           </FormControl>
           <div className="space-y-1 leading-none">
             <FormLabel>{label}</FormLabel>

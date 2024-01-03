@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 type FormInput<T extends FieldValues> = {
   control: Control<T>;
   name: Path<T>;
-  description?: string;
+  description?: React.ReactNode;
   label: string;
   className?: string;
   options: (

@@ -16,7 +16,7 @@ type CommentCarouselProps = {
 export const CommentCarousel: React.FC<CommentCarouselProps> = ({
   children,
 }) => {
-  const [api, setApi] = useState<CarouselApi>(null);
+  const [api, setApi] = useState<CarouselApi | null>(null);
   const [currentSlide, setCurrentSlideApi] = useState<number>(0);
 
   useEffect(() => {

@@ -6,14 +6,22 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { cn } from "@/lib/utils";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { CircleUserRoundIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
-const Navigation: React.FC<React.PropsWithChildren> = ({ children }) => {
+type NavigationProps = {
+  children?: React.ReactNode;
+  account?: React.ReactNode;
+};
+
+const Navigation: React.FC<NavigationProps> = ({ children, account }) => {
+  const user = useCurrentUser();
   const pathname = usePathname();
   const [isVisibleMenu, setIsVisibleMenu] = useState<boolean>(false);
 
@@ -36,15 +44,20 @@ const Navigation: React.FC<React.PropsWithChildren> = ({ children }) => {
       <div className="flex items-center gap-2">
         <Popover>
           <PopoverTrigger>
-            <CircleUserRoundIcon />
+            {user?.image ? (
+              <Image
+                src={user.image}
+                width={32}
+                height={32}
+                className="rounded-full"
+                alt="Avatar"
+              />
+            ) : (
+              <CircleUserRoundIcon />
+            )}
           </PopoverTrigger>
-          <PopoverContent className="z-[9999] max-w-[200px] flex items-center justify-between">
-            <Link href="/register">
-              <Button>Register</Button>
-            </Link>
-            <Link href="/login">
-              <Button>Log In</Button>
-            </Link>
+          <PopoverContent className="z-[9999] max-w-[200px]">
+            {account}
           </PopoverContent>
         </Popover>
         <Button

@@ -6,6 +6,7 @@ import NavLinkHeader from "./_components/NavLinkHeader";
 import Header from "./_components/Header";
 import Navigation from "./_components/Navigation";
 import NavLinkHeaderChild from "./_components/NavLinkHeaderChild";
+import Account from "./_components/Account";
 
 const routing = [
   {
@@ -100,7 +101,7 @@ const LayoutHeader = () => {
             height={50}
           />
         </Link>
-        <Navigation>
+        <Navigation account={<Account />}>
           {routing.map((route, i) => (
             <NavLinkHeader key={i} {...route}>
               {route.children

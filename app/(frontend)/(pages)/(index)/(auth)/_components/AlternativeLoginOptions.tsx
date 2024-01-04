@@ -1,7 +1,7 @@
-import { signIn } from "@/auth";
 import GithubIcon from "@/components/icons/GithubIcon";
 import GoogleIcon from "@/components/icons/GoogleIcon";
 import { GoogleLogin } from "./actions/GoogleLogin";
+import { GithubLogin } from "./actions/GithubLogin";
 
 const AlternativeLoginOptions = () => {
   return (
@@ -20,6 +20,7 @@ const AlternativeLoginOptions = () => {
         </button>
         <button
           type="button"
+          onClick={async () => await GithubLogin()}
           className="flex items-center gap-2 rounded-sm text-white bg-[#0d1117] font-bold py-2 px-8 hover:opacity-90 transition-opacity"
         >
           <GithubIcon width={16} height={16} />

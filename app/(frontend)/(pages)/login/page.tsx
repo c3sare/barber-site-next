@@ -1,8 +1,6 @@
 "use client";
 
 import { FormInput } from "@/components/form/FormInput";
-import GithubIcon from "@/components/icons/GithubIcon";
-import GoogleIcon from "@/components/icons/GoogleIcon";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useZodForm } from "@/hooks/useZodForm";
@@ -10,8 +8,17 @@ import Link from "next/link";
 import { z } from "zod";
 import { signInCredentials } from "./actions/signInCredentials";
 import AlternativeLoginOptions from "../(index)/(auth)/_components/AlternativeLoginOptions";
+import { useSearchParams } from "next/navigation";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertTriangleIcon } from "lucide-react";
 
 const SignInPage = () => {
+  const searchParams = useSearchParams();
+  const urlError =
+    searchParams.get("error") === "OAuthAccountNotLinked"
+      ? "Email already in use with different provider!"
+      : "";
+
   const form = useZodForm({
     schema: z.object({
       email: z.string().email(),
@@ -22,7 +29,7 @@ const SignInPage = () => {
   });
 
   const onSubmit = form.handleSubmit(async (data) => {
-    const action = await signInCredentials(data);
+    await signInCredentials(data);
   });
 
   return (
@@ -55,6 +62,15 @@ const SignInPage = () => {
           Get started
         </Link>
       </span>
+      {!!urlError && (
+        <Alert className="max-w-[380px] text-xs" variant="destructive">
+          <AlertTriangleIcon />
+          <AlertTitle className="font-sans font-normal text-inherit after:content-none before:content-none">
+            Login Error
+          </AlertTitle>
+          <AlertDescription>{urlError}</AlertDescription>
+        </Alert>
+      )}
     </div>
   );
 };

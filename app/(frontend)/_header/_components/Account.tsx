@@ -5,6 +5,8 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 import Link from "next/link";
 import Image from "next/image";
 import { logout } from "../_actions/logout";
+import { FileClockIcon, SettingsIcon } from "lucide-react";
+import AccountListItem from "./AccountListItem";
 
 export default function Account() {
   const user = useCurrentUser();
@@ -23,7 +25,18 @@ export default function Account() {
           {user.name ?? user.email ?? "Unknown user"}
         </span>
       </div>
-      <ul></ul>
+      <ul className="w-full flex flex-col">
+        <AccountListItem
+          title="Booking History"
+          href="/user/booking-history"
+          icon={FileClockIcon}
+        />
+        <AccountListItem
+          title="Settings"
+          href="/user/settings"
+          icon={SettingsIcon}
+        />
+      </ul>
       <div className="w-full my-2">
         <Button className="mx-auto block" onClick={() => logout()}>
           Logout

@@ -82,15 +82,7 @@ export default function Home() {
             ))}
           </Gallery>
         </WorksContainer>
-        <div className="w-full sm:w-1/2 md:w-1/4 float-left sm:pr-[15px] md:px-[15px]">
-          <h4>Who we are</h4>
-          <AboutImage src="/images/about_01.jpg" width={720} height={475} />
-          <p className="mb-2 text-xs text-center text-zinc-500">
-            The Barberia opened in the fall of 1989. We specialize in cutting
-            mens hair and shaving their faces.
-          </p>
-        </div>
-        <div className="w-full sm:w-1/2 md:w-1/4 float-left sm:pl-[15px]">
+        <div className="w-full sm:w-1/2 md:w-1/2 float-left sm:pl-[15px]">
           <h4>Company Experience</h4>
           <div>
             {expData.map((props, i) => (

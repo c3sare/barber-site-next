@@ -30,7 +30,7 @@ const BarberBox: React.FC<BarberBoxProps> = ({ name, image, availability }) => {
           ))}
         </div>
         <Button asChild>
-          <Link href="/book-now" className="translate-y-1/2 rounded-none">
+          <Link href="/book-now" className="translate-y-1/2">
             BOOK NOW
           </Link>
         </Button>

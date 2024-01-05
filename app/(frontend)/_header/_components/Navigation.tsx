@@ -35,7 +35,7 @@ const Navigation: React.FC<NavigationProps> = ({ children, account }) => {
     <>
       <ul
         className={cn(
-          "max-h-0 mx-auto md:mx-0 w-full overflow-hidden md:overflow-visible md:w-auto md:max-h-none flex text-sm uppercase md:pl-3 items-between flex-col md:flex-row items-center md:flex-wrap transition-all duration-700",
+          "max-h-0 mx-auto order-last md:order-none md:mx-0 w-full overflow-hidden md:overflow-visible md:w-auto md:max-h-none flex text-sm uppercase md:pl-3 items-between flex-col md:flex-row items-center md:flex-wrap transition-all duration-700",
           isVisibleMenu && "max-h-[100vh] md:max-h-none"
         )}
       >

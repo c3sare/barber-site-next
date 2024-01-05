@@ -91,7 +91,7 @@ const routing = [
 const LayoutHeader = () => {
   return (
     <Header>
-      <nav className="max-w-7xl mx-auto flex justify-between items-center px-4 flex-nowrap">
+      <nav className="max-w-7xl mx-auto flex justify-between items-center px-4 flex-wrap md:flex-nowrap">
         <Link href="/">
           <Image
             src={logo}

@@ -11,10 +11,18 @@ export default function SettingsPage() {
       <h1 className="text-5xl text-center after:left-1/2 after:-translate-x-1/2">
         Settings
       </h1>
-      <Accordion type="single" collapsible>
-        <AccordionItem value="item-1">
-          <AccordionTrigger className="text-xl after:content-none before:content-none">
-            Is it accessible?
+      <Accordion type="single" collapsible defaultValue="user-profile">
+        <AccordionItem value="user-profile">
+          <AccordionTrigger className="text-xl">
+            Profile Informations
+          </AccordionTrigger>
+          <AccordionContent>
+            Yes. It adheres to the WAI-ARIA design pattern.
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="user-password">
+          <AccordionTrigger className="text-xl">
+            Change Password
           </AccordionTrigger>
           <AccordionContent>
             Yes. It adheres to the WAI-ARIA design pattern.

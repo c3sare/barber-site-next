@@ -10,7 +10,6 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { cn } from "@/lib/utils";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { CircleUserRoundIcon } from "lucide-react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -24,9 +23,11 @@ const Navigation: React.FC<NavigationProps> = ({ children, account }) => {
   const user = useCurrentUser();
   const pathname = usePathname();
   const [isVisibleMenu, setIsVisibleMenu] = useState<boolean>(false);
+  const [isVisibleAccount, setIsVisibleAccount] = useState<boolean>(false);
 
   useEffect(() => {
     setIsVisibleMenu(false);
+    setIsVisibleAccount(false);
   }, [pathname]);
 
   const handleToggleMenuVisibility = () => setIsVisibleMenu((prev) => !prev);
@@ -42,7 +43,10 @@ const Navigation: React.FC<NavigationProps> = ({ children, account }) => {
         {children}
       </ul>
       <div className="flex items-center gap-2">
-        <Popover>
+        <Popover
+          open={isVisibleAccount}
+          onOpenChange={(state) => setIsVisibleAccount(state)}
+        >
           <PopoverTrigger>
             {user?.image ? (
               <Image

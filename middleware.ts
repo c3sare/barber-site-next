@@ -7,6 +7,7 @@ import {
   authRoutes,
   protectedRoutes,
 } from "@/routes";
+import includesStartsWith from "./utils/includesStartsWith";
 
 const { auth } = NextAuth(authConfig);
 
@@ -15,7 +16,10 @@ export default auth((req) => {
   const isLoggedIn = !!req.auth;
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
-  const isProtectedRoute = protectedRoutes.includes(nextUrl.pathname);
+  const isProtectedRoute = includesStartsWith(
+    protectedRoutes,
+    nextUrl.pathname
+  );
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
   if (isApiAuthRoute) {

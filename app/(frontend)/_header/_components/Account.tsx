@@ -5,7 +5,12 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 import Link from "next/link";
 import Image from "next/image";
 import { logout } from "../_actions/logout";
-import { FileClockIcon, SettingsIcon } from "lucide-react";
+import {
+  FileClockIcon,
+  ListOrderedIcon,
+  SettingsIcon,
+  ShieldEllipsisIcon,
+} from "lucide-react";
 import AccountListItem from "./AccountListItem";
 
 export default function Account() {
@@ -32,10 +37,22 @@ export default function Account() {
           icon={FileClockIcon}
         />
         <AccountListItem
+          title="Order History"
+          href="/user/order-history"
+          icon={ListOrderedIcon}
+        />
+        <AccountListItem
           title="Settings"
           href="/user/settings"
           icon={SettingsIcon}
         />
+        {user.role === "ADMIN" && (
+          <AccountListItem
+            title="Admin Panel"
+            href="/admin"
+            icon={ShieldEllipsisIcon}
+          />
+        )}
       </ul>
       <div className="w-full my-2">
         <Button className="mx-auto block" onClick={() => logout()}>

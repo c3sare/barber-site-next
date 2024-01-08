@@ -20,8 +20,10 @@ export default function SettingsPage() {
             Profile Informations
           </AccordionTrigger>
           <AccordionContent>
-            <AvatarChangeForm />
-            <ProfileInformationsForm />
+            <div className="flex gap-6">
+              <AvatarChangeForm />
+              <ProfileInformationsForm />
+            </div>
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="user-password">

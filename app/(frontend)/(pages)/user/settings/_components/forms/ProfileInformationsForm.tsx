@@ -4,11 +4,16 @@ import { FormInput } from "@/components/form/FormInput";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useZodForm } from "@/hooks/useZodForm";
-import { changePasswordSchema } from "@/validators/changePasswordSchema";
+import { profileInformationsSchema } from "@/validators/profileInformationsSchema";
+import { getProfileInformation } from "../../_actions/getProfileInformation";
 
 const ProfileInformationsForm = () => {
   const form = useZodForm({
-    schema: changePasswordSchema,
+    schema: profileInformationsSchema,
+    defaultValues: async () => {
+      const data = await getProfileInformation();
+      return data;
+    },
   });
 
   const onSubmit = form.handleSubmit((data) => {
@@ -17,25 +22,13 @@ const ProfileInformationsForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit}>
-        <FormInput
-          control={form.control}
-          name="password"
-          label="Current Password"
-          type="password"
-        />
-        <FormInput
-          control={form.control}
-          name="newPassword"
-          label="New Password"
-          type="password"
-        />
-        <FormInput
-          control={form.control}
-          name="reNewPassword"
-          label="Repeat New Password"
-          type="password"
-        />
+      <form
+        onSubmit={onSubmit}
+        className="flex flex-col justify-center items-center gap-2"
+      >
+        <FormInput control={form.control} name="name" label="Name" />
+        <FormInput control={form.control} name="phone" label="Phone" />
+        <FormInput control={form.control} name="email" label="E-mail" />
         <Button disabled={form.formState.disabled} type="submit">
           Submit
         </Button>

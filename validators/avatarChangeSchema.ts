@@ -11,13 +11,12 @@ const ACCEPTED_IMAGE_TYPES = [
 
 export const avatarChangeSchema = z
   .any()
-  .refine((files: FileList) => files?.length == 1, "Image is required.")
   .refine(
-    (files: FileList) => files?.[0]?.size <= MAX_FILE_SIZE,
+    (file: File) => file?.size <= MAX_FILE_SIZE,
     `Max file size is ${Math.round(MAX_FILE_SIZE / 100000)}MB.`
   )
   .refine(
-    (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+    (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
     `${ACCEPTED_IMAGE_TYPES.map(
       (item) => "." + (item.split("/")?.[1] ?? "")
     ).join(", ")} files are accepted.`

@@ -5,9 +5,9 @@ import { passwordSchema } from "./passwordSchema";
 export const registerSchema = z
   .object({
     email: z.string().email(),
+    name: z.string().trim(),
     password: passwordSchema,
     repassword: z.string(),
-    name: z.string().trim(),
     phone: z
       .string()
       .refine((phone) => validator.isMobilePhone(phone, "pl-PL"), {

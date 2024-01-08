@@ -19,6 +19,7 @@ type FormTextareaProps<T extends FieldValues> = {
   placeholder?: string;
   label: string;
   className?: string;
+  disabled?: boolean;
 };
 
 const FormTextarea = <T extends FieldValues>({
@@ -28,11 +29,13 @@ const FormTextarea = <T extends FieldValues>({
   label,
   placeholder,
   className,
+  disabled,
 }: FormTextareaProps<T>) => {
   return (
     <FormField
       control={control}
       name={name}
+      disabled={disabled}
       render={({ field }) => (
         <FormItem>
           <FormLabel>{label}</FormLabel>

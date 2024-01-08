@@ -31,6 +31,7 @@ type FormSelectProps<T extends FieldValues> = {
       }
     | string
   )[];
+  disabled?: boolean;
 };
 
 const FormSelect = <T extends FieldValues>({
@@ -40,15 +41,21 @@ const FormSelect = <T extends FieldValues>({
   placeholder,
   name,
   options,
+  disabled,
 }: FormSelectProps<T>) => {
   return (
     <FormField
       control={control}
       name={name}
+      disabled={disabled}
       render={({ field }) => (
         <FormItem>
           <FormLabel>{label}</FormLabel>
-          <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <Select
+            onValueChange={field.onChange}
+            defaultValue={field.value}
+            disabled={field.disabled}
+          >
             <FormControl>
               <SelectTrigger>
                 <SelectValue placeholder={placeholder} />

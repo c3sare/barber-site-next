@@ -24,6 +24,7 @@ type FormInput<T extends FieldValues> = {
       }
     | string
   )[];
+  disabled?: boolean;
 };
 
 const FormRadioGroup = <T extends FieldValues>({
@@ -32,11 +33,13 @@ const FormRadioGroup = <T extends FieldValues>({
   label,
   className,
   options,
+  disabled,
 }: FormInput<T>) => {
   return (
     <FormField
       control={control}
       name={name}
+      disabled={disabled}
       render={({ field }) => (
         <FormItem className="space-y-3">
           <FormLabel>{label}</FormLabel>
@@ -44,6 +47,7 @@ const FormRadioGroup = <T extends FieldValues>({
             <RadioGroup
               onValueChange={field.onChange}
               defaultValue={field.value}
+              disabled={field.disabled}
               className={cn("flex flex-col space-y-1", className)}
             >
               {options.map((option) => {

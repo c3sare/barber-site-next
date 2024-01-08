@@ -22,6 +22,7 @@ type FormDatePickerProps<T extends FieldValues> = {
   label: string;
   placeholder?: string;
   description?: React.ReactNode;
+  disabled?: boolean;
 };
 
 const FormDatePicker = <T extends FieldValues>({
@@ -30,6 +31,7 @@ const FormDatePicker = <T extends FieldValues>({
   label,
   placeholder,
   description,
+  disabled,
 }: FormDatePickerProps<T>) => {
   return (
     <FormField
@@ -39,7 +41,7 @@ const FormDatePicker = <T extends FieldValues>({
         <FormItem className="flex flex-col">
           <FormLabel>{label}</FormLabel>
           <Popover>
-            <PopoverTrigger asChild>
+            <PopoverTrigger asChild disabled={disabled}>
               <FormControl>
                 <Button
                   variant={"outline"}

@@ -37,6 +37,7 @@ type FormComboboxProps<T extends FieldValues> = {
     value: FieldValue<T>;
     label: string;
   }[];
+  disabled?: boolean;
 };
 
 const FormCombobox = <T extends FieldValues>({
@@ -46,6 +47,7 @@ const FormCombobox = <T extends FieldValues>({
   label,
   description,
   options,
+  disabled,
 }: FormComboboxProps<T>) => {
   const form = useFormContext();
 
@@ -53,11 +55,12 @@ const FormCombobox = <T extends FieldValues>({
     <FormField
       control={control}
       name={name}
+      disabled={disabled}
       render={({ field }) => (
         <FormItem className="flex flex-col">
           <FormLabel>{label}</FormLabel>
           <Popover>
-            <PopoverTrigger asChild>
+            <PopoverTrigger asChild disabled={field.disabled}>
               <FormControl>
                 <Button
                   variant="outline"

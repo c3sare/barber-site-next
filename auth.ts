@@ -13,7 +13,7 @@ import Credentials from "next-auth/providers/credentials";
 import Github from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
 
-import { LoginSchema } from "@/validators/LoginSchema";
+import { loginSchema } from "@/validators/loginSchema";
 import { getUserByEmail } from "@/data/user";
 
 export const {
@@ -113,7 +113,7 @@ export const {
     }),
     Credentials({
       async authorize(credentials) {
-        const validatedFields = LoginSchema.safeParse(credentials);
+        const validatedFields = loginSchema.safeParse(credentials);
 
         if (validatedFields.success) {
           const { email, password } = validatedFields.data;

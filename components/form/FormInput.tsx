@@ -21,6 +21,7 @@ type FormInput<T extends FieldValues> = {
   type?: InputHTMLAttributes<HTMLInputElement>["type"];
   className?: string;
   autoComplete?: string;
+  disabled?: boolean;
 };
 
 export const FormInput = <T extends FieldValues>({
@@ -32,11 +33,13 @@ export const FormInput = <T extends FieldValues>({
   type,
   className,
   autoComplete,
+  disabled,
 }: FormInput<T>) => {
   return (
     <FormField
       control={control}
       name={name}
+      disabled={disabled}
       render={({ field }) => (
         <FormItem>
           <FormLabel>{label}</FormLabel>

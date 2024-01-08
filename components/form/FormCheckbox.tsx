@@ -17,6 +17,7 @@ type FormInput<T extends FieldValues> = {
   description?: React.ReactNode;
   label: string;
   className?: string;
+  disabled?: boolean;
 };
 
 const FormCheckbox = <T extends FieldValues>({
@@ -25,12 +26,14 @@ const FormCheckbox = <T extends FieldValues>({
   description,
   label,
   className,
+  disabled,
 }: FormInput<T>) => {
   return (
     <FormField
       control={control}
       name={name}
-      render={({ field }) => (
+      disabled={disabled}
+      render={({ field: { value, onChange, ...rest } }) => (
         <FormItem
           className={cn(
             "flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow",
@@ -38,7 +41,7 @@ const FormCheckbox = <T extends FieldValues>({
           )}
         >
           <FormControl>
-            <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+            <Checkbox checked={value} onCheckedChange={onChange} {...rest} />
           </FormControl>
           <div className="space-y-1 leading-none">
             <FormLabel>{label}</FormLabel>

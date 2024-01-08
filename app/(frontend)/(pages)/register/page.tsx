@@ -1,22 +1,20 @@
 "use client";
 
 import { FormInput } from "@/components/form/FormInput";
-import GithubIcon from "@/components/icons/GithubIcon";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useZodForm } from "@/hooks/useZodForm";
 import Link from "next/link";
-import { RegisterSchema } from "@/validators/RegisterSchema";
+import { registerSchema } from "@/validators/registerSchema";
 import FormCheckbox from "@/components/form/FormCheckbox";
 import { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
-import GoogleIcon from "@/components/icons/GoogleIcon";
 import AlternativeLoginOptions from "../(index)/(auth)/_components/AlternativeLoginOptions";
 
 export default function Register() {
   const [captchaValue, setCaptchaValue] = useState<string | null>(null);
   const form = useZodForm({
-    schema: RegisterSchema,
+    schema: registerSchema,
     defaultValues: {
       name: "",
       email: "",

@@ -4,6 +4,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import ProfileInformationsForm from "./_components/forms/ProfileInformationsForm";
+import ChangePasswordForm from "./_components/forms/ChangePasswordForm";
+import AvatarChangeForm from "./_components/forms/AvatarChangeForm";
 
 export default function SettingsPage() {
   return (
@@ -17,7 +20,8 @@ export default function SettingsPage() {
             Profile Informations
           </AccordionTrigger>
           <AccordionContent>
-            Yes. It adheres to the WAI-ARIA design pattern.
+            <AvatarChangeForm />
+            <ProfileInformationsForm />
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="user-password">
@@ -25,7 +29,7 @@ export default function SettingsPage() {
             Change Password
           </AccordionTrigger>
           <AccordionContent>
-            Yes. It adheres to the WAI-ARIA design pattern.
+            <ChangePasswordForm />
           </AccordionContent>
         </AccordionItem>
       </Accordion>

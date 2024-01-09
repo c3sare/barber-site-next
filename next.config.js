@@ -12,6 +12,11 @@ const nextConfig = {
       },
     ],
   },
+  webpack: (config) => {
+    config.externals = [...config.externals, { sharp: "commonjs sharp" }];
+
+    return config;
+  },
 };
 
 module.exports = nextConfig;

@@ -2,7 +2,7 @@
 
 import { FileUpIcon } from "lucide-react";
 import Image from "next/image";
-import { InputHTMLAttributes, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import updateAvatar from "../../_actions/updateAvatar";
 import { useSession } from "next-auth/react";
 import { cn } from "@/lib/utils";

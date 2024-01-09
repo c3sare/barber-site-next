@@ -92,6 +92,9 @@ dependencies:
   next-themes:
     specifier: ^0.2.1
     version: 0.2.1(next@14.0.4)(react-dom@18.2.0)(react@18.2.0)
+  optional:
+    specifier: ^0.1.4
+    version: 0.1.4
   photoswipe:
     specifier: ^5.4.3
     version: 5.4.3
@@ -3668,6 +3671,10 @@ packages:
     dependencies:
       wrappy: 1.0.2
     dev: true
+
+  /optional@0.1.4:
+    resolution: {integrity: sha512-gtvrrCfkE08wKcgXaVwQVgwEQ8vel2dc5DDBn9RLQZ3YtmtkBss6A2HY6BnJH4N/4Ku97Ri/SF8sNWE2225WJw==}
+    dev: false
 
   /optionator@0.9.3:
     resolution: {integrity: sha512-JjCoypp+jKn1ttEFExxhetCKeJt9zhAgAve5FXHixTvFDW/5aEktX9bufBKLRRMdU7bNtpLfcGu94B3cdEJgjg==}

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const MAX_FILE_SIZE = 500000;
+const MAX_FILE_SIZE = 5000000;
 
 const ACCEPTED_IMAGE_TYPES = [
   "image/jpeg",
@@ -13,7 +13,7 @@ export const avatarChangeSchema = z
   .any()
   .refine(
     (file: File) => file?.size <= MAX_FILE_SIZE,
-    `Max file size is ${Math.round(MAX_FILE_SIZE / 100000)}MB.`
+    `Max file size is ${Math.round(MAX_FILE_SIZE / 1000000)}MB.`
   )
   .refine(
     (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),

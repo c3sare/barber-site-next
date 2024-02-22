@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils";
 import { ParallaxProvider } from "@/providers/ParallaxProvider";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
+import LayoutHeader from "./(frontend)/_header/LayoutHeader";
+import LayoutFooter from "./(frontend)/_footer/LayoutFooter";
 // import { ThemeProvider } from "@/providers/ThemeProvider";
 
 const fontSans = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -43,7 +45,12 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         > */}
-          <ParallaxProvider>{children}</ParallaxProvider>
+          <ParallaxProvider>
+            {" "}
+            <LayoutHeader />
+            <main className="w-full">{children}</main>
+            <LayoutFooter />
+          </ParallaxProvider>
           {/* </ThemeProvider> */}
         </body>
       </html>

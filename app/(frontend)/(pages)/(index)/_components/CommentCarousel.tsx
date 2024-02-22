@@ -53,7 +53,9 @@ export const CommentCarousel: React.FC<CommentCarouselProps> = ({
               "w-[10px] h-[10px] bg-[#aaa] rounded-full transition-colors hover:bg-white",
               currentSlide === i && "bg-white"
             )}
-          />
+          >
+            <span className="sr-only">Select comment number {i + 1}</span>
+          </button>
         ))}
       </div>
     </Carousel>

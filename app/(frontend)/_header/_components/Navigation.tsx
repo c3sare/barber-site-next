@@ -59,6 +59,7 @@ const Navigation: React.FC<NavigationProps> = ({ children, account }) => {
             ) : (
               <CircleUserRoundIcon />
             )}
+            <span className="sr-only">Profile</span>
           </PopoverTrigger>
           <PopoverContent className="z-[9999] max-w-[200px]">
             {account}

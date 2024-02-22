@@ -84,10 +84,12 @@ const Slider: React.FC<SliderProps> = ({ children }) => {
         <SlideChangeButton
           variant="prev"
           onClick={() => handleClickChangeSlide(-1)}
+          name="Previous slide"
         />
         <SlideChangeButton
           variant="next"
           onClick={() => handleClickChangeSlide(1)}
+          name="Next slide"
         />
       </div>
     </SliderContext.Provider>

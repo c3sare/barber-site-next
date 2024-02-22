@@ -4,11 +4,13 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 type SlideChangeButtonProps = {
   variant: "prev" | "next";
   onClick?: React.HTMLAttributes<HTMLButtonElement>["onClick"];
+  name: string;
 };
 
 const SlideChangeButton: React.FC<SlideChangeButtonProps> = ({
   variant,
   onClick,
+  name,
 }) => {
   const icons = {
     prev: {
@@ -28,6 +30,7 @@ const SlideChangeButton: React.FC<SlideChangeButtonProps> = ({
       onClick={onClick}
     >
       <Icon width={32} height={32} />
+      <span className="sr-only">{name}</span>
     </button>
   );
 };

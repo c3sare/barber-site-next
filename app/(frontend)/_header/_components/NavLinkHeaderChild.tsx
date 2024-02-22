@@ -12,6 +12,7 @@ const NavLinkHeaderChild: React.FC<NavLinkHeaderChildProps> = ({
   return (
     <li className="py-2 px-1 border-b border-secondary last:border-b-0 text-center md:text-left">
       <Link
+        prefetch={false}
         className="hover:text-primary transition-colors duration-500 text-xs tracking-normal py-1 px-5 leading-normal whitespace-nowrap"
         href={href}
       >

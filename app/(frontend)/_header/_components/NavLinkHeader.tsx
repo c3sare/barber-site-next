@@ -68,6 +68,7 @@ const NavLinkHeader: React.FC<NavLinkHeaderProps> = ({
     >
       <span className="relative">
         <Link
+          prefetch={false}
           href={href}
           className="block text-center uppercase text-xl md:text-sm leading-4 relative tracking-normal group-hover:text-primary transition-colors duration-500 p-4"
         >

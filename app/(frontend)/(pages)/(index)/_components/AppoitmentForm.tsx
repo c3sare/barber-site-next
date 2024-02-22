@@ -5,12 +5,14 @@ import {
   Select,
   SelectContent,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { SelectGroup } from "@radix-ui/react-select";
 
 const AppoitnmentForm = () => {
   return (
@@ -26,10 +28,13 @@ const AppoitnmentForm = () => {
             <SelectValue placeholder="Select Barber *" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="1">John Doe</SelectItem>
-            <SelectItem value="2">Markus Hobbs</SelectItem>
-            <SelectItem value="3">Steve Zoer</SelectItem>
-            <SelectItem value="4">Tony Devito</SelectItem>
+            <SelectGroup>
+              <SelectLabel>Barbers</SelectLabel>
+              <SelectItem value="1">John Doe</SelectItem>
+              <SelectItem value="2">Markus Hobbs</SelectItem>
+              <SelectItem value="3">Steve Zoer</SelectItem>
+              <SelectItem value="4">Tony Devito</SelectItem>
+            </SelectGroup>
           </SelectContent>
         </Select>
         <Select>
@@ -37,14 +42,17 @@ const AppoitnmentForm = () => {
             <SelectValue placeholder="Appoitment time *" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="8:00">8:00</SelectItem>
-            <SelectItem value="9:00">9:00</SelectItem>
-            <SelectItem value="10:00">10:00</SelectItem>
-            <SelectItem value="11:00">11:00</SelectItem>
-            <SelectItem value="12:00">12:00</SelectItem>
-            <SelectItem value="13:00">13:00</SelectItem>
-            <SelectItem value="14:00">14:00</SelectItem>
-            <SelectItem value="15:00">15:00</SelectItem>
+            <SelectGroup>
+              <SelectLabel>Time</SelectLabel>
+              <SelectItem value="8:00">8:00</SelectItem>
+              <SelectItem value="9:00">9:00</SelectItem>
+              <SelectItem value="10:00">10:00</SelectItem>
+              <SelectItem value="11:00">11:00</SelectItem>
+              <SelectItem value="12:00">12:00</SelectItem>
+              <SelectItem value="13:00">13:00</SelectItem>
+              <SelectItem value="14:00">14:00</SelectItem>
+              <SelectItem value="15:00">15:00</SelectItem>
+            </SelectGroup>
           </SelectContent>
         </Select>
         <Input placeholder="Your full name *" type="text" />
@@ -55,12 +63,15 @@ const AppoitnmentForm = () => {
             <SelectValue placeholder="Choose gender *" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="male">Male</SelectItem>
-            <SelectItem value="female">Female</SelectItem>
+            <SelectGroup>
+              <SelectLabel>Gender</SelectLabel>
+              <SelectItem value="male">Male</SelectItem>
+              <SelectItem value="female">Female</SelectItem>
+            </SelectGroup>
           </SelectContent>
         </Select>
         <div className="flex items-center space-x-2">
-          <Checkbox id="newsletter" />
+          <Checkbox id="newsletter" aria-label="subscribe newsletter" />
           <label
             htmlFor="newsletter"
             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -69,7 +80,7 @@ const AppoitnmentForm = () => {
           </label>
         </div>
         <div className="flex items-center space-x-2">
-          <Checkbox id="terms" />
+          <Checkbox id="terms" aria-label="accept terms and conditions" />
           <label
             htmlFor="terms"
             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"

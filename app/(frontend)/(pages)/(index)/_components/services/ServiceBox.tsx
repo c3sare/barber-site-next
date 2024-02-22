@@ -31,7 +31,9 @@ const ServiceBox: React.FC<ServiceBoxProps> = ({
         <p className="text-xs">{description}</p>
 
         <Button asChild className="absolute top-full -translate-y-1/2">
-          <Link href={href}>READ MORE</Link>
+          <Link href={href}>
+            READ MORE <span className="sr-only">read more about {title}</span>
+          </Link>
         </Button>
       </div>
     </div>

@@ -8,6 +8,7 @@ import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 import LayoutHeader from "./(frontend)/_header/LayoutHeader";
 import LayoutFooter from "./(frontend)/_footer/LayoutFooter";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 // import { ThemeProvider } from "@/providers/ThemeProvider";
 
 const fontSans = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -39,6 +40,7 @@ export default async function RootLayout({
             bebesNeue.variable
           )}
         >
+          <SpeedInsights />
           {/* <ThemeProvider
           attribute="class"
           defaultTheme="system"

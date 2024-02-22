@@ -27,6 +27,7 @@
     "@radix-ui/react-tooltip": "^1.0.7",
     "@react-spring/web": "^9.7.3",
     "@vercel/blob": "^0.16.1",
+    "@vercel/speed-insights": "^1.0.10",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",

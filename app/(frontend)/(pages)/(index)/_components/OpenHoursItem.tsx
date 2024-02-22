@@ -19,7 +19,7 @@ const OpenHourItem: React.FC<OpenHourItemProps> = ({
       key={shortDay}
       className={cn(
         "text-white border-b-[3px] border-b-[rgba(255,_255,_255,_0.3)] flex items-center gap-4 justify-center flex-col aspect-square min-w-[150px]",
-        open ? "bg-[#486b71]" : "bg-[#a89d8e]"
+        open ? "bg-[#486b71]" : "bg-primary"
       )}
     >
       <span className="text-3xl font-bold">{shortDay}</span>

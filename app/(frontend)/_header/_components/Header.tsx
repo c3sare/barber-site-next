@@ -61,7 +61,7 @@ const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
     <div
       className={cn(
         "w-full transition-all sticky top-0 z-[9999]",
-        isHomePage && "h-0"
+        isHomePage && "md:h-0"
       )}
     >
       {transition(

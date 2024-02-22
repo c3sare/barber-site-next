@@ -74,7 +74,7 @@ const NavLinkHeader: React.FC<NavLinkHeaderProps> = ({
         >
           {title}
           {label && (
-            <span className="text-[11px] inline text-white font-light normal-case leading-none p-[.1em_.4em_.2em] text-center align-super ml-[3px] whitespace-nowrap bg-[#a89d8e]">
+            <span className="text-[11px] inline text-white font-light normal-case leading-none p-[.1em_.4em_.2em] text-center align-super ml-[3px] whitespace-nowrap bg-primary">
               {label}
             </span>
           )}

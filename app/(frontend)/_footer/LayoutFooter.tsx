@@ -11,7 +11,7 @@ import { Gallery } from "../../../components/lightbox";
 const LayoutFooter: React.FC<React.PropsWithChildren> = () => {
   return (
     <>
-      <footer className="relative overflow-hidden text-[#777] block bg-[#0c0c0c] py-24">
+      <footer className="relative overflow-hidden text-[#AAA] block bg-[#0c0c0c] py-24">
         <div className="max-w-7xl mx-auto p-4">
           <div className="w-full md:w-1/2 lg:w-1/4 float-left px-4 mb-6">
             <Image src={logo} alt="Logo" width={228} />

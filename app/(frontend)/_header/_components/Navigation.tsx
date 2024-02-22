@@ -71,6 +71,7 @@ const Navigation: React.FC<NavigationProps> = ({ children, account }) => {
           onClick={handleToggleMenuVisibility}
         >
           <HamburgerMenuIcon />
+          <span className="sr-only">Menu</span>
         </Button>
       </div>
     </>

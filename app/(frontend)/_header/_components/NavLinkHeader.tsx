@@ -90,6 +90,7 @@ const NavLinkHeader: React.FC<NavLinkHeaderProps> = ({
                 isExpanded && "rotate-180"
               )}
             />
+            <span className="sr-only">Expan {title} menu</span>
           </button>
         ) : null}
       </span>

@@ -23,9 +23,9 @@ const LayoutFooter: React.FC<React.PropsWithChildren> = () => {
             <Button size="lg">READ MORE</Button>
           </div>
           <div className="w-full md:w-1/2 lg:w-1/4 float-left px-4 mb-6">
-            <h4 className="text-white before:content-none after:bg-white ">
+            <h5 className="text-white before:content-none after:bg-white text-2xl">
               OUR OFFICE{"'"}S
-            </h4>
+            </h5>
             <ul className="flex flex-col gap-2">
               {ourOfficesData.map((office) => (
                 <LinkListItem
@@ -38,9 +38,9 @@ const LayoutFooter: React.FC<React.PropsWithChildren> = () => {
             </ul>
           </div>
           <div className="w-full md:w-1/2 lg:w-1/3 float-left px-4 mb-6">
-            <h4 className="text-white before:content-none after:bg-white ">
+            <h5 className="text-white before:content-none after:bg-white text-2xl">
               FLICKR STREAM
-            </h4>
+            </h5>
             <Gallery withCaption>
               {stylesData.map((item, i) => (
                 <ImageItem key={i} src={item} i={i} />
@@ -48,9 +48,9 @@ const LayoutFooter: React.FC<React.PropsWithChildren> = () => {
             </Gallery>
           </div>
           <div className="w-full md:w-1/2 lg:w-1/6 float-left px-4 mb-6">
-            <h4 className="text-white before:content-none after:bg-white">
+            <h5 className="text-white before:content-none after:bg-white text-2xl">
               SITE LINKS
-            </h4>
+            </h5>
             <ul className="flex flex-col gap-2">
               {siteLinksData.map((siteLink) => (
                 <LinkListItem key={siteLink.id} {...siteLink} />

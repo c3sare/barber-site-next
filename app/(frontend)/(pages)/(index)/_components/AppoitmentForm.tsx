@@ -24,7 +24,7 @@ const AppoitnmentForm = () => {
       <form className="bg-white p-5 w-full flex flex-col gap-3 border-x border-b border-gray-100">
         <DatePicker placeholder="Appoitment date" />
         <Select>
-          <SelectTrigger className="w-full">
+          <SelectTrigger className="w-full" aria-label="Barber">
             <SelectValue placeholder="Select Barber *" />
           </SelectTrigger>
           <SelectContent>
@@ -38,7 +38,7 @@ const AppoitnmentForm = () => {
           </SelectContent>
         </Select>
         <Select>
-          <SelectTrigger className="w-full">
+          <SelectTrigger className="w-full" aria-label="Time">
             <SelectValue placeholder="Appoitment time *" />
           </SelectTrigger>
           <SelectContent>
@@ -59,7 +59,7 @@ const AppoitnmentForm = () => {
         <Input placeholder="Phone number *" type="tel" />
         <Input placeholder="Email address *" type="email" />
         <Select>
-          <SelectTrigger className="w-full">
+          <SelectTrigger className="w-full" aria-label="Gender">
             <SelectValue placeholder="Choose gender *" />
           </SelectTrigger>
           <SelectContent>

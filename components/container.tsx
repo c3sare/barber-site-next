@@ -10,6 +10,7 @@ type ContainerProps = {
   className?: string;
   bgImageUrl?: string;
   parallax?: boolean;
+  bgPriority?: boolean;
 };
 
 const Container: React.FC<ContainerProps> = ({
@@ -18,6 +19,7 @@ const Container: React.FC<ContainerProps> = ({
   wrapperClassName,
   className,
   parallax,
+  bgPriority,
 }) => {
   const wrapper = (
     <div
@@ -36,6 +38,7 @@ const Container: React.FC<ContainerProps> = ({
               <Image
                 src={bgImageUrl}
                 fill
+                priority={bgPriority}
                 sizes="100vw"
                 alt="Background Image"
                 className="object-cover select-none"

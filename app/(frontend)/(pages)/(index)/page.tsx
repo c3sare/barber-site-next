@@ -51,9 +51,10 @@ export default function Home() {
       <Container
         bgImageUrl="/images/white-bg.png"
         className="flex items-center flex-wrap"
+        bgPriority
       >
         <div className="p-5 my-8 w-full flex-1 flex flex-col gap-3 md:flex-auto md:w-2/3 float-left bg-white shadow-[0_3px_0_#f0f1f3]">
-          <h4>Welcome to the Barberia</h4>
+          <h2>Welcome to the Barberia</h2>
           <p className="italic pb-1 leading-8 relative w-auto text-base mb-5">
             The Barberia opened in the fall of 1989. We specialize in cutting
             mens hair and shaving their faces. Let{"'"}s see all our awesome

@@ -57,7 +57,6 @@ const SlideItem: React.FC<SlideItemProps> = ({
       const headerHeight = isMobile ? 0 : header?.clientHeight ?? 0;
       const slideHeight = slider.slideHeight - headerHeight;
       const contentHeight = contentRef.current.offsetHeight;
-      console.log(slideHeight / contentHeight);
       if (slideHeight <= contentHeight) {
         const value = slideHeight / contentHeight - 0.05;
         contentRef.current.style.scale = `${value.toFixed(2)}`;

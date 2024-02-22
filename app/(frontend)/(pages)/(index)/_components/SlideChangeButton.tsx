@@ -24,7 +24,7 @@ const SlideChangeButton: React.FC<SlideChangeButtonProps> = ({
   return (
     <button
       className={cn(
-        "absolute top-1/2 -translate-y-1/2 bg-[#333] text-white w-[30px] h-[110px] flex items-center justify-center opacity-0 transition-opacity duration-500 group-hover:opacity-100",
+        "absolute top-1/2 -translate-y-1/2 bg-[#333] text-white w-[30px] h-[110px] flex items-center justify-center md:opacity-0 transition-opacity duration-500 group-hover:opacity-100",
         className
       )}
       onClick={onClick}

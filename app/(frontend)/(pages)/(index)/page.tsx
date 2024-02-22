@@ -43,6 +43,7 @@ export default function Home() {
             index={i}
             backgroundUrl={item.image}
             itemsAlign={item.align as "left" | "right" | "center"}
+            priority={i === 0}
           >
             {item.components}
           </SlideItem>

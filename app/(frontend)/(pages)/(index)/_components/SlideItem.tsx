@@ -12,6 +12,7 @@ type SlideItemProps = {
   index: number;
   backgroundUrl: string;
   itemsAlign: "left" | "right" | "center";
+  priority?: boolean;
 };
 
 const SlideItem: React.FC<SlideItemProps> = ({
@@ -19,6 +20,7 @@ const SlideItem: React.FC<SlideItemProps> = ({
   index,
   backgroundUrl,
   itemsAlign,
+  priority,
 }) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -88,6 +90,7 @@ const SlideItem: React.FC<SlideItemProps> = ({
         src={backgroundUrl}
         fill
         sizes="100vw"
+        priority={priority}
         className="object-cover object-right z-[-1] select-none"
       />
       <div

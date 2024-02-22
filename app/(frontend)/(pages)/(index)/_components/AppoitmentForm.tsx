@@ -3,6 +3,7 @@ import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import {
   Select,
+  SelectGroup,
   SelectContent,
   SelectItem,
   SelectLabel,
@@ -12,7 +13,6 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { SelectGroup } from "@radix-ui/react-select";
 
 const AppoitnmentForm = () => {
   return (

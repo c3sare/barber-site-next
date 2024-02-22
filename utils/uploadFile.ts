@@ -1,8 +1,10 @@
 import { put } from "@vercel/blob";
-import { v4 as uuid } from "uuid";
 
 export default async function uploadFile(blob: File) {
-  const upload = await put(`${uuid()}${blob.name}`, blob, { access: "public" });
+  const upload = await put(`${blob.name}`, blob, {
+    access: "public",
+    addRandomSuffix: true,
+  });
 
   return upload;
 }

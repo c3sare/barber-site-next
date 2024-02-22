@@ -6,7 +6,6 @@ import { avatarChangeSchema } from "@/validators/avatarChangeSchema";
 import { put } from "@vercel/blob";
 import { revalidatePath } from "next/cache";
 import sharp from "sharp";
-import { v4 as uuid } from "uuid";
 
 const updateAvatar = async (formData: FormData) => {
   try {
@@ -30,8 +29,9 @@ const updateAvatar = async (formData: FormData) => {
       .toFormat("webp")
       .toBuffer();
 
-    const upload = await put(`${uuid()}.webp`, trimmedImage, {
+    const upload = await put(`avatar.webp`, trimmedImage, {
       access: "public",
+      addRandomSuffix: true,
     });
 
     const updateProfile = await db.user.update({

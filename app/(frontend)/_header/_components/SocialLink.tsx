@@ -1,3 +1,5 @@
+"use client";
+
 import { IconProps } from "@radix-ui/react-icons/dist/types";
 import { LucideIcon } from "lucide-react";
 import {

@@ -3,7 +3,7 @@ import GoogleIcon from "@/components/icons/GoogleIcon";
 import { GoogleLogin } from "./actions/GoogleLogin";
 import { GithubLogin } from "./actions/GithubLogin";
 
-const AlternativeLoginOptions = () => {
+const AlternativeLoginOptions = ({ disabled }: { disabled?: boolean }) => {
   return (
     <>
       <div className="w-full my-4 relative text-center before:absolute before:top-1/2 before:-translate-y-1/2 before:left-0 before:w-full before:h-[1px] before:bg-black max-w-[300px]">
@@ -11,6 +11,7 @@ const AlternativeLoginOptions = () => {
       </div>
       <div className="flex items-center justify-center gap-4 text-sm">
         <button
+          disabled={disabled}
           type="button"
           className="flex items-center gap-2 rounded-sm text-white bg-[#d62d20] font-bold py-2 px-8 hover:opacity-90 transition-opacity"
           onClick={async () => await GoogleLogin()}
@@ -19,6 +20,7 @@ const AlternativeLoginOptions = () => {
           <span>Google</span>
         </button>
         <button
+          disabled={disabled}
           type="button"
           onClick={async () => await GithubLogin()}
           className="flex items-center gap-2 rounded-sm text-white bg-[#0d1117] font-bold py-2 px-8 hover:opacity-90 transition-opacity"

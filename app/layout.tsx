@@ -9,6 +9,7 @@ import { auth } from "@/auth";
 import LayoutHeader from "./(frontend)/_header/LayoutHeader";
 import LayoutFooter from "./(frontend)/_footer/LayoutFooter";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Toaster } from "@/components/ui/toaster";
 // import { ThemeProvider } from "@/providers/ThemeProvider";
 
 const fontSans = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -40,6 +41,7 @@ export default async function RootLayout({
             bebesNeue.variable
           )}
         >
+          <Toaster />
           <SpeedInsights />
           {/* <ThemeProvider
           attribute="class"

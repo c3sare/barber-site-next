@@ -13,7 +13,7 @@ export const registerSchema = z
       .refine((phone) => validator.isMobilePhone(phone, "pl-PL"), {
         message: "Invalid phone number",
       }),
-    terms: z.boolean(),
+    terms: z.boolean().refine((val) => val, "You need to accept terms"),
   })
   .refine((obj) => obj.password === obj.repassword, {
     message: "Passwords don't match",

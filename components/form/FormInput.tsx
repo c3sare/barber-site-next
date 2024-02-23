@@ -41,11 +41,10 @@ export const FormInput = <T extends FieldValues>({
       name={name}
       disabled={disabled}
       render={({ field }) => (
-        <FormItem>
+        <FormItem className={className}>
           <FormLabel>{label}</FormLabel>
           <FormControl>
             <Input
-              className={className}
               type={type}
               placeholder={placeholder}
               autoComplete={autoComplete}

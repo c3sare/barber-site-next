@@ -72,7 +72,7 @@ const Slider: React.FC<SliderProps> = ({ children }) => {
     >
       <div
         ref={sliderContainerRef}
-        className="h-[90vh] max-h-[820px] w-full overflow-hidden relative group"
+        className="h-[85vh] max-h-[820px] w-full overflow-hidden relative group"
         style={style}
       >
         <div

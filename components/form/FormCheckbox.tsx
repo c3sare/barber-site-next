@@ -7,6 +7,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "../ui/form";
 import { Checkbox } from "../ui/checkbox";
 import { cn } from "@/lib/utils";

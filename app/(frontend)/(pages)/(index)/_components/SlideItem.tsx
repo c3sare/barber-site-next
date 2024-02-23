@@ -81,7 +81,7 @@ const SlideItem: React.FC<SlideItemProps> = ({
   return (
     <div
       className={cn(
-        "w-full h-[80vh] max-h-[820px] overflow-hidden relative flex items-center px-[30px] text-white text-center md:pt-36"
+        "w-full h-[90vh] max-h-[820px] overflow-hidden relative flex items-center px-[30px] text-white text-center md:pt-36"
       )}
       style={style}
     >

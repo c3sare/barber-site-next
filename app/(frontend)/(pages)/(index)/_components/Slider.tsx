@@ -24,7 +24,7 @@ const Slider: React.FC<SliderProps> = ({ children }) => {
   useEffect(() => {
     const handleResize = () => {
       if (sliderContainerRef.current) {
-        setSlideHeight(sliderContainerRef.current.clientWidth / 1.4275);
+        setSlideHeight(sliderContainerRef.current.clientHeight);
       }
     };
 
@@ -72,7 +72,7 @@ const Slider: React.FC<SliderProps> = ({ children }) => {
     >
       <div
         ref={sliderContainerRef}
-        className="h-[80vh] max-h-[820px] w-full overflow-hidden relative group"
+        className="h-[90vh] max-h-[820px] w-full overflow-hidden relative group"
         style={style}
       >
         <div

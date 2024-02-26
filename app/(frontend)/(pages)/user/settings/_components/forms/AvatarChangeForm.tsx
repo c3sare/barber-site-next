@@ -67,7 +67,8 @@ const AvatarChangeForm = () => {
         />
         {!isLoading && (
           <div className="opacity-0 text-white absolute top-0 left-0 h-full w-full bg-[rgba(0,_0,_0,_.6)] group-hover:opacity-100 transition-opacity flex items-center justify-center">
-            <FileUpIcon width={48} height={48} />
+            <FileUpIcon width={24} height={24} />
+            <span className="sr-only">Change avatar</span>
           </div>
         )}
       </label>

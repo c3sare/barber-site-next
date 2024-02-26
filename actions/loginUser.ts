@@ -9,7 +9,7 @@ import { AuthError } from "next-auth";
 import { z } from "zod";
 
 export const loginUser = action(
-  loginSchema.and(z.object({ callbackUrl: z.string().url().optional() })),
+  loginSchema.and(z.object({ callbackUrl: z.string().optional().nullable() })),
   async ({ email, password, callbackUrl }) => {
     const user = await db.user.findUnique({
       where: {
@@ -36,7 +36,7 @@ export const loginUser = action(
       };
 
     try {
-      await signIn("credentials", {
+      return await signIn("credentials", {
         email,
         password,
         redirectTo: callbackUrl ?? "/",

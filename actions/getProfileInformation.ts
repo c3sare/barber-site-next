@@ -1,9 +1,7 @@
-"use server";
-
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 
-export const getProfileInformation = async () => {
+export const getCurrentUserProfileInformations = async () => {
   const session = await auth();
 
   const user = await db.user.findUnique({

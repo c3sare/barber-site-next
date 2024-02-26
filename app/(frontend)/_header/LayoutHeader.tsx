@@ -92,7 +92,7 @@ const LayoutHeader = () => {
   return (
     <Header>
       <nav className="max-w-7xl mx-auto flex justify-between items-center px-4 flex-wrap md:flex-nowrap">
-        <Link href="/">
+        <Link href="/" className="w-[calc(100%_-_90px)] sm:w-auto">
           <Image
             src={logo}
             alt="Logo"

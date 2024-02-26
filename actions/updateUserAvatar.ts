@@ -1,23 +1,17 @@
 "use server";
 
-import { auth, update } from "@/auth";
+import { update } from "@/auth";
 import { db } from "@/lib/db";
+import { actionWithAuth } from "@/lib/safe-action";
 import { avatarChangeSchema } from "@/validators/avatarChangeSchema";
 import { put } from "@vercel/blob";
 import { revalidatePath } from "next/cache";
 import sharp from "sharp";
 
-const updateAvatar = async (formData: FormData) => {
-  try {
-    const session = await auth();
-
-    if (!session) throw new Error("No authorization");
-
-    const image = formData.get("image") as File;
-
-    if (!image) return null;
-
-    const parsedAvatar = avatarChangeSchema.parse(image) as File;
+export const updateUserAvatar = actionWithAuth(
+  avatarChangeSchema,
+  async ({ image }, { session }) => {
+    const parsedAvatar = image as File;
 
     const trimmedImage = await sharp(await parsedAvatar.arrayBuffer())
       .resize({
@@ -54,11 +48,8 @@ const updateAvatar = async (formData: FormData) => {
 
     revalidatePath("/user/settings", "layout");
 
-    return updateProfile;
-  } catch (err) {
-    console.error(err);
-    return null;
+    return {
+      success: true,
+    };
   }
-};
-
-export default updateAvatar;
+);

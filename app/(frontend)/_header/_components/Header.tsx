@@ -68,7 +68,7 @@ const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
         (style, item) =>
           item && (
             <animated.div
-              className="bg-header-full overflow-hidden"
+              className="bg-header-full overflow-hidden hidden md:block"
               ref={contactRef}
               style={style}
             >

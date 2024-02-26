@@ -1,6 +1,6 @@
 "use client";
 
-import { Control, FieldValues, Path } from "react-hook-form";
+import { Control, FieldValues, Path, type PathValue } from "react-hook-form";
 import {
   FormControl,
   FormDescription,
@@ -22,6 +22,7 @@ type FormInput<T extends FieldValues> = {
   className?: string;
   autoComplete?: string;
   disabled?: boolean;
+  defaultValue?: PathValue<T, Path<T>>;
 };
 
 export const FormInput = <T extends FieldValues>({
@@ -34,12 +35,14 @@ export const FormInput = <T extends FieldValues>({
   className,
   autoComplete,
   disabled,
+  defaultValue,
 }: FormInput<T>) => {
   return (
     <FormField
       control={control}
       name={name}
       disabled={disabled}
+      defaultValue={defaultValue}
       render={({ field }) => (
         <FormItem className={className}>
           <FormLabel>{label}</FormLabel>

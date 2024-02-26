@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import Link from "next/link";
 import Image from "next/image";
-import { logout } from "../_actions/logout";
+import { logoutUser } from "@/actions/logoutUser";
 import {
   FileClockIcon,
   ListOrderedIcon,
@@ -55,7 +55,7 @@ export default function Account() {
         )}
       </ul>
       <div className="w-full my-2">
-        <Button className="mx-auto block" onClick={() => logout()}>
+        <Button className="mx-auto block" onClick={() => logoutUser()}>
           Logout
         </Button>
       </div>

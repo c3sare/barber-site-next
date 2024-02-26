@@ -14,7 +14,12 @@ import { useAction } from "next-safe-action/hooks";
 import { loginUser } from "@/actions/loginUser";
 
 const SignInPage = () => {
-  const action = useAction(loginUser);
+  const action = useAction(loginUser, {
+    onError: console.log,
+    onSuccess: console.log,
+    onSettled: console.log,
+    onExecute: console.log,
+  });
   const searchParams = useSearchParams();
   const urlError =
     searchParams.get("error") === "OAuthAccountNotLinked"
@@ -30,6 +35,10 @@ const SignInPage = () => {
         .string()
         .min(8, "Password must be at least 8 characters long"),
     }),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
   const onSubmit = form.handleSubmit((data) => {

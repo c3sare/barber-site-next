@@ -7,10 +7,14 @@ import {
 import ProfileInformationsForm from "./_components/forms/ProfileInformationsForm";
 import ChangePasswordForm from "./_components/forms/ChangePasswordForm";
 import AvatarChangeForm from "./_components/forms/AvatarChangeForm";
+import { getCurrentUserProfileInformations } from "@/actions/getProfileInformation";
+import { Suspense } from "react";
 
-export default function SettingsPage() {
+export default async function SettingsPage() {
+  const profileInformations = await getCurrentUserProfileInformations();
+
   return (
-    <div className="mx-auto max-w-7xl py-8">
+    <div className="mx-auto max-w-7xl py-8 px-4">
       <h1 className="text-5xl text-center after:left-1/2 after:-translate-x-1/2">
         Settings
       </h1>
@@ -20,9 +24,13 @@ export default function SettingsPage() {
             Profile Informations
           </AccordionTrigger>
           <AccordionContent>
-            <div className="flex gap-6">
+            <div className="flex gap-6 items-center justify-center flex-wrap md:flex-nowrap">
               <AvatarChangeForm />
-              <ProfileInformationsForm />
+              <Suspense fallback={null}>
+                <ProfileInformationsForm
+                  profileInformations={profileInformations}
+                />
+              </Suspense>
             </div>
           </AccordionContent>
         </AccordionItem>

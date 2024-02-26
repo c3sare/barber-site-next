@@ -2,14 +2,31 @@
 
 import { FileUpIcon } from "lucide-react";
 import Image from "next/image";
-import { useRef, useState } from "react";
-import updateAvatar from "../../_actions/updateAvatar";
+import { useRef } from "react";
+import { updateUserAvatar } from "@/actions/updateUserAvatar";
 import { useSession } from "next-auth/react";
 import { cn } from "@/lib/utils";
+import { useAction } from "next-safe-action/hooks";
+import { useToast } from "@/components/ui/use-toast";
 
 const AvatarChangeForm = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { toast } = useToast();
   const { update, data } = useSession();
+  const action = useAction(updateUserAvatar, {
+    onSettled: (data) => {
+      if (data.data?.success) {
+        toast({
+          title: "Success",
+          description: "Avatar was updated",
+        });
+        update();
+      } else
+        toast({
+          title: "Error",
+          description: "Something went wrong",
+        });
+    },
+  });
   const formRef = useRef<HTMLFormElement>(null);
 
   const inputOnChange = () => {
@@ -18,30 +35,26 @@ const AvatarChangeForm = () => {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
     const formData = new FormData(e.currentTarget);
-    updateAvatar(formData)
-      .then(() => {
-        update();
-      })
-      .catch((err) => console.log(err))
-      .finally(() => setIsLoading(false));
+    action.execute(formData);
   };
 
+  const isLoading = action.status === "executing";
+
   return (
-    <form className="w-[256px] h-[256px]" ref={formRef} onSubmit={onSubmit}>
+    <form className="w-[128px] h-[128px]" ref={formRef} onSubmit={onSubmit}>
       <label
         htmlFor="avatar"
         className={cn(
-          "relative group w-[256px] h-[256px] cursor-pointer",
+          "relative group w-[128px] h-[128px] cursor-pointer",
           isLoading && "opacity-50 cursor-default"
         )}
       >
         <Image
           src={data?.user?.image ?? "/images/avatar.png"}
           alt="Avatar"
-          width={256}
-          height={256}
+          width={128}
+          height={128}
         />
         <input
           type="file"

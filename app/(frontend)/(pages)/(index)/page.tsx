@@ -84,7 +84,7 @@ export default function Home() {
             ))}
           </Gallery>
         </WorksContainer>
-        <div className="w-full sm:w-1/2 md:w-1/2 float-left sm:pl-[15px]">
+        <div className="w-full pt-4 sm:pt-0 sm:w-full md:w-1/2 float-left sm:pl-4">
           <h4>Company Experience</h4>
           <div>
             {expData.map((props, i) => (

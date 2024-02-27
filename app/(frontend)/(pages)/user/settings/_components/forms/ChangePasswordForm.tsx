@@ -50,7 +50,10 @@ const ChangePasswordForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className="max-w-sm mx-auto">
+      <form
+        onSubmit={onSubmit}
+        className="max-w-sm mx-auto flex gap-2 items-center justify-center flex-col"
+      >
         <FormInput
           control={form.control}
           name="password"
@@ -69,11 +72,7 @@ const ChangePasswordForm = () => {
           label="Repeat New Password"
           type="password"
         />
-        <Button
-          className="my-2"
-          disabled={form.formState.disabled || isLoading}
-          type="submit"
-        >
+        <Button disabled={form.formState.disabled || isLoading} type="submit">
           Submit
         </Button>
       </form>

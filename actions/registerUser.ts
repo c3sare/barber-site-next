@@ -1,9 +1,12 @@
 "use server";
 
+import AfterRegisterEmail from "@/emails/after-register";
 import { db } from "@/lib/db";
+import { mail } from "@/lib/mail";
 import { action } from "@/lib/safe-action";
 import { verifyCaptcha } from "@/lib/verifyCaptcha";
 import { registerSchema } from "@/validators/registerSchema";
+import { render } from "@react-email/components";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 
@@ -44,6 +47,14 @@ export const registerUser = action(
     });
 
     if (!user) throw new Error("Couldn't create user.");
+
+    const mailer = await mail();
+
+    await mailer.sendMail({
+      to: email,
+      subject: "Email confirmation - Barberia",
+      html: render(AfterRegisterEmail({ name, passcode: 321321 })),
+    });
 
     return {
       type: "success",

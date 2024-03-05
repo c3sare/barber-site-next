@@ -6,6 +6,7 @@ import { action } from "@/lib/safe-action";
 import { loginSchema } from "@/validators/loginSchema";
 import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
+import { redirect } from "next/navigation";
 import { z } from "zod";
 
 export const loginUser = action(
@@ -34,6 +35,8 @@ export const loginUser = action(
         message: "Password isn't correct",
         field: "password",
       };
+
+    if (!user.emailVerified) return redirect(`/verify?email=${user.email}`);
 
     try {
       return await signIn("credentials", {

@@ -15,7 +15,7 @@ import * as React from "react";
 
 interface AfterRegisterEmailProps {
   name: string;
-  passcode: number;
+  passcode: string;
 }
 
 export const AfterRegisterEmail = ({
@@ -69,7 +69,7 @@ export const AfterRegisterEmail = ({
 
 AfterRegisterEmail.PreviewProps = {
   name: "Alan",
-  passcode: 144833,
+  passcode: "144833",
 } as AfterRegisterEmailProps;
 
 export default AfterRegisterEmail;

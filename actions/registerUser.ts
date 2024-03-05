@@ -37,12 +37,15 @@ export const registerUser = action(
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    const passcode = Math.random().toString().slice(2, 6);
+
     const user = await db.user.create({
       data: {
         email,
         name,
         phone,
         password: hashedPassword,
+        verifyPasscode: passcode,
       },
     });
 
@@ -53,7 +56,7 @@ export const registerUser = action(
     await mailer.sendMail({
       to: email,
       subject: "Email confirmation - Barberia",
-      html: render(AfterRegisterEmail({ name, passcode: 321321 })),
+      html: render(AfterRegisterEmail({ name, passcode })),
     });
 
     return {

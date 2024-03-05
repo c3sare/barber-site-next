@@ -61,7 +61,8 @@ export const registerUser = action(
 
     return {
       type: "success",
-      message: "Your account has been successfully created",
+      message:
+        "Your account has been successfully created, please check your email to verify account",
     };
   }
 );

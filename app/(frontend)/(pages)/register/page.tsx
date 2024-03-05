@@ -33,39 +33,29 @@ export default function Register() {
     },
   });
   const serverAction = useAction(registerUser, {
-    onSettled: () => {
-      captchaRef.current?.reset();
-    },
-    onError: () => {
-      toast({
-        variant: "destructive",
-        title: "Something went wrong...",
-        description: "Try again after a while",
-      });
-    },
-    onSuccess: (data) => {
-      if (data.type === "success") {
-        router.push("/login");
-        toast({ title: "Success", description: data.message });
-      } else if (data.type === "error") {
-        if (data.field) {
-          if (data.field === "email") {
+    onSettled: (data) => {
+      if (data.data?.type === "success") {
+        router.push(`/verify?email=${form.getValues("email")}`);
+        toast({ title: "Success", description: data.data.message });
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: data?.data?.message ?? "Something went wrong...",
+        });
+        if (data.data?.field) {
+          if (data.data?.field === "email") {
             setUsedEmails((prev) => [...prev, form.getValues("email")]);
           }
 
           form.setError(
-            data.field,
-            { message: data.message },
+            data.data.field,
+            { message: data.data.message },
             { shouldFocus: true }
           );
-        } else {
-          toast({
-            variant: "destructive",
-            title: "Error",
-            description: data.message,
-          });
         }
       }
+      captchaRef.current?.reset();
     },
   });
 

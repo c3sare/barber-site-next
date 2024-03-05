@@ -39,6 +39,7 @@
     "date-fns": "^3.3.1",
     "embla-carousel-react": "8.0.0-rc23",
     "googleapis": "^133.0.0",
+    "input-otp": "0.3.31-beta",
     "lucide-react": "^0.336.0",
     "next": "14.1.2",
     "next-auth": "5.0.0-beta.13",

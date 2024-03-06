@@ -142,7 +142,7 @@ export default function Register() {
           </Button>
         </form>
       </Form>
-      <AlternativeLoginOptions />
+      <AlternativeLoginOptions disabled={isLoading} />
       <span className="text-xs my-4">
         You already have an account?{" "}
         <Link className="text-primary hover:underline" href="/login">

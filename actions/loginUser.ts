@@ -16,6 +16,9 @@ export const loginUser = action(
       where: {
         email,
       },
+      include: {
+        accounts: true,
+      },
     });
 
     if (!user)
@@ -36,7 +39,8 @@ export const loginUser = action(
         field: "password",
       };
 
-    if (!user.emailVerified) return redirect(`/verify?email=${user.email}`);
+    if (!user.emailVerified && user.accounts.length === 0)
+      return redirect(`/verify?email=${user.email}`);
 
     try {
       return await signIn("credentials", {

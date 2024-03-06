@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import { mail } from "@/lib/mail";
 import { action } from "@/lib/safe-action";
 import { verifyCaptcha } from "@/lib/verifyCaptcha";
+import { generatePasscode } from "@/utils/generatePasscode";
 import { registerSchema } from "@/validators/registerSchema";
 import { render } from "@react-email/components";
 import bcrypt from "bcryptjs";
@@ -37,7 +38,7 @@ export const registerUser = action(
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const passcode = Math.random().toString().slice(2, 6);
+    const passcode = generatePasscode();
 
     const user = await db.user.create({
       data: {
@@ -46,6 +47,7 @@ export const registerUser = action(
         phone,
         password: hashedPassword,
         verifyPasscode: passcode,
+        passcodeCreatedAt: new Date(),
       },
     });
 
@@ -56,7 +58,7 @@ export const registerUser = action(
     await mailer.sendMail({
       to: email,
       subject: "Email confirmation - Barberia",
-      html: render(AfterRegisterEmail({ name, passcode })),
+      html: render(AfterRegisterEmail({ name, passcode, email })),
     });
 
     return {

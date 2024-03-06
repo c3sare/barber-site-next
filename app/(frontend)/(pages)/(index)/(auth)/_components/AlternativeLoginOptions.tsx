@@ -13,7 +13,7 @@ const AlternativeLoginOptions = ({ disabled }: { disabled?: boolean }) => {
         <button
           disabled={disabled}
           type="button"
-          className="flex items-center gap-2 rounded-sm text-white bg-[#d62d20] font-bold py-2 px-8 hover:opacity-90 transition-opacity"
+          className="flex items-center gap-2 rounded-sm text-white bg-[#d62d20] font-bold py-2 px-8 hover:opacity-90 transition-opacity disabled:opacity-70"
           onClick={async () => await GoogleLogin()}
         >
           <GoogleIcon width={16} height={16} />
@@ -23,7 +23,7 @@ const AlternativeLoginOptions = ({ disabled }: { disabled?: boolean }) => {
           disabled={disabled}
           type="button"
           onClick={async () => await GithubLogin()}
-          className="flex items-center gap-2 rounded-sm text-white bg-[#0d1117] font-bold py-2 px-8 hover:opacity-90 transition-opacity"
+          className="flex items-center gap-2 rounded-sm text-white bg-[#0d1117] font-bold py-2 px-8 hover:opacity-90 transition-opacity disabled:opacity-70"
         >
           <GithubIcon width={16} height={16} />
           <span>GitHub</span>

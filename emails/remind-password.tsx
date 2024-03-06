@@ -13,17 +13,17 @@ import {
 } from "@react-email/components";
 import * as React from "react";
 
-interface AfterRegisterEmailProps {
+interface RemindPasswordProps {
   name: string;
-  passcode: string;
-  email: string;
+  userId: string;
+  token: string;
 }
 
-export const AfterRegisterEmail = ({
+export const RemindPasswordEmail = ({
   name,
-  passcode,
-  email,
-}: AfterRegisterEmailProps) => (
+  userId,
+  token,
+}: RemindPasswordProps) => (
   <Html>
     <Head />
     <Preview>
@@ -39,21 +39,16 @@ export const AfterRegisterEmail = ({
           style={logo}
         />
         <Text style={paragraph}>Hi {name},</Text>
-        <Text style={paragraph}>Welcome to Barberia.</Text>
+        <Text style={paragraph}>
+          You can change password to your account by click on button below.
+        </Text>
         <Section style={btnContainer}>
           <Button
             style={button}
-            href={`${getBaseUrl()}/verify?email=${email}&passcode=${passcode}`}
+            href={`${getBaseUrl()}/remind?id=${userId}&token=${token}`}
           >
             Confirm your email
           </Button>
-        </Section>
-        <Section style={{ textAlign: "center", padding: "8px 0" }}>or</Section>
-        <Button style={button} href={`${getBaseUrl()}/verify?email=${email}`}>
-          Enter the code below
-        </Button>
-        <Section style={codeContainer}>
-          <Text style={code}>{passcode}</Text>
         </Section>
         <Text style={paragraph}>
           Best,
@@ -66,36 +61,13 @@ export const AfterRegisterEmail = ({
   </Html>
 );
 
-AfterRegisterEmail.PreviewProps = {
+RemindPasswordEmail.PreviewProps = {
   name: "Alan",
-  passcode: "144833",
-  email: "user@example.com",
-} as AfterRegisterEmailProps;
+  userId: "144833",
+  token: "daxxasd1231231asld",
+} as RemindPasswordProps;
 
-export default AfterRegisterEmail;
-
-const codeContainer = {
-  background: "rgba(0,0,0,.05)",
-  borderRadius: "4px",
-  margin: "16px auto 14px",
-  verticalAlign: "middle",
-  width: "280px",
-};
-
-const code = {
-  color: "#000",
-  display: "inline-block",
-  fontFamily: "HelveticaNeue-Bold",
-  fontSize: "32px",
-  fontWeight: 700,
-  letterSpacing: "6px",
-  lineHeight: "40px",
-  paddingBottom: "8px",
-  paddingTop: "8px",
-  margin: "0 auto",
-  width: "100%",
-  textAlign: "center" as const,
-};
+export default RemindPasswordEmail;
 
 const main = {
   backgroundColor: "#ffffff",

@@ -13,17 +13,17 @@ import {
 } from "@react-email/components";
 import * as React from "react";
 
-interface AfterRegisterEmailProps {
+interface ResendPasscodeProps {
   name: string;
   passcode: string;
   email: string;
 }
 
-export const AfterRegisterEmail = ({
+export const ResendPasscodeEmail = ({
   name,
   passcode,
   email,
-}: AfterRegisterEmailProps) => (
+}: ResendPasscodeProps) => (
   <Html>
     <Head />
     <Preview>
@@ -39,7 +39,7 @@ export const AfterRegisterEmail = ({
           style={logo}
         />
         <Text style={paragraph}>Hi {name},</Text>
-        <Text style={paragraph}>Welcome to Barberia.</Text>
+        <Text style={paragraph}>Here is your new passcode to verify.</Text>
         <Section style={btnContainer}>
           <Button
             style={button}
@@ -66,13 +66,13 @@ export const AfterRegisterEmail = ({
   </Html>
 );
 
-AfterRegisterEmail.PreviewProps = {
+ResendPasscodeEmail.PreviewProps = {
   name: "Alan",
   passcode: "144833",
   email: "user@example.com",
-} as AfterRegisterEmailProps;
+} as ResendPasscodeProps;
 
-export default AfterRegisterEmail;
+export default ResendPasscodeEmail;
 
 const codeContainer = {
   background: "rgba(0,0,0,.05)",

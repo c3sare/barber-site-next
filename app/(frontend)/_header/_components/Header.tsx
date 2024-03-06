@@ -14,7 +14,6 @@ import { socials } from "../_data/socials";
 import SocialLinkButton from "./SocialLink";
 import { contacts } from "../_data/contacts";
 import TopBarLinkButton from "./TopBarLinkButton";
-import { animated, useTransition } from "@react-spring/web";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 const HeaderHeightContext = createContext(0);
@@ -37,20 +36,6 @@ const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
     setHeaderHeight(headerRef.current!.clientHeight + contactDivHeight ?? 0);
   }, []);
 
-  const transition = useTransition(!isHomePage, {
-    from: {
-      maxHeight: "0px",
-    },
-    enter: {
-      maxHeight: "100px",
-      onResolve: handleResizeScreen,
-    },
-    leave: {
-      maxHeight: "0px",
-      onResolve: handleResizeScreen,
-    },
-  });
-
   useEffect(() => {
     window.addEventListener("resize", handleResizeScreen, true);
 
@@ -64,42 +49,33 @@ const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
         isHomePage && "md:h-0"
       )}
     >
-      {transition(
-        (style, item) =>
-          item && (
-            <animated.div
-              className="bg-header-full overflow-hidden hidden md:block"
-              ref={contactRef}
-              style={style}
-            >
-              <div className="mx-auto max-w-7xl px-6 py-2 flex items-center justify-center md:justify-between flex-wrap gap-2">
-                <div className="flex items-center gap-2 flex-wrap justify-center">
-                  {contacts.map((item) => (
-                    <TopBarLinkButton
-                      key={item.name}
-                      href={item.href}
-                      icon={item.icon}
-                    >
-                      {item.name}
-                    </TopBarLinkButton>
-                  ))}
-                </div>
-                <div className="flex items-center gap-1 justify-center">
-                  <TooltipProvider>
-                    {socials.map((item) => (
-                      <SocialLinkButton
-                        key={item.name}
-                        icon={item.icon}
-                        href={item.href}
-                        name={item.name}
-                      />
-                    ))}
-                  </TooltipProvider>
-                </div>
-              </div>
-            </animated.div>
-          )
-      )}
+      <div className="bg-header-full overflow-hidden hidden md:block">
+        <div className="mx-auto max-w-7xl px-6 py-2 flex items-center justify-center md:justify-between flex-wrap gap-2">
+          <div className="flex items-center gap-2 flex-wrap justify-center">
+            {contacts.map((item) => (
+              <TopBarLinkButton
+                key={item.name}
+                href={item.href}
+                icon={item.icon}
+              >
+                {item.name}
+              </TopBarLinkButton>
+            ))}
+          </div>
+          <div className="flex items-center gap-1 justify-center">
+            <TooltipProvider>
+              {socials.map((item) => (
+                <SocialLinkButton
+                  key={item.name}
+                  icon={item.icon}
+                  href={item.href}
+                  name={item.name}
+                />
+              ))}
+            </TooltipProvider>
+          </div>
+        </div>
+      </div>
       <header
         ref={headerRef}
         className={cn(

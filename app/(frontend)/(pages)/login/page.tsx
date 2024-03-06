@@ -81,6 +81,12 @@ const SignInPage = () => {
           Get started
         </Link>
       </span>
+      <span className="text-xs mb-4">
+        Forgot your password?{" "}
+        <Link className="text-primary hover:underline" href="/remind">
+          Send a reminder
+        </Link>
+      </span>
       {!!urlError && (
         <Alert className="max-w-[380px] text-xs" variant="destructive">
           <AlertTriangleIcon />

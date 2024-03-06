@@ -10,6 +10,7 @@ import { OTPInput } from "input-otp";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
+import { ResendButtonPasscode } from "./ResendPasscodeButton";
 
 export const PasscodeForm = ({ email }: { email: string }) => {
   const { toast } = useToast();
@@ -98,6 +99,7 @@ export const PasscodeForm = ({ email }: { email: string }) => {
           className="hidden"
           type="submit"
         />
+        <ResendButtonPasscode email={email} />
       </form>
     </Form>
   );

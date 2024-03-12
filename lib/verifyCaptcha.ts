@@ -5,7 +5,7 @@ const googleCaptchaResponseSchema = z.object({
   hostname: z.string(),
 });
 
-export async function verifyCaptchaV3(captcha: string) {
+export async function verifyCaptcha(captcha: string) {
   try {
     const request = await fetch(
       `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_V3_SECRET_KEY}&response=${captcha}`

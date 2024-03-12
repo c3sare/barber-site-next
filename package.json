@@ -30,6 +30,8 @@
     "@react-email/components": "^0.0.15",
     "@react-email/render": "^0.0.12",
     "@react-spring/web": "^9.7.3",
+    "@upstash/ratelimit": "^1.0.1",
+    "@upstash/redis": "^1.28.4",
     "@vercel/blob": "^0.22.1",
     "@vercel/speed-insights": "^1.0.10",
     "bcryptjs": "^2.4.3",

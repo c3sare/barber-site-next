@@ -3,7 +3,7 @@
 import { signIn } from "@/auth";
 import { db } from "@/lib/db";
 import { action } from "@/lib/safe-action";
-import { verifyCaptchaV3 } from "@/lib/verifyCaptchaV3";
+import { verifyCaptcha } from "@/lib/verifyCaptcha";
 import { loginSchema } from "@/validators/loginSchema";
 import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
@@ -18,7 +18,7 @@ export const loginUser = action(
     })
   ),
   async ({ email, password, callbackUrl, token }) => {
-    const isValidCaptchaToken = await verifyCaptchaV3(token);
+    const isValidCaptchaToken = await verifyCaptcha(token);
 
     if (!isValidCaptchaToken) {
       return {

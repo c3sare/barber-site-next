@@ -10,7 +10,7 @@ import AlternativeLoginOptions from "../(index)/(auth)/_components/AlternativeLo
 import { useSearchParams } from "next/navigation";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertTriangleIcon } from "lucide-react";
-import { useAction } from "next-safe-action/hooks";
+import { useAction } from "@/hooks/useAction";
 import { loginUser } from "@/actions/loginUser";
 import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
@@ -53,13 +53,6 @@ const SignInPage = () => {
             description: data.message,
           });
       }
-    },
-    onError: () => {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Something went wrong...",
-      });
     },
   });
   const searchParams = useSearchParams();

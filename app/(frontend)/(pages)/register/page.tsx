@@ -9,7 +9,7 @@ import { registerSchema } from "@/validators/registerSchema";
 import FormCheckbox from "@/components/form/FormCheckbox";
 import { useState } from "react";
 import AlternativeLoginOptions from "../(index)/(auth)/_components/AlternativeLoginOptions";
-import { useAction } from "next-safe-action/hooks";
+import { useAction } from "@/hooks/useAction";
 import { registerUser } from "@/actions/registerUser";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
@@ -32,24 +32,24 @@ export default function Register() {
     },
   });
   const serverAction = useAction(registerUser, {
-    onSettled: (data) => {
-      if (data.data?.type === "success") {
+    onSuccess: (data) => {
+      if (data.type === "success") {
         router.push(`/verify?email=${form.getValues("email")}`);
-        toast({ title: "Success", description: data.data.message });
+        toast({ title: "Success", description: data.message });
       } else {
         toast({
           variant: "destructive",
           title: "Error",
-          description: data?.data?.message ?? "Something went wrong...",
+          description: data.message ?? "Something went wrong...",
         });
-        if (data.data?.field) {
-          if (data.data?.field === "email") {
+        if (data.field) {
+          if (data.field === "email") {
             setUsedEmails((prev) => [...prev, form.getValues("email")]);
           }
 
           form.setError(
-            data.data.field,
-            { message: data.data.message },
+            data.field,
+            { message: data.message },
             { shouldFocus: true }
           );
         }

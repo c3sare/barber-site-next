@@ -9,6 +9,7 @@ import { useZodForm } from "@/hooks/useZodForm";
 import { userChangePasswordSchema } from "@/validators/userChangePasswordSchema";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 
 type ChangePasswordFormProps = {
   userId: string;
@@ -19,16 +20,17 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
   userId,
   token,
 }) => {
+  const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
   const router = useRouter();
   const action = useAction(userChangePassword, {
-    onSettled: (data) => {
-      if (data.data?.success) {
+    onSuccess: (data) => {
+      if (data.success) {
         toast({
           title: "Success",
           description: "Your password has been changed",
         });
-        router.push("/login");
+        startTransition(() => router.push("/login"));
       } else {
         toast({
           variant: "destructive",
@@ -52,7 +54,7 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
     action.execute(data);
   });
 
-  const isLoading = action.status === "executing";
+  const isLoading = action.status === "executing" || isPending;
 
   return (
     <Form {...form}>

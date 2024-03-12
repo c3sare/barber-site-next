@@ -7,7 +7,7 @@ import { useZodForm } from "@/hooks/useZodForm";
 import Link from "next/link";
 import { registerSchema } from "@/validators/registerSchema";
 import FormCheckbox from "@/components/form/FormCheckbox";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import AlternativeLoginOptions from "../(index)/(auth)/_components/AlternativeLoginOptions";
 import { useAction } from "@/hooks/useAction";
 import { registerUser } from "@/actions/registerUser";
@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 export default function Register() {
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const { executeRecaptcha } = useGoogleReCaptcha();
   const [usedEmails, setUsedEmails] = useState<string[]>([]);
@@ -34,7 +35,9 @@ export default function Register() {
   const serverAction = useAction(registerUser, {
     onSuccess: (data) => {
       if (data.type === "success") {
-        router.push(`/verify?email=${form.getValues("email")}`);
+        startTransition(() =>
+          router.push(`/verify?email=${form.getValues("email")}`)
+        );
         toast({ title: "Success", description: data.message });
       } else {
         toast({
@@ -57,7 +60,7 @@ export default function Register() {
     },
   });
 
-  const isLoading = serverAction.status === "executing";
+  const isLoading = serverAction.status === "executing" || isPending;
 
   const onSubmit = form.handleSubmit(async (data) => {
     if (usedEmails.includes(data.email))

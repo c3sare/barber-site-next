@@ -82,23 +82,26 @@ const SignInPage = () => {
   const isLoading = action.status === "executing";
 
   return (
-    <div className="max-w-7xl mx-auto flex items-center justify-center my-16 flex-col">
+    <div className="max-w-[300px] mx-auto flex items-center justify-center my-16 flex-col">
       <Form {...form}>
-        <form onSubmit={onSubmit} className="flex gap-2 flex-col items-center">
+        <form
+          onSubmit={onSubmit}
+          className="flex gap-2 flex-col items-center w-full px-4"
+        >
           <h1 className="text-4xl after:left-1/2 after:-translate-x-1/2">
             Log In Panel
           </h1>
           <FormInput
             control={form.control}
             name="email"
-            className="w-[300px]"
+            className="w-full"
             label="E-mail"
             disabled={isLoading}
           />
           <FormInput
             control={form.control}
             name="password"
-            className="w-[300px]"
+            className="w-full"
             label="Password"
             type="password"
             disabled={isLoading}
@@ -109,20 +112,20 @@ const SignInPage = () => {
         </form>
       </Form>
       <AlternativeLoginOptions disabled={isLoading} />
-      <span className="text-xs my-4">
+      <span className="text-xs my-4 px-4">
         You are new here?{" "}
         <Link className="text-primary hover:underline" href="/register">
           Get started
         </Link>
       </span>
-      <span className="text-xs mb-4">
+      <span className="text-xs mb-4 px-4">
         Forgot your password?{" "}
         <Link className="text-primary hover:underline" href="/remind">
           Send a reminder
         </Link>
       </span>
       {!!urlError && (
-        <Alert className="max-w-[380px] text-xs" variant="destructive">
+        <Alert className="w-full max-w-[380px] text-xs" variant="destructive">
           <AlertTriangleIcon />
           <AlertTitle className="font-sans font-normal text-inherit after:content-none before:content-none">
             Login Error

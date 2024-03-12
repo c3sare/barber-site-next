@@ -8,7 +8,7 @@ import { Schema } from "zod";
 
 export const useAction = <S extends Schema, const Data>(
   action: SafeAction<S, Data>,
-  callbacks: HookCallbacks<S, Data>
+  callbacks?: HookCallbacks<S, Data>
 ) => {
   const { toast } = useToast();
 

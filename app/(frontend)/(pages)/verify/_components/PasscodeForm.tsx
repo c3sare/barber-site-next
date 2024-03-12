@@ -9,10 +9,11 @@ import { passcodeVerifySchema } from "@/validators/passcodeVerifySchema";
 import { OTPInput } from "input-otp";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useTransition } from "react";
 import { ResendButtonPasscode } from "./ResendPasscodeButton";
 
 export const PasscodeForm = ({ email }: { email: string }) => {
+  const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
   const router = useRouter();
   const form = useZodForm({
@@ -29,7 +30,7 @@ export const PasscodeForm = ({ email }: { email: string }) => {
           title: "Success",
           description: "Your email has been verified successfully",
         });
-        router.push("/login");
+        startTransition(() => router.push("/login"));
       } else {
         form.setValue("passcode", "");
         toast({
@@ -41,7 +42,7 @@ export const PasscodeForm = ({ email }: { email: string }) => {
     },
   });
 
-  const isLoading = action.status === "executing";
+  const isLoading = action.status === "executing" || isPending;
   const submitButtonRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {

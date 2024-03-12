@@ -6,15 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useZodForm } from "@/hooks/useZodForm";
 import { remindPasswordSchema } from "@/validators/remindPasswordSchema";
-import { useAction } from "next-safe-action/hooks";
+import { useAction } from "@/hooks/useAction";
 
 export const RemindPasswordForm = () => {
-  const action = useAction(remindPassword, {
-    onSuccess: (data) => {
-      if (data.success) {
-      }
-    },
-  });
+  const action = useAction(remindPassword);
   const form = useZodForm({
     schema: remindPasswordSchema,
   });

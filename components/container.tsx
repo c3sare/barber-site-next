@@ -22,9 +22,7 @@ const Container: React.FC<ContainerProps> = ({
   bgPriority,
 }) => {
   const wrapper = (
-    <div
-      className={cn("max-w-7xl mx-auto px-4 w-full relative z-10", className)}
-    >
+    <div className={cn("max-w-7xl mx-auto px-4 w-full relative", className)}>
       {children}
     </div>
   );
@@ -41,7 +39,7 @@ const Container: React.FC<ContainerProps> = ({
                 priority={bgPriority}
                 sizes="100vw"
                 alt="Background Image"
-                className="object-cover select-none"
+                className="object-cover select-none -z-10"
               />
             </ParallaxBannerLayer>
             {wrapper}
@@ -53,7 +51,7 @@ const Container: React.FC<ContainerProps> = ({
               fill
               sizes="100vw"
               alt="Background Image"
-              className="object-cover select-none"
+              className="object-cover select-none -z-10"
             />
             {wrapper}
           </>

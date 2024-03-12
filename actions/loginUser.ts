@@ -3,6 +3,7 @@
 import { signIn } from "@/auth";
 import { db } from "@/lib/db";
 import { action } from "@/lib/safe-action";
+import { verifyCaptchaV3 } from "@/lib/verifyCaptchaV3";
 import { loginSchema } from "@/validators/loginSchema";
 import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
@@ -10,8 +11,22 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 
 export const loginUser = action(
-  loginSchema.and(z.object({ callbackUrl: z.string().optional().nullable() })),
-  async ({ email, password, callbackUrl }) => {
+  loginSchema.and(
+    z.object({
+      token: z.string(),
+      callbackUrl: z.string().optional().nullable(),
+    })
+  ),
+  async ({ email, password, callbackUrl, token }) => {
+    const isValidCaptchaToken = await verifyCaptchaV3(token);
+
+    if (!isValidCaptchaToken) {
+      return {
+        type: "error",
+        message: "Captcha value isn't valid",
+      };
+    }
+
     const user = await db.user.findUnique({
       where: {
         email,

@@ -32,6 +32,7 @@ model User {
   phone                 String?
   createdAt             DateTime               @default(now())
   updatedAt             DateTime               @updatedAt
+  files                 File[]
 }
 
 model Account {
@@ -88,4 +89,28 @@ model TwoFactorConfirmation {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId])
+}
+
+enum FileType {
+  IMAGE
+  AUDIO
+  VIDEO
+  DOCUMENT
+  SPREADSHEET
+  ARCHIVE
+}
+
+model File {
+  id          String   @id @default(cuid())
+  name        String
+  extension   String
+  type        FileType
+  width       Int
+  height      Int
+  uploadedAt  DateTime @default(now())
+  blurDataUrl String
+  url         String
+  desc        String
+  userId      String
+  author      User     @relation(fields: [userId], references: [id])
 }

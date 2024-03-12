@@ -7,20 +7,19 @@ import { useZodForm } from "@/hooks/useZodForm";
 import Link from "next/link";
 import { registerSchema } from "@/validators/registerSchema";
 import FormCheckbox from "@/components/form/FormCheckbox";
-import { useRef, useState } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
+import { useState } from "react";
 import AlternativeLoginOptions from "../(index)/(auth)/_components/AlternativeLoginOptions";
 import { useAction } from "next-safe-action/hooks";
 import { registerUser } from "@/actions/registerUser";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 export default function Register() {
   const router = useRouter();
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const [usedEmails, setUsedEmails] = useState<string[]>([]);
-  const captchaRef = useRef<ReCAPTCHA>(null);
   const { toast } = useToast();
-  const [captchaValue, setCaptchaValue] = useState<string | null>(null);
   const form = useZodForm({
     schema: registerSchema,
     defaultValues: {
@@ -55,22 +54,24 @@ export default function Register() {
           );
         }
       }
-      captchaRef.current?.reset();
     },
   });
 
   const isLoading = serverAction.status === "executing";
 
-  const onSubmit = form.handleSubmit((data) => {
-    if (!captchaValue) return;
+  const onSubmit = form.handleSubmit(async (data) => {
     if (usedEmails.includes(data.email))
       return form.setError(
         "email",
         { message: "User with this email already exist" },
         { shouldFocus: true }
       );
-    setCaptchaValue(null);
-    serverAction.execute({ ...data, captcha: captchaValue });
+
+    if (!executeRecaptcha)
+      return toast({ title: "Info", description: "Try again later" });
+
+    const captcha = await executeRecaptcha("submit");
+    serverAction.execute({ ...data, captcha });
   });
 
   return (
@@ -131,11 +132,6 @@ export default function Register() {
                 Read Terms Policy
               </Link>
             }
-          />
-          <ReCAPTCHA
-            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_KEY as string}
-            onChange={(value) => setCaptchaValue(value)}
-            ref={captchaRef}
           />
           <Button disabled={isLoading} type="submit">
             Register

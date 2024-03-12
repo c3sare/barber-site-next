@@ -12,22 +12,13 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertTriangleIcon } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { loginUser } from "@/actions/loginUser";
+import { useToast } from "@/components/ui/use-toast";
+import { useState } from "react";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 const SignInPage = () => {
-  const action = useAction(loginUser, {
-    onError: console.log,
-    onSuccess: console.log,
-    onSettled: console.log,
-    onExecute: console.log,
-  });
-  const searchParams = useSearchParams();
-  const urlError =
-    searchParams.get("error") === "OAuthAccountNotLinked"
-      ? "Email already in use with different provider!"
-      : "";
-
-  const callbackUrl = searchParams.get("callbackUrl") ?? undefined;
-
+  const { executeRecaptcha } = useGoogleReCaptcha();
+  const [usedNotExistEmails, setUsedNotExistEmails] = useState<string[]>([]);
   const form = useZodForm({
     schema: z.object({
       email: z.string().email(),
@@ -41,8 +32,58 @@ const SignInPage = () => {
     },
   });
 
-  const onSubmit = form.handleSubmit((data) => {
-    action.execute({ ...data, callbackUrl });
+  const { toast } = useToast();
+
+  const action = useAction(loginUser, {
+    onSuccess: (data) => {
+      if (data.type === "error") {
+        if (data.field) {
+          if (data.field === "email")
+            setUsedNotExistEmails((prev) => [...prev, form.getValues("email")]);
+
+          form.setError(
+            data.field,
+            { message: data.message },
+            { shouldFocus: true }
+          );
+        } else
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: data.message,
+          });
+      }
+    },
+    onError: () => {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Something went wrong...",
+      });
+    },
+  });
+  const searchParams = useSearchParams();
+  const urlError =
+    searchParams.get("error") === "OAuthAccountNotLinked"
+      ? "Email already in use with different provider!"
+      : "";
+
+  const callbackUrl = searchParams.get("callbackUrl") ?? undefined;
+
+  const onSubmit = form.handleSubmit(async (data) => {
+    if (usedNotExistEmails.includes(data.email))
+      return form.setError(
+        "email",
+        { message: "User with this email don't exist" },
+        { shouldFocus: true }
+      );
+
+    if (!executeRecaptcha)
+      return toast({ title: "Information", description: "Try again." });
+
+    const token = await executeRecaptcha("submit");
+
+    action.execute({ ...data, callbackUrl, token });
   });
 
   const isLoading = action.status === "executing";

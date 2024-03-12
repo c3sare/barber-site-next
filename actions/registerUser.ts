@@ -4,7 +4,7 @@ import AfterRegisterEmail from "@/emails/after-register";
 import { db } from "@/lib/db";
 import { mail } from "@/lib/mail";
 import { action } from "@/lib/safe-action";
-import { verifyCaptcha } from "@/lib/verifyCaptcha";
+import { verifyCaptchaV3 } from "@/lib/verifyCaptchaV3";
 import { generatePasscode } from "@/utils/generatePasscode";
 import { registerSchema } from "@/validators/registerSchema";
 import { render } from "@react-email/components";
@@ -14,7 +14,7 @@ import { z } from "zod";
 export const registerUser = action(
   registerSchema.and(z.object({ captcha: z.string() })),
   async ({ name, email, password, phone, captcha }) => {
-    const isValidCaptcha = await verifyCaptcha(captcha);
+    const isValidCaptcha = await verifyCaptchaV3(captcha);
 
     if (!isValidCaptcha)
       return {

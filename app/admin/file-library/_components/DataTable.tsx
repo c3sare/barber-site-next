@@ -33,6 +33,8 @@ import {
 } from "@/components/ui/table";
 
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { FileUploadArea } from "@/components/FileUploadArea";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -81,6 +83,14 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm"
         />
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="ml-2">Upload</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <FileUploadArea />
+          </DialogContent>
+        </Dialog>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">

@@ -11,13 +11,17 @@ export default async function AdminLayout({
 
   return (
     <div className="flex flex-nowrap">
-      <aside className="w-[300px]">
-        <nav>
-          <Link href="/admin">Home</Link>
-          <Link href="/admin/file-library">File Library</Link>
+      <aside className="w-[300px] h-screen border-r-2 p-4">
+        <nav className="block">
+          <Link className="block" href="/admin">
+            Home
+          </Link>
+          <Link className="block" href="/admin/file-library">
+            File Library
+          </Link>
         </nav>
       </aside>
-      <div className="flex-1">{children}</div>
+      <div className="flex-1 p-4">{children}</div>
     </div>
   );
 }

@@ -163,7 +163,7 @@ export default function Home() {
       <Container
         bgImageUrl="/images/parallax_03.jpg"
         parallax
-        wrapperClassName="after:absolute after:w-full after:h-full after:top-0 after:left-0 after:bg-black after:opacity-60"
+        parallaxClassName="after:absolute after:w-full after:h-full after:top-0 after:left-0 after:bg-black after:opacity-60"
         className="py-24 font-bold text-center"
       >
         <ContactBox>support@barberia.com</ContactBox>

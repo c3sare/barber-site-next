@@ -11,6 +11,7 @@ type ContainerProps = {
   bgImageUrl?: string;
   parallax?: boolean;
   bgPriority?: boolean;
+  parallaxClassName?: string;
 };
 
 const Container: React.FC<ContainerProps> = ({
@@ -20,10 +21,11 @@ const Container: React.FC<ContainerProps> = ({
   className,
   parallax,
   bgPriority,
+  parallaxClassName,
 }) => {
   const wrapper = (
     <div className={cn("max-w-7xl mx-auto px-4 w-full relative", className)}>
-      {children}
+      <div className="z-10">{children}</div>
     </div>
   );
 
@@ -32,7 +34,10 @@ const Container: React.FC<ContainerProps> = ({
       {bgImageUrl ? (
         parallax ? (
           <ParallaxBanner>
-            <ParallaxBannerLayer className="relative" speed={-30}>
+            <ParallaxBannerLayer
+              className={cn("relative", parallaxClassName)}
+              speed={-30}
+            >
               <Image
                 src={bgImageUrl}
                 fill

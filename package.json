@@ -30,6 +30,7 @@
     "@react-email/components": "^0.0.15",
     "@react-email/render": "^0.0.12",
     "@react-spring/web": "^9.7.3",
+    "@tanstack/react-table": "^8.13.2",
     "@upstash/ratelimit": "^1.0.1",
     "@upstash/redis": "^1.28.4",
     "@vercel/blob": "^0.22.1",

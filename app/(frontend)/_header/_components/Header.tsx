@@ -25,18 +25,17 @@ export const useHeaderHeight = () => {
 };
 
 const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const contactRef = useRef<HTMLDivElement>(null);
-  const headerRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
   const [headerHeight, setHeaderHeight] = useState<number>(0);
   const pathname = usePathname();
   const isHomePage = pathname === "/";
 
   const handleResizeScreen = useCallback(() => {
-    const contactDivHeight = contactRef.current?.clientHeight ?? 0;
-    setHeaderHeight(headerRef.current!.clientHeight + contactDivHeight ?? 0);
+    setHeaderHeight(headerRef.current!.clientHeight);
   }, []);
 
   useEffect(() => {
+    handleResizeScreen();
     window.addEventListener("resize", handleResizeScreen, true);
 
     return () => window.removeEventListener("resize", handleResizeScreen, true);
@@ -44,9 +43,10 @@ const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   return (
     <div
+      ref={headerRef}
       className={cn(
-        "w-full transition-all sticky top-0 z-[9999]",
-        isHomePage && "md:h-0"
+        "w-full top-0 z-[9999]",
+        isHomePage ? "sticky md:fixed" : "sticky"
       )}
     >
       <div className="bg-header-full overflow-hidden hidden md:block">
@@ -77,7 +77,6 @@ const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
         </div>
       </div>
       <header
-        ref={headerRef}
         className={cn(
           "w-full py-4 text-header-foreground transition-colors duration-300 delay-200",
           isHomePage ? "md:bg-header bg-header-full" : "bg-header-sticky"

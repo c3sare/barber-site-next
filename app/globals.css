@@ -97,3 +97,7 @@
     @apply text-xl leading-5 font-bebes tracking-wider;
   }
 }
+
+.grecaptcha-badge {
+  z-index: 99999;
+}

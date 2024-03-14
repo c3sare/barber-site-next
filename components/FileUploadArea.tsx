@@ -13,7 +13,6 @@ import {
   useController,
   useWatch,
 } from "react-hook-form";
-import { Button } from "./ui/button";
 
 type FileWithId = {
   file: File;
@@ -78,7 +77,7 @@ export const FileUploadArea = <T extends FieldValues>({
   };
 
   return (
-    <div className="max-w-xl mt-4 relative">
+    <div className="max-w-2xl w-full mt-4 relative">
       <div
         onDrop={handleOnDrop}
         onDragOver={(e) => e.preventDefault()}
@@ -105,21 +104,25 @@ export const FileUploadArea = <T extends FieldValues>({
                 className="w-32 h-32 rounded-xl overflow-hidden group relative"
                 key={item.id}
                 onClick={(e) => handleDeleteItem(e, item.id)}
+                type="button"
               >
                 <img
                   src={URL.createObjectURL(item.file)}
                   alt={`Image Upload ${item.id}`}
                   className="w-32 h-32 object-cover"
                 />
-                <div className="h-full w-full absolute top-0 left-0 flex items-center justify-center opacity-0 bg-black/50 group-hover:opacity-100 transition-opacity">
-                  <Cross1Icon className="text-white" width={24} height={24} />
-                </div>
+                {!disabled && (
+                  <div className="h-full w-full absolute top-0 left-0 flex items-center justify-center opacity-0 bg-black/50 group-hover:opacity-100 transition-opacity">
+                    <Cross1Icon className="text-white" width={24} height={24} />
+                  </div>
+                )}
               </button>
             ))}
             <button
-              className="border rounded-xl w-32 h-32 hover:bg-black/10 text-4xl"
+              className="border rounded-xl w-32 h-32 hover:bg-black/10 text-4xl disabled:hover:bg-transparent disabled:opacity-80 disabled:cursor-not-allowed"
               onClick={() => inputRef.current?.click()}
               disabled={disabled}
+              type="button"
             >
               +
             </button>

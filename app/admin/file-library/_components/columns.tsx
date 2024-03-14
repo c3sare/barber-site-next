@@ -96,24 +96,26 @@ export const columns: ColumnDef<FileLibraryType>[] = [
       <Dialog>
         <DialogTrigger asChild>
           <Image
-            className="cursor-pointer aspect-square object-cover"
+            className="cursor-pointer aspect-square object-cover transition-[filter] duration-100 blur-sm overflow-hidden"
             src={row.getValue("preview") as string}
             alt={row.getValue("name") as string}
             width={100}
             height={100}
             placeholder="blur"
             blurDataURL={row.original.blurDataUrl}
+            onLoad={(e) => e.currentTarget.classList.remove("blur-sm")}
           />
         </DialogTrigger>
         <DialogContent className="max-w-screen-xl">
           <Image
-            className="mx-auto max-w-screen-lg"
+            className="mx-auto max-w-screen-lg transition-[filter] duration-100 blur-sm overflow-hidden"
             src={row.getValue("preview")}
             alt={row.getValue("name")}
             width={row.getValue("width")}
             height={row.getValue("height")}
             placeholder="blur"
             blurDataURL={row.original.blurDataUrl}
+            onLoad={(e) => e.currentTarget.classList.remove("blur-sm")}
           />
         </DialogContent>
       </Dialog>
@@ -134,10 +136,7 @@ export const columns: ColumnDef<FileLibraryType>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem>Copy payment ID</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem>Remove Image</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

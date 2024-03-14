@@ -25,7 +25,7 @@ const Container: React.FC<ContainerProps> = ({
 }) => {
   const wrapper = (
     <div className={cn("max-w-7xl mx-auto px-4 w-full relative", className)}>
-      <div className="z-10">{children}</div>
+      <div className="z-[1]">{children}</div>
     </div>
   );
 

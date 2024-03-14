@@ -16,23 +16,10 @@ import { format } from "date-fns";
 import Image from "next/image";
 
 import { MoreHorizontal, ArrowUpDown } from "lucide-react";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import type { FileLibraryType } from "@/actions/getFilesFromFilesLibrary";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type File = {
-  id: string;
-  name: string;
-  extension: string;
-  type: "IMAGE" | "AUDIO" | "VIDEO" | "DOCUMENT" | "SPREADSHEET" | "ARCHIEVE";
-  width: number;
-  height: number;
-  uploadedAt: Date;
-  preview: string;
-  desc: string;
-  author: string;
-};
-
-export const columns: ColumnDef<File>[] = [
+export const columns: ColumnDef<FileLibraryType>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -62,10 +49,6 @@ export const columns: ColumnDef<File>[] = [
   {
     accessorKey: "name",
     header: "Name",
-  },
-  {
-    accessorKey: "extension",
-    header: "Ext",
   },
   {
     accessorKey: "type",
@@ -110,12 +93,30 @@ export const columns: ColumnDef<File>[] = [
     accessorKey: "preview",
     header: "Preview",
     cell: ({ row }) => (
-      <Image
-        src={row.getValue("preview") as string}
-        alt={row.getValue("name") as string}
-        width={100}
-        height={100}
-      />
+      <Dialog>
+        <DialogTrigger asChild>
+          <Image
+            className="cursor-pointer aspect-square object-cover"
+            src={row.getValue("preview") as string}
+            alt={row.getValue("name") as string}
+            width={100}
+            height={100}
+            placeholder="blur"
+            blurDataURL={row.original.blurDataUrl}
+          />
+        </DialogTrigger>
+        <DialogContent className="max-w-screen-xl">
+          <Image
+            className="mx-auto max-w-screen-lg"
+            src={row.getValue("preview")}
+            alt={row.getValue("name")}
+            width={row.getValue("width")}
+            height={row.getValue("height")}
+            placeholder="blur"
+            blurDataURL={row.original.blurDataUrl}
+          />
+        </DialogContent>
+      </Dialog>
     ),
   },
   {
@@ -123,8 +124,6 @@ export const columns: ColumnDef<File>[] = [
     enableSorting: false,
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original;
-
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -135,11 +134,7 @@ export const columns: ColumnDef<File>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              Copy payment ID
-            </DropdownMenuItem>
+            <DropdownMenuItem>Copy payment ID</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>View customer</DropdownMenuItem>
             <DropdownMenuItem>View payment details</DropdownMenuItem>

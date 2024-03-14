@@ -34,7 +34,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { FileUploadArea } from "@/components/FileUploadArea";
+import { FileTransferForm } from "./FileTransferForm";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -88,7 +88,7 @@ export function DataTable<TData, TValue>({
             <Button className="ml-2">Upload</Button>
           </DialogTrigger>
           <DialogContent>
-            <FileUploadArea />
+            <FileTransferForm />
           </DialogContent>
         </Dialog>
         <DropdownMenu>

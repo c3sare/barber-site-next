@@ -1,21 +1,9 @@
 import { DataTable } from "./_components/DataTable";
 import { columns } from "./_components/columns";
+import { getFilesFromFilesLibrary } from "@/actions/getFilesFromFilesLibrary";
 
-const data = [
-  {
-    id: "1",
-    name: "file",
-    extension: "PNG" as const,
-    type: "IMAGE" as const,
-    width: 100,
-    height: 100,
-    uploadedAt: new Date(),
-    preview: "/images/logo-black.png",
-    desc: "Description",
-    author: "Admin",
-  },
-];
+export default async function FileLibraryPage() {
+  const data = await getFilesFromFilesLibrary();
 
-export default function FileLibraryPage() {
   return <DataTable columns={columns} data={data} />;
 }

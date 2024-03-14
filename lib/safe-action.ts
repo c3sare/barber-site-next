@@ -12,7 +12,7 @@ export class ServerActionErrorClient extends Error {
 
 const rateLimit = new Ratelimit({
   redis,
-  limiter: Ratelimit.slidingWindow(5, "120s"),
+  limiter: Ratelimit.slidingWindow(10, "60s"),
 });
 
 function handleReturnedServerError(e: Error) {
@@ -28,7 +28,8 @@ async function rateLimiter() {
 
   const { success } = await rateLimit.limit(ip!);
 
-  if (!success) throw new ServerActionErrorClient("Request limit reached");
+  if (!success && process.env.NODE_ENV === "production")
+    throw new ServerActionErrorClient("Request limit reached");
 }
 
 export const action = createSafeActionClient({

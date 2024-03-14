@@ -95,15 +95,11 @@ enum FileType {
   IMAGE
   AUDIO
   VIDEO
-  DOCUMENT
-  SPREADSHEET
-  ARCHIVE
 }
 
 model File {
   id          String   @id @default(cuid())
   name        String
-  extension   String
   type        FileType
   width       Int
   height      Int

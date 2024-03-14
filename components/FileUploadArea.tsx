@@ -2,80 +2,139 @@
 "use client";
 
 import { CloudArrowIcon } from "@/components/icons/CloudArrowIcon";
-import { cn } from "@/lib/utils";
+import { generateToken } from "@/utils/generateToken";
 import { Cross1Icon } from "@radix-ui/react-icons";
-import { useRef, useState } from "react";
+import React, { useRef } from "react";
+import {
+  Control,
+  FieldValue,
+  FieldValues,
+  Path,
+  useController,
+  useWatch,
+} from "react-hook-form";
+import { Button } from "./ui/button";
 
-export const FileUploadArea = () => {
+type FileWithId = {
+  file: File;
+  id: string;
+};
+
+type FileUploadAreaProps<T extends FieldValues> = {
+  name: Path<T>;
+  control: Control<T>;
+  disabled?: boolean;
+};
+
+export const FileUploadArea = <T extends FieldValues>({
+  name,
+  control,
+  disabled,
+}: FileUploadAreaProps<T>) => {
+  const { field } = useController({
+    name,
+    control,
+    defaultValue: [] as FieldValue<T>,
+  });
+
+  const filesWatch = useWatch({
+    control,
+    name,
+  });
+
   const inputRef = useRef<HTMLInputElement>(null);
-  const [files, setFiles] = useState<File[]>([]);
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files ?? []);
     if (files.length) {
-      setFiles((prev) => [...prev, ...files]);
+      field.onChange([
+        ...field.value,
+        ...files.map((item) => ({
+          id: generateToken(),
+          file: item,
+        })),
+      ]);
     }
   };
 
-  const handleOnDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+  const handleOnDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const files = Array.from(e.dataTransfer.files);
-    setFiles((prev) => [...prev, ...files]);
+    field.onChange([
+      ...field.value,
+      ...files.map((item) => ({
+        id: generateToken(),
+        file: item,
+      })),
+    ]);
   };
 
-  const handleDeleteItem = (index: number) => {
-    setFiles((prev) => prev.filter((_item, i) => i !== index));
+  const handleDeleteItem = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    id: string
+  ) => {
+    e.preventDefault();
+    field.onChange(filesWatch.filter((file: FileWithId) => file.id !== id));
   };
 
   return (
     <div className="max-w-xl mt-4 relative">
-      <label
+      <div
         onDrop={handleOnDrop}
         onDragOver={(e) => e.preventDefault()}
         onDragLeave={(e) => e.preventDefault()}
-        className="flex justify-center w-full h-32 px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-md appearance-none cursor-pointer hover:border-gray-400 focus:outline-none"
+        className="flex justify-center w-full min-h-32 px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-md appearance-none hover:border-gray-400 focus:outline-none"
       >
-        <span
-          className={cn(
-            "flex items-center space-x-2",
-            !!files.length && "invisible"
-          )}
-        >
-          <CloudArrowIcon className="text-gray-600" />
-          <span className="font-medium text-gray-600">
-            Drop files to Attach, or{" "}
-            <span className="text-primary underline">browse</span>
-          </span>
-        </span>
+        {!filesWatch?.length && (
+          <button
+            className="flex items-center space-x-2"
+            onClick={() => inputRef.current?.click()}
+            disabled={disabled}
+          >
+            <CloudArrowIcon className="text-gray-600" />
+            <span className="font-medium text-gray-600">
+              Drop files to Attach, or{" "}
+              <span className="text-primary underline">browse</span>
+            </span>
+          </button>
+        )}
+        {!!filesWatch?.length && (
+          <div className="flex gap-2 w-full p-2 flex-wrap items-center">
+            {filesWatch.map((item: FileWithId) => (
+              <button
+                className="w-32 h-32 rounded-xl overflow-hidden group relative"
+                key={item.id}
+                onClick={(e) => handleDeleteItem(e, item.id)}
+              >
+                <img
+                  src={URL.createObjectURL(item.file)}
+                  alt={`Image Upload ${item.id}`}
+                  className="w-32 h-32 object-cover"
+                />
+                <div className="h-full w-full absolute top-0 left-0 flex items-center justify-center opacity-0 bg-black/50 group-hover:opacity-100 transition-opacity">
+                  <Cross1Icon className="text-white" width={24} height={24} />
+                </div>
+              </button>
+            ))}
+            <button
+              className="border rounded-xl w-32 h-32 hover:bg-black/10 text-4xl"
+              onClick={() => inputRef.current?.click()}
+              disabled={disabled}
+            >
+              +
+            </button>
+          </div>
+        )}
         <input
+          disabled={disabled}
           ref={inputRef}
           type="file"
           onChange={handleOnChange}
-          name="file_upload"
+          name={name}
           className="hidden"
           multiple
         />
-      </label>
-      {!!files.length && (
-        <div className="flex gap-2 h-full w-full absolute top-0 p-2">
-          {files.map((item, i) => (
-            <button
-              className="w-16 h-16 rounded-xl overflow-hidden group relative"
-              key={i}
-              onClick={() => handleDeleteItem(i)}
-            >
-              <img
-                src={URL.createObjectURL(item)}
-                alt={`Image Upload ${i + 1}`}
-                className="h-16 object-cover"
-              />
-              <div className="h-full w-full absolute top-0 left-0 flex items-center justify-center opacity-0 bg-black/50 group-hover:opacity-100 transition-opacity">
-                <Cross1Icon className="text-white" width={24} height={24} />
-              </div>
-            </button>
-          ))}
-        </div>
-      )}
+      </div>
     </div>
   );
 };

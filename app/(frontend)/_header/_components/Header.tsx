@@ -45,7 +45,7 @@ const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
     <div
       ref={headerRef}
       className={cn(
-        "w-full top-0 z-[9999]",
+        "w-full top-0 z-10",
         isHomePage ? "sticky md:fixed" : "sticky"
       )}
     >

@@ -1,10 +1,11 @@
 "use server";
 
 import { update } from "@/auth";
+import { upload as uploadCloudinary } from "@/lib/cloudinary";
 import { db } from "@/lib/db";
 import { actionWithAuth } from "@/lib/safe-action";
+import { bufferToBase64Url } from "@/utils/bufferToBase64Url";
 import { avatarChangeSchema } from "@/validators/avatarChangeSchema";
-import { put } from "@vercel/blob";
 import { revalidatePath } from "next/cache";
 import sharp from "sharp";
 
@@ -23,17 +24,16 @@ export const updateUserAvatar = actionWithAuth(
       .toFormat("webp")
       .toBuffer();
 
-    const upload = await put(`avatar.webp`, trimmedImage, {
-      access: "public",
-      addRandomSuffix: true,
-    });
+    const base64 = bufferToBase64Url(trimmedImage);
+
+    const upload = await uploadCloudinary(base64);
 
     const updateProfile = await db.user.update({
       where: {
         id: session.user.id,
       },
       data: {
-        image: upload.url,
+        image: upload.secure_url,
       },
     });
 
@@ -42,7 +42,7 @@ export const updateUserAvatar = actionWithAuth(
 
     await update({
       user: {
-        image: upload.url,
+        image: upload.secure_url,
       },
     });
 

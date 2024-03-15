@@ -1,11 +1,11 @@
 "use server";
 
+import { upload } from "@/lib/cloudinary";
 import { db } from "@/lib/db";
 import { actionWithAuth } from "@/lib/safe-action";
+import { bufferToBase64Url } from "@/utils/bufferToBase64Url";
 import { uploadImagesSchema } from "@/validators/uploadImagesSchema";
 import { FileType } from "@prisma/client";
-import { put } from "@vercel/blob";
-import imageSize from "buffer-image-size";
 import { getPlaiceholder } from "plaiceholder";
 
 export const uploadImages = actionWithAuth(
@@ -22,18 +22,23 @@ export const uploadImages = actionWithAuth(
 
     const fileUploads = await Promise.all(
       files.map(async (file) => {
-        const fileUpload = await put(file.name, file, {
-          access: "public",
-          addRandomSuffix: true,
-        });
+        // const fileUpload = await put(file.name, file, {
+        //   access: "public",
+        //   addRandomSuffix: true,
+        // });
 
         const buffer = await Buffer.from(await file.arrayBuffer());
 
-        const { width, height } = imageSize(buffer);
+        const base64 = bufferToBase64Url(buffer);
+
+        const fileUpload = await upload(base64);
+
+        const {
+          metadata: { width, height },
+          base64: blurDataUrl,
+        } = await getPlaiceholder(buffer);
 
         const type = file.type.split("/")[0].toUpperCase() as FileType;
-
-        const { base64: blurDataUrl } = await getPlaiceholder(buffer);
 
         const {
           author,
@@ -54,7 +59,7 @@ export const uploadImages = actionWithAuth(
             width,
             height,
             blurDataUrl,
-            url: fileUpload.url,
+            url: fileUpload.secure_url,
             desc: "",
             author: {
               connect: {

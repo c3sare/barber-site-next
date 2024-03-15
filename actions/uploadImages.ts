@@ -22,11 +22,6 @@ export const uploadImages = actionWithAuth(
 
     const fileUploads = await Promise.all(
       files.map(async (file) => {
-        // const fileUpload = await put(file.name, file, {
-        //   access: "public",
-        //   addRandomSuffix: true,
-        // });
-
         const buffer = await Buffer.from(await file.arrayBuffer());
 
         const base64 = bufferToBase64Url(buffer);

@@ -1,23 +1,16 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 
 import { format } from "date-fns";
 import Image from "next/image";
 
-import { MoreHorizontal, ArrowUpDown } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import type { FileLibraryType } from "@/actions/getFilesFromFilesLibrary";
+import { RowActionsDropDown } from "./RowActionsDropDown";
 
 export const columns: ColumnDef<FileLibraryType>[] = [
   {
@@ -126,20 +119,7 @@ export const columns: ColumnDef<FileLibraryType>[] = [
     enableSorting: false,
     enableHiding: false,
     cell: ({ row }) => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem>Remove Image</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
+      return <RowActionsDropDown {...row.original} />;
     },
   },
 ];

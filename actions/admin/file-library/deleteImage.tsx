@@ -1,6 +1,6 @@
 "use server";
 
-import { delete_resources } from "@/lib/cloudinary";
+import { delete_resources, destroy } from "@/lib/cloudinary";
 import { db } from "@/lib/db";
 import { adminAction } from "@/lib/safe-action";
 import { z } from "zod";
@@ -29,9 +29,7 @@ export const deleteImage = adminAction(
       },
     });
 
-    const fileNames = images.map((image) => image.url.split("/").at(-1)!);
-
-    await delete_resources(fileNames);
+    await delete_resources(imageIds);
 
     return { success: true };
   }

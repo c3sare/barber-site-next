@@ -20,9 +20,9 @@ export const uploadImages = actionWithAuth(
   ) => {
     const files = Object.keys(data).map((item) => data[item] as File);
 
-    const fileUploads = await Promise.all(
+    await Promise.all(
       files.map(async (file) => {
-        const buffer = await Buffer.from(await file.arrayBuffer());
+        const buffer = Buffer.from(await file.arrayBuffer());
 
         const base64 = bufferToBase64Url(buffer);
 
@@ -49,6 +49,7 @@ export const uploadImages = actionWithAuth(
             },
           },
           data: {
+            id: fileUpload.public_id,
             name: file.name,
             type,
             width,

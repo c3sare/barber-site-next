@@ -98,7 +98,7 @@ enum FileType {
 }
 
 model File {
-  id          String   @id @default(cuid())
+  id          String   @id
   name        String
   type        FileType
   width       Int

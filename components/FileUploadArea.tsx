@@ -89,6 +89,7 @@ export const FileUploadArea = <T extends FieldValues>({
             className="flex items-center space-x-2"
             onClick={() => inputRef.current?.click()}
             disabled={disabled}
+            type="button"
           >
             <CloudArrowIcon className="text-gray-600" />
             <span className="font-medium text-gray-600">
@@ -98,18 +99,19 @@ export const FileUploadArea = <T extends FieldValues>({
           </button>
         )}
         {!!filesWatch?.length && (
-          <div className="flex gap-2 w-full p-2 flex-wrap items-center">
+          <div className="flex w-full p-2 flex-wrap items-center">
             {filesWatch.map((item: FileWithId) => (
               <button
-                className="w-32 h-32 rounded-xl overflow-hidden group relative"
+                className="w-1/2 md:w-1/3 aspect-square rounded-xl overflow-hidden group relative disabled:cursor-not-allowed opacity-80 transition-opacity my-1"
                 key={item.id}
                 onClick={(e) => handleDeleteItem(e, item.id)}
                 type="button"
+                disabled={disabled}
               >
                 <img
                   src={URL.createObjectURL(item.file)}
                   alt={`Image Upload ${item.id}`}
-                  className="w-32 h-32 object-cover"
+                  className="w-full h-full object-cover"
                 />
                 {!disabled && (
                   <div className="h-full w-full absolute top-0 left-0 flex items-center justify-center opacity-0 bg-black/50 group-hover:opacity-100 transition-opacity">
@@ -119,7 +121,7 @@ export const FileUploadArea = <T extends FieldValues>({
               </button>
             ))}
             <button
-              className="border rounded-xl w-32 h-32 hover:bg-black/10 text-4xl disabled:hover:bg-transparent disabled:opacity-80 disabled:cursor-not-allowed"
+              className="border rounded-xl w-1/2 md:w-1/3 aspect-square hover:bg-black/10 text-4xl disabled:hover:bg-transparent disabled:opacity-80 disabled:cursor-not-allowed"
               onClick={() => inputRef.current?.click()}
               disabled={disabled}
               type="button"

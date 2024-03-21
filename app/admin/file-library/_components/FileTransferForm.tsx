@@ -4,14 +4,22 @@ import { uploadImages } from "@/actions/uploadImages";
 import { FileUploadArea } from "@/components/FileUploadArea";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import { useToast } from "@/components/ui/use-toast";
 import { useZodForm } from "@/hooks/useZodForm";
 import { fileSchema } from "@/validators/fileSchema";
 import { useAction } from "next-safe-action/hooks";
-import { useRouter } from "next/navigation";
 import { z } from "zod";
 
-export const FileTransferForm = () => {
-  const router = useRouter();
+type FileTransferFormProps<TData> = {
+  addFilesToState: (files: TData[]) => void;
+  closeForm: () => void;
+};
+
+export const FileTransferForm = <T extends unknown>({
+  addFilesToState,
+  closeForm,
+}: FileTransferFormProps<T>) => {
+  const { toast } = useToast();
   const form = useZodForm({
     schema: z.object({
       files: z
@@ -23,9 +31,16 @@ export const FileTransferForm = () => {
     }),
   });
   const action = useAction(uploadImages, {
-    onSuccess: () => {
-      form.setValue("files", []);
-      router.refresh();
+    onSuccess: (data) => {
+      addFilesToState(data as T[]);
+      closeForm();
+    },
+    onError: () => {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Something went wrong...",
+      });
     },
   });
 
@@ -48,7 +63,11 @@ export const FileTransferForm = () => {
         onSubmit={onSubmit}
         className="flex flex-col items-center justify-center gap-2"
       >
-        <FileUploadArea control={form.control} name="files" />
+        <FileUploadArea
+          disabled={isLoading}
+          control={form.control}
+          name="files"
+        />
         <Button disabled={isLoading} type="submit">
           Submit
         </Button>

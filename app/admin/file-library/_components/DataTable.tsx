@@ -46,6 +46,9 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const [isVisibleUploadForm, setIsVisibleUploadForm] =
+    React.useState<boolean>(false);
+  const [state, setState] = React.useState<TData[]>(data);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -55,7 +58,7 @@ export function DataTable<TData, TValue>({
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
-    data,
+    data: state,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -73,6 +76,15 @@ export function DataTable<TData, TValue>({
     },
   });
 
+  const deleteFilesFromState = (fileIds: string[]) => {
+    setState((state) =>
+      state.filter((item) => !fileIds.includes((item as { id: string }).id))
+    );
+  };
+
+  const addFilesToState = (items: TData[]) =>
+    setState((state) => [...state, ...items]);
+
   return (
     <div>
       <div className="flex items-center py-4">
@@ -84,12 +96,18 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm"
         />
-        <Dialog>
+        <Dialog
+          open={isVisibleUploadForm}
+          onOpenChange={setIsVisibleUploadForm}
+        >
           <DialogTrigger asChild>
             <Button className="mx-2">Upload</Button>
           </DialogTrigger>
-          <DialogContent>
-            <FileTransferForm />
+          <DialogContent className="max-h-screen overflow-y-auto">
+            <FileTransferForm
+              closeForm={() => setIsVisibleUploadForm(false)}
+              addFilesToState={addFilesToState}
+            />
           </DialogContent>
         </Dialog>
         <DropdownMenu>
@@ -175,7 +193,10 @@ export function DataTable<TData, TValue>({
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
         <div className="flex items-center justify-end space-x-2 py-4">
-          <MultiActionsDropDown table={table} />
+          <MultiActionsDropDown
+            deleteFilesFromState={deleteFilesFromState}
+            table={table}
+          />
           <Button
             variant="outline"
             size="sm"

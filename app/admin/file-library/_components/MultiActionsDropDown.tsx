@@ -17,10 +17,12 @@ import { useToast } from "@/components/ui/use-toast";
 
 type MultiActionsDropDownProps<TData> = {
   table: Table<TData>;
+  deleteFilesFromState: (filesIds: string[]) => void;
 };
 
 export const MultiActionsDropDown = <TData extends unknown>({
   table,
+  deleteFilesFromState,
 }: MultiActionsDropDownProps<TData>) => {
   const router = useRouter();
   const { toast } = useToast();
@@ -39,11 +41,18 @@ export const MultiActionsDropDown = <TData extends unknown>({
         description: "Something went wrong...",
       });
     },
+    onSuccess: (_, fileIds) => {
+      const ids = typeof fileIds === "string" ? [fileIds] : fileIds;
+
+      deleteFilesFromState(ids);
+    },
   });
 
   const selectedFilesIds = table
     .getFilteredSelectedRowModel()
     .flatRows.map((item) => item.getValue("id") as string);
+
+  console.log(selectedFilesIds);
 
   const handleDeleteSelectedFiles = () =>
     deleteAction.execute(selectedFilesIds);

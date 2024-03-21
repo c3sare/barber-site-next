@@ -1,6 +1,6 @@
 "use server";
 
-import { delete_resources, destroy } from "@/lib/cloudinary";
+import { delete_resources } from "@/lib/cloudinary";
 import { db } from "@/lib/db";
 import { adminAction } from "@/lib/safe-action";
 import { revalidateTag } from "next/cache";
@@ -10,6 +10,8 @@ export const deleteImage = adminAction(
   z.string().or(z.array(z.string())),
   async (input) => {
     const imageIds = typeof input === "string" ? [input] : input;
+
+    console.log(imageIds);
 
     const images = await db.file.findMany({
       where: {

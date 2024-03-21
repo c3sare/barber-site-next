@@ -6,6 +6,7 @@ import { actionWithAuth } from "@/lib/safe-action";
 import { bufferToBase64Url } from "@/utils/bufferToBase64Url";
 import { uploadImagesSchema } from "@/validators/uploadImagesSchema";
 import { FileType } from "@prisma/client";
+import { revalidateTag } from "next/cache";
 import { getPlaiceholder } from "plaiceholder";
 
 export const uploadImages = actionWithAuth(
@@ -20,7 +21,7 @@ export const uploadImages = actionWithAuth(
   ) => {
     const files = Object.keys(data).map((item) => data[item] as File);
 
-    await Promise.all(
+    const items = await Promise.all(
       files.map(async (file) => {
         const buffer = Buffer.from(await file.arrayBuffer());
 
@@ -35,12 +36,7 @@ export const uploadImages = actionWithAuth(
 
         const type = file.type.split("/")[0].toUpperCase() as FileType;
 
-        const {
-          author,
-          userId,
-          blurDataUrl: _,
-          ...fileDb
-        } = await db.file.create({
+        const data = await db.file.create({
           include: {
             author: {
               select: {
@@ -65,10 +61,16 @@ export const uploadImages = actionWithAuth(
           },
         });
 
-        return { ...fileDb, author: author.name };
+        return data;
       })
     );
 
-    return true;
+    revalidateTag("file-library");
+
+    return items.map(({ author, url, ...file }) => ({
+      ...file,
+      author: author.name ?? "",
+      preview: url,
+    }));
   }
 );

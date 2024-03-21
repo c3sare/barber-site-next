@@ -35,6 +35,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { FileTransferForm } from "./FileTransferForm";
+import { MultiActionsDropDown } from "./MultiActionsDropDown";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -85,7 +86,7 @@ export function DataTable<TData, TValue>({
         />
         <Dialog>
           <DialogTrigger asChild>
-            <Button className="ml-2">Upload</Button>
+            <Button className="mx-2">Upload</Button>
           </DialogTrigger>
           <DialogContent>
             <FileTransferForm />
@@ -174,6 +175,7 @@ export function DataTable<TData, TValue>({
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
         <div className="flex items-center justify-end space-x-2 py-4">
+          <MultiActionsDropDown table={table} />
           <Button
             variant="outline"
             size="sm"

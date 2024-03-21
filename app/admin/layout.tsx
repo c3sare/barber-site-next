@@ -1,6 +1,17 @@
 import { auth } from "@/auth";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuIndicator,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  NavigationMenuViewport,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
 
 export default async function AdminLayout({
   children,
@@ -10,18 +21,16 @@ export default async function AdminLayout({
   if (!session?.user.id || session?.user.role !== "ADMIN") return notFound();
 
   return (
-    <div className="flex flex-nowrap">
-      <aside className="w-[300px] h-screen border-r-2 p-4">
-        <nav className="block">
-          <Link className="block" href="/admin">
-            Home
-          </Link>
-          <Link className="block" href="/admin/file-library">
+    <div className="w-full max-w-7xl p-4 mx-auto">
+      <NavigationMenu className="z-auto">
+        <NavigationMenuList>
+          <NavigationMenuLink href="/admin">Home</NavigationMenuLink>
+          <NavigationMenuLink href="/admin/file-library">
             File Library
-          </Link>
-        </nav>
-      </aside>
-      <div className="flex-1 p-4">{children}</div>
+          </NavigationMenuLink>
+        </NavigationMenuList>
+      </NavigationMenu>
+      <div className="w-full p-4">{children}</div>
     </div>
   );
 }

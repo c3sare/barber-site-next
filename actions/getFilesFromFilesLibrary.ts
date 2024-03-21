@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
+import { unstable_cache as cache } from "next/cache";
 
-export const getFilesFromFilesLibrary = async () => {
+export const getFilesFromFilesLibrary = cache(async () => {
   const data = await db.file.findMany({
     include: {
       author: {
@@ -16,7 +17,7 @@ export const getFilesFromFilesLibrary = async () => {
     author: author.name ?? "",
     preview: url,
   }));
-};
+}, ["file-library"]);
 
 export type FileLibraryType = Awaited<
   ReturnType<typeof getFilesFromFilesLibrary>

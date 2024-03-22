@@ -87,55 +87,57 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex items-center py-4">
+      <div className="flex items-center py-4 gap-2 flex-wrap md:flex-nowrap">
         <Input
           placeholder="Filter name..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="w-full md:w-auto md:max-w-md"
         />
-        <Dialog
-          open={isVisibleUploadForm}
-          onOpenChange={setIsVisibleUploadForm}
-        >
-          <DialogTrigger asChild>
-            <Button className="mx-2">Upload</Button>
-          </DialogTrigger>
-          <DialogContent className="max-h-screen overflow-y-auto">
-            <FileTransferForm
-              closeForm={() => setIsVisibleUploadForm(false)}
-              addFilesToState={addFilesToState}
-            />
-          </DialogContent>
-        </Dialog>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="w-full flex items-center justify-between">
+          <Dialog
+            open={isVisibleUploadForm}
+            onOpenChange={setIsVisibleUploadForm}
+          >
+            <DialogTrigger asChild>
+              <Button>Upload</Button>
+            </DialogTrigger>
+            <DialogContent className="max-h-screen overflow-y-auto">
+              <FileTransferForm
+                closeForm={() => setIsVisibleUploadForm(false)}
+                addFilesToState={addFilesToState}
+              />
+            </DialogContent>
+          </Dialog>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="ml-auto">
+                Columns
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
       <div className="rounded-md border">
         <Table>
@@ -187,16 +189,16 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-between">
-        <div className="flex-1 text-sm text-muted-foreground">
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <div className="w=full md:flex-1 text-sm text-muted-foreground py-4 mr-auto">
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
-        <div className="flex items-center justify-end space-x-2 py-4">
-          <MultiActionsDropDown
-            deleteFilesFromState={deleteFilesFromState}
-            table={table}
-          />
+        <MultiActionsDropDown
+          deleteFilesFromState={deleteFilesFromState}
+          table={table}
+        />
+        <div className="w-full md:w-auto flex space-x-2 justify-between">
           <Button
             variant="outline"
             size="sm"

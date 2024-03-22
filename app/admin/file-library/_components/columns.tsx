@@ -99,9 +99,9 @@ export const columns: ColumnDef<FileLibraryType>[] = [
             onLoad={(e) => e.currentTarget.classList.remove("blur-sm")}
           />
         </DialogTrigger>
-        <DialogContent className="max-w-screen-xl">
+        <DialogContent className="max-w-screen-xl w-full max-h-screen">
           <Image
-            className="mx-auto max-w-screen-lg transition-[filter] duration-100 blur-sm overflow-hidden"
+            className="mx-auto max-w-full max-h-full transition-[filter] duration-100 blur-sm overflow-hidden"
             src={row.getValue("preview")}
             alt={row.getValue("name")}
             width={row.getValue("width")}

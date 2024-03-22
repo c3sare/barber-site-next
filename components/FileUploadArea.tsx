@@ -99,26 +99,32 @@ export const FileUploadArea = <T extends FieldValues>({
           </button>
         )}
         {!!filesWatch?.length && (
-          <div className="flex w-full p-2 flex-wrap items-center">
+          <div className="flex w-full p-1 flex-wrap items-center">
             {filesWatch.map((item: FileWithId) => (
-              <button
-                className="w-1/2 md:w-1/3 aspect-square rounded-xl overflow-hidden group relative disabled:cursor-not-allowed opacity-80 transition-opacity my-1"
-                key={item.id}
-                onClick={(e) => handleDeleteItem(e, item.id)}
-                type="button"
-                disabled={disabled}
-              >
-                <img
-                  src={URL.createObjectURL(item.file)}
-                  alt={`Image Upload ${item.id}`}
-                  className="w-full h-full object-cover"
-                />
-                {!disabled && (
-                  <div className="h-full w-full absolute top-0 left-0 flex items-center justify-center opacity-0 bg-black/50 group-hover:opacity-100 transition-opacity">
-                    <Cross1Icon className="text-white" width={24} height={24} />
-                  </div>
-                )}
-              </button>
+              <div key={item.id} className="p-1 w-1/2 md:w-1/3">
+                <button
+                  className="w-full aspect-square rounded-xl overflow-hidden group relative disabled:cursor-not-allowed opacity-80 transition-opacity"
+                  key={item.id}
+                  onClick={(e) => handleDeleteItem(e, item.id)}
+                  type="button"
+                  disabled={disabled}
+                >
+                  <img
+                    src={URL.createObjectURL(item.file)}
+                    alt={`Image Upload ${item.id}`}
+                    className="w-full h-full object-cover"
+                  />
+                  {!disabled && (
+                    <div className="h-full w-full absolute top-0 left-0 flex items-center justify-center opacity-0 bg-black/50 group-hover:opacity-100 transition-opacity">
+                      <Cross1Icon
+                        className="text-white"
+                        width={24}
+                        height={24}
+                      />
+                    </div>
+                  )}
+                </button>
+              </div>
             ))}
             <button
               className="border rounded-xl w-1/2 md:w-1/3 aspect-square hover:bg-black/10 text-4xl disabled:hover:bg-transparent disabled:opacity-80 disabled:cursor-not-allowed"

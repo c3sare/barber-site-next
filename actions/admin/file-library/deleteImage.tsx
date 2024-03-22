@@ -11,8 +11,6 @@ export const deleteImage = adminAction(
   async (input) => {
     const imageIds = typeof input === "string" ? [input] : input;
 
-    console.log(imageIds);
-
     const images = await db.file.findMany({
       where: {
         id: {

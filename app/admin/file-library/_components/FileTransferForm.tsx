@@ -1,6 +1,6 @@
 "use client";
 
-import { uploadImages } from "@/actions/uploadImages";
+import { uploadImages } from "@/actions/admin/file-library/uploadImages";
 import { FileUploadArea } from "@/components/FileUploadArea";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -9,16 +9,14 @@ import { useZodForm } from "@/hooks/useZodForm";
 import { fileSchema } from "@/validators/fileSchema";
 import { useAction } from "next-safe-action/hooks";
 import { z } from "zod";
+import { useFilesLibraryContext } from "../_context/FilesLibraryContext";
 
-type FileTransferFormProps<TData> = {
-  addFilesToState: (files: TData[]) => void;
+type FileTransferFormProps = {
   closeForm: () => void;
 };
 
-export const FileTransferForm = <T extends unknown>({
-  addFilesToState,
-  closeForm,
-}: FileTransferFormProps<T>) => {
+export const FileTransferForm = ({ closeForm }: FileTransferFormProps) => {
+  const { addFilesToState } = useFilesLibraryContext();
   const { toast } = useToast();
   const form = useZodForm({
     schema: z.object({
@@ -32,7 +30,7 @@ export const FileTransferForm = <T extends unknown>({
   });
   const action = useAction(uploadImages, {
     onSuccess: (data) => {
-      addFilesToState(data as T[]);
+      addFilesToState(data);
       closeForm();
     },
     onError: () => {

@@ -9,10 +9,21 @@ import Image from "next/image";
 
 import { ArrowUpDown } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import type { FileLibraryType } from "@/actions/getFilesFromFilesLibrary";
+import type { FileLibraryType } from "@/actions/admin/file-library/getFilesFromFilesLibrary";
 import { RowActionsDropDown } from "./RowActionsDropDown";
+import { FilesLibraryProvider } from "../_context/FilesLibraryContext";
 
-export const columns: ColumnDef<FileLibraryType>[] = [
+type FilesLibraryContextType = {
+  deleteFilesFromState: (filesIds: string[]) => void;
+  addFilesToState: (files: FileLibraryType[]) => void;
+  updateFileInState: (file: FileLibraryType) => void;
+};
+
+export const columns = ({
+  addFilesToState,
+  deleteFilesFromState,
+  updateFileInState,
+}: FilesLibraryContextType): ColumnDef<FileLibraryType>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -34,10 +45,6 @@ export const columns: ColumnDef<FileLibraryType>[] = [
     ),
     enableSorting: false,
     enableHiding: false,
-  },
-  {
-    accessorKey: "id",
-    header: "ID",
   },
   {
     accessorKey: "name",
@@ -101,7 +108,7 @@ export const columns: ColumnDef<FileLibraryType>[] = [
         </DialogTrigger>
         <DialogContent className="max-w-screen-xl w-full max-h-screen">
           <Image
-            className="mx-auto max-w-full max-h-full transition-[filter] duration-100 blur-sm overflow-hidden"
+            className="mx-auto max-w-full max-h-full w-auto h-full transition-[filter] duration-100 blur-sm overflow-hidden"
             src={row.getValue("preview")}
             alt={row.getValue("name")}
             width={row.getValue("width")}
@@ -119,7 +126,15 @@ export const columns: ColumnDef<FileLibraryType>[] = [
     enableSorting: false,
     enableHiding: false,
     cell: ({ row }) => {
-      return <RowActionsDropDown {...row.original} />;
+      return (
+        <FilesLibraryProvider
+          addFilesToState={addFilesToState}
+          deleteFilesFromState={deleteFilesFromState}
+          updateFileInState={updateFileInState}
+        >
+          <RowActionsDropDown {...row.original} />
+        </FilesLibraryProvider>
+      );
     },
   },
 ];

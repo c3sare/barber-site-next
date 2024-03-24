@@ -1,16 +1,9 @@
 import { auth } from "@/auth";
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import {
   NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
-  NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuViewport,
-  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
 export default async function AdminLayout({

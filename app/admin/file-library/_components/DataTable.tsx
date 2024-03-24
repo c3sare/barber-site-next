@@ -48,7 +48,6 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [isVisibleUploadForm, setIsVisibleUploadForm] =
     React.useState<boolean>(false);
-  const [state, setState] = React.useState<TData[]>(data);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -58,7 +57,7 @@ export function DataTable<TData, TValue>({
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
-    data: state,
+    data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -75,15 +74,6 @@ export function DataTable<TData, TValue>({
       rowSelection,
     },
   });
-
-  const deleteFilesFromState = (fileIds: string[]) => {
-    setState((state) =>
-      state.filter((item) => !fileIds.includes((item as { id: string }).id))
-    );
-  };
-
-  const addFilesToState = (items: TData[]) =>
-    setState((state) => [...state, ...items]);
 
   return (
     <div>
@@ -107,7 +97,6 @@ export function DataTable<TData, TValue>({
             <DialogContent className="max-h-screen overflow-y-auto">
               <FileTransferForm
                 closeForm={() => setIsVisibleUploadForm(false)}
-                addFilesToState={addFilesToState}
               />
             </DialogContent>
           </Dialog>
@@ -194,10 +183,7 @@ export function DataTable<TData, TValue>({
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
-        <MultiActionsDropDown
-          deleteFilesFromState={deleteFilesFromState}
-          table={table}
-        />
+        <MultiActionsDropDown table={table} />
         <div className="w-full md:w-auto flex space-x-2 justify-between">
           <Button
             variant="outline"

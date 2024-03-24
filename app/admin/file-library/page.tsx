@@ -1,9 +1,10 @@
-import { DataTable } from "./_components/DataTable";
-import { columns } from "./_components/columns";
-import { getFilesFromFilesLibrary } from "@/actions/getFilesFromFilesLibrary";
+import { FilesTable } from "./_components/FilesTable";
+import { getFilesFromFilesLibrary } from "@/actions/admin/file-library/getFilesFromFilesLibrary";
+import { unstable_noStore as noStore } from "next/cache";
 
 export default async function FileLibraryPage() {
+  noStore();
   const data = await getFilesFromFilesLibrary();
 
-  return <DataTable columns={columns} data={data} />;
+  return <FilesTable files={data} />;
 }

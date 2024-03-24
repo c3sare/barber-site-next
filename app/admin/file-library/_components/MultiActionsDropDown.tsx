@@ -14,16 +14,16 @@ import { useAction } from "next-safe-action/hooks";
 import { deleteImage } from "@/actions/admin/file-library/deleteImage";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
+import { useFilesLibraryContext } from "../_context/FilesLibraryContext";
 
 type MultiActionsDropDownProps<TData> = {
   table: Table<TData>;
-  deleteFilesFromState: (filesIds: string[]) => void;
 };
 
 export const MultiActionsDropDown = <TData extends unknown>({
   table,
-  deleteFilesFromState,
 }: MultiActionsDropDownProps<TData>) => {
+  const { deleteFilesFromState } = useFilesLibraryContext();
   const router = useRouter();
   const { toast } = useToast();
   const [isVisibleDeleteDialog, setIsVisibleDeleteDialog] =

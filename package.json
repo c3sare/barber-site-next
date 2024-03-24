@@ -30,6 +30,7 @@
     "@radix-ui/react-tooltip": "^1.0.7",
     "@react-email/components": "^0.0.15",
     "@react-email/render": "^0.0.12",
+    "@react-icons/all-files": "^4.1.0",
     "@react-spring/web": "^9.7.3",
     "@tanstack/react-table": "^8.15.0",
     "@upstash/ratelimit": "^1.0.1",

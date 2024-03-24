@@ -1,7 +1,6 @@
 "use client";
 
-import { IconProps } from "@radix-ui/react-icons/dist/types";
-import { LucideIcon } from "lucide-react";
+import { IconType } from "@react-icons/all-files";
 import {
   Tooltip,
   TooltipContent,
@@ -9,11 +8,7 @@ import {
 } from "@/components/ui/tooltip";
 
 type SocialLinkButtonProps = {
-  icon:
-    | React.ForwardRefExoticComponent<
-        IconProps & React.RefAttributes<SVGSVGElement>
-      >
-    | LucideIcon;
+  icon: IconType;
   href: string;
   name: string;
 };

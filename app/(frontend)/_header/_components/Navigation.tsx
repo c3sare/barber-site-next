@@ -13,6 +13,12 @@ import { CircleUserRoundIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 type NavigationProps = {
   children?: React.ReactNode;
@@ -34,14 +40,15 @@ const Navigation: React.FC<NavigationProps> = ({ children, account }) => {
 
   return (
     <>
-      <ul
-        className={cn(
-          "max-h-0 mx-auto order-last md:order-none md:mx-0 w-full overflow-hidden md:overflow-visible md:w-auto md:max-h-none flex text-sm uppercase md:pl-3 items-between flex-col md:flex-row items-center md:flex-wrap transition-all duration-700",
-          isVisibleMenu && "max-h-[100vh] md:max-h-none"
-        )}
-      >
+      <ul className="mx-auto w-full hidden md:flex text-sm uppercase pl-3 items-between flex-row justify-center items-center flex-wrap">
         {children}
       </ul>
+      <Sheet open={isVisibleMenu} onOpenChange={setIsVisibleMenu}>
+        <SheetContent side="left">
+          <SheetTitle className="text-3xl">Menu</SheetTitle>
+          <ul className="flex flex-col list-none">{children}</ul>
+        </SheetContent>
+      </Sheet>
       <div className="flex items-center gap-2">
         <Popover
           open={isVisibleAccount}

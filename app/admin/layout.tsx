@@ -15,14 +15,31 @@ export default async function AdminLayout({
 
   return (
     <div className="w-full max-w-7xl p-4 mx-auto">
-      <NavigationMenu className="z-auto">
-        <NavigationMenuList>
-          <NavigationMenuLink href="/admin">Home</NavigationMenuLink>
-          <NavigationMenuLink href="/admin/file-library">
-            File Library
-          </NavigationMenuLink>
-        </NavigationMenuList>
-      </NavigationMenu>
+      <div className="flex">
+        <NavigationMenu className="z-auto">
+          <NavigationMenuList>
+            <NavigationMenuLink href="/admin" title="Home" />
+          </NavigationMenuList>
+        </NavigationMenu>
+        <NavigationMenu className="z-auto">
+          <NavigationMenuList>
+            <NavigationMenuLink href="/admin/footer" title="Footer">
+              <NavigationMenuLink
+                href="/admin/footer/gallery"
+                title="Gallery"
+              />
+            </NavigationMenuLink>
+          </NavigationMenuList>
+        </NavigationMenu>
+        <NavigationMenu className="z-auto">
+          <NavigationMenuList>
+            <NavigationMenuLink
+              href="/admin/file-library"
+              title="File Library"
+            />
+          </NavigationMenuList>
+        </NavigationMenu>
+      </div>
       <div className="w-full p-4">{children}</div>
     </div>
   );

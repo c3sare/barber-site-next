@@ -1,43 +1,29 @@
 "use client";
 
-import { PinLeftIcon } from "@radix-ui/react-icons";
-import {
-  FacebookIcon,
-  TwitterIcon,
-  PlusIcon,
-  GithubIcon,
-  BeanIcon,
-} from "lucide-react";
+import { FaGoogle } from "@react-icons/all-files/fa/FaGoogle";
+import { FaTwitter } from "@react-icons/all-files/fa/FaTwitter";
+import { FaFacebook } from "@react-icons/all-files/fa/FaFacebook";
+import { FaGithub } from "@react-icons/all-files/fa/FaGithub";
 
 export const socials = [
   {
     name: "Facebook",
-    icon: FacebookIcon,
+    icon: FaFacebook,
     href: "https://facebook.com/",
   },
   {
-    name: "Twitter",
-    icon: TwitterIcon,
-    href: "https://twitter.com/",
+    name: "X",
+    icon: FaTwitter,
+    href: "https://x.com/",
   },
   {
-    name: "Google+",
-    icon: PlusIcon,
+    name: "Google",
+    icon: FaGoogle,
     href: "https://google.com/",
   },
   {
     name: "GitHub",
-    icon: GithubIcon,
+    icon: FaGithub,
     href: "https://github.com/",
-  },
-  {
-    name: "Behance",
-    icon: BeanIcon,
-    href: "https://behance.com/",
-  },
-  {
-    name: "Pinterest",
-    icon: PinLeftIcon,
-    href: "https://pinterest.com/",
   },
 ];

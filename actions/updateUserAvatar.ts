@@ -21,6 +21,7 @@ export const updateUserAvatar = actionWithAuth(
         fit: "cover",
         position: "center",
       })
+      .flatten({ background: "#fff" })
       .toFormat("webp")
       .toBuffer();
 

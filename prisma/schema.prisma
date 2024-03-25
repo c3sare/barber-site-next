@@ -98,15 +98,29 @@ enum FileType {
 }
 
 model File {
-  id          String   @id
-  name        String
-  type        FileType
-  width       Int
-  height      Int
-  uploadedAt  DateTime @default(now())
-  blurDataUrl String
-  url         String
-  desc        String
-  userId      String
-  author      User     @relation(fields: [userId], references: [id])
+  id           String            @id
+  name         String
+  type         FileType
+  width        Int
+  height       Int
+  uploadedAt   DateTime          @default(now())
+  blurDataUrl  String
+  url          String
+  desc         String
+  userId       String
+  author       User              @relation(fields: [userId], references: [id])
+  usedByFooter FooterComponent[] @relation("usedFooterImages")
+}
+
+enum FooterComponentEnum {
+  PHOTO_GALLERY
+  LINK_BOX
+  HERO_BOX
+}
+
+model FooterComponent {
+  id        String              @id @default(cuid())
+  component FooterComponentEnum
+  data      Json
+  images    File[]              @relation("usedFooterImages")
 }

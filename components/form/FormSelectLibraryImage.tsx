@@ -52,7 +52,7 @@ const FormSelectLibraryImage = <T extends FieldValues>({
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <FormControl>
-            <Select {...field}>
+            <Select {...field} onValueChange={field.onChange}>
               <SelectTrigger className={className}>
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>

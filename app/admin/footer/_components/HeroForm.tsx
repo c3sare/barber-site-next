@@ -4,8 +4,11 @@ import FormSelectLibraryImage from "@/components/form/FormSelectLibraryImage";
 import FormTextarea from "@/components/form/FormTextarea";
 import { Form } from "@/components/ui/form";
 import { useZodForm } from "@/hooks/useZodForm";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
+import { heroComponentSchema } from "@/validators/heroComponentSchema";
+import { useAction } from "next-safe-action/hooks";
+import { addHeroBoxComponent } from "@/actions/admin/footer/addHeroBoxComponent";
+import { z } from "zod";
 
 type HeroFormProps = {
   images: {
@@ -14,17 +17,7 @@ type HeroFormProps = {
     name: string;
   }[];
   id?: string;
-  defaultValues?: {
-    image: string;
-    text: string;
-    button?: {
-      text: string;
-      link: {
-        type: "internal" | "external";
-        url: string;
-      };
-    };
-  };
+  defaultValues?: z.infer<typeof heroComponentSchema>;
 };
 
 export const HeroForm: React.FC<HeroFormProps> = ({
@@ -32,25 +25,14 @@ export const HeroForm: React.FC<HeroFormProps> = ({
   id,
   defaultValues,
 }) => {
+  const action = useAction(addHeroBoxComponent);
   const form = useZodForm({
-    schema: z.object({
-      image: z.string(),
-      text: z.string(),
-      button: z.optional(
-        z.object({
-          text: z.string(),
-          link: z.object({
-            type: z.enum(["internal", "external"]),
-            url: z.string(),
-          }),
-        })
-      ),
-    }),
+    schema: heroComponentSchema,
     defaultValues,
   });
 
   const onSubmit = form.handleSubmit((data) => {
-    console.log(data);
+    action.execute({ ...data, id });
   });
 
   return (

@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { HeroForm } from "../_components/HeroForm";
+import { FooterFormSwitcher } from "../_components/FooterFormSwitcher";
 
 export default async function NewComponentPage() {
   const images = (await db.file.findMany({})).map((img) => ({
@@ -8,5 +8,5 @@ export default async function NewComponentPage() {
     url: img.url,
   }));
 
-  return <HeroForm images={images} />;
+  return <FooterFormSwitcher images={images} />;
 }

@@ -24,7 +24,7 @@ export const LinkBoxForm: React.FC<LinkBoxFormProps> = ({
     schema: linkBoxSchema,
     defaultValues,
   });
-  const { fields: links } = useFieldArray({
+  const { fields: links, append } = useFieldArray({
     name: "links",
     control: form.control,
   });
@@ -37,9 +37,10 @@ export const LinkBoxForm: React.FC<LinkBoxFormProps> = ({
     <Form {...form}>
       <form onSubmit={onSubmit}>
         <FormInput control={form.control} name="title" label="Box title" />
-        <div>
+        <div className="p-2 my-2 flex flex-wrap items-center gap-2">
+          <h2 className="w-full text-3xl">Links</h2>
           {links.map((link, i) => (
-            <div key={id}>
+            <div key={link.id} className="p-2">
               <FormInput
                 control={form.control}
                 name={`links.${i}.name`}
@@ -52,8 +53,15 @@ export const LinkBoxForm: React.FC<LinkBoxFormProps> = ({
               />
             </div>
           ))}
+          <Button
+            type="button"
+            className="mx-auto"
+            onClick={() => append({ name: "", url: "" })}
+          >
+            Add another link
+          </Button>
         </div>
-        <Button>Submit</Button>
+        <Button type="submit">Submit</Button>
       </form>
     </Form>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { Control, FieldValues, Path } from "react-hook-form";
+import { Control, FieldValue, FieldValues, Path } from "react-hook-form";
 import {
   FormControl,
   FormDescription,
@@ -9,20 +9,22 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select";
 import Image from "next/image";
+import { Button } from "../ui/button";
+import { ScrollArea } from "../ui/scroll-area";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { useState } from "react";
+import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
-type FormTextareaProps<T extends FieldValues> = {
+type FormSelectLibraryImageProps<T extends FieldValues> = {
   control: Control<T>;
   name: Path<T>;
   description?: React.ReactNode;
-  placeholder?: string;
   label: string;
   className?: string;
   disabled?: boolean;
@@ -31,6 +33,7 @@ type FormTextareaProps<T extends FieldValues> = {
     name: string;
     url: string;
   }[];
+  defaultValue?: FieldValue<T>;
 };
 
 const FormSelectLibraryImage = <T extends FieldValues>({
@@ -38,43 +41,83 @@ const FormSelectLibraryImage = <T extends FieldValues>({
   name,
   description,
   label,
-  placeholder,
   className,
   disabled,
   values,
-}: FormTextareaProps<T>) => {
+  defaultValue
+}: FormSelectLibraryImageProps<T>) => {
+  const [isVisibleDropDown, setIsVisibleDropdown] = useState(false);
+
   return (
     <FormField
       control={control}
       name={name}
       disabled={disabled}
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>{label}</FormLabel>
-          <FormControl>
-            <Select {...field} onValueChange={field.onChange}>
-              <SelectTrigger className={className}>
-                <SelectValue placeholder={placeholder} />
-              </SelectTrigger>
-              <SelectContent>
-                {values.map((item) => (
-                  <SelectItem key={item.id} value={item.id}>
-                    <Image
-                      src={item.url}
-                      alt={item.name}
-                      width={72}
-                      height={72}
-                      className="object-cover"
-                    />
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </FormControl>
-          {!!description && <FormDescription>{description}</FormDescription>}
-          <FormMessage />
-        </FormItem>
-      )}
+      defaultValue={defaultValue}
+      render={({ field }) => {
+        const handleClickImage = (id: string) => {
+          field.onChange(id);
+          setIsVisibleDropdown(false);
+        };
+
+        const currentImage = values.find((item) => item.id === field.value);
+
+        return (
+          <FormItem>
+            <FormLabel>{label}</FormLabel>
+            <FormControl>
+              <DropdownMenu
+                open={isVisibleDropDown}
+                onOpenChange={setIsVisibleDropdown}
+              >
+                <DropdownMenuTrigger asChild>
+                  <Card
+                    className={cn(
+                      "size-24 flex items-center justify-center cursor-pointer text-xs",
+                      className
+                    )}
+                  >
+                    {currentImage ? (
+                      <Image
+                        src={currentImage.url}
+                        width={128}
+                        height={128}
+                        className="w-full aspect-square object-cover"
+                        alt={currentImage.name}
+                      />
+                    ) : (
+                      "Select image"
+                    )}
+                  </Card>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="max-w-full">
+                  <ScrollArea className="h-72 pl-1 pr-3">
+                    <div className="flex flex-wrap max-w-72">
+                      {values.map((item) => (
+                        <button
+                          className="size-24 aspect-square"
+                          key={item.id}
+                          onClick={() => handleClickImage(item.id)}
+                        >
+                          <Image
+                            src={item.url}
+                            alt={item.name}
+                            width={128}
+                            height={128}
+                            className="w-full aspect-square object-cover"
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  </ScrollArea>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </FormControl>
+            {!!description && <FormDescription>{description}</FormDescription>}
+            <FormMessage />
+          </FormItem>
+        );
+      }}
     />
   );
 };

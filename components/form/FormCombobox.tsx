@@ -38,6 +38,7 @@ type FormComboboxProps<T extends FieldValues> = {
     label: string;
   }[];
   disabled?: boolean;
+  defaultValue?: FieldValue<T>;
 };
 
 const FormCombobox = <T extends FieldValues>({
@@ -48,14 +49,14 @@ const FormCombobox = <T extends FieldValues>({
   description,
   options,
   disabled,
+  defaultValue,
 }: FormComboboxProps<T>) => {
-  const form = useFormContext();
-
   return (
     <FormField
       control={control}
       name={name}
       disabled={disabled}
+      defaultValue={defaultValue}
       render={({ field }) => (
         <FormItem className="flex flex-col">
           <FormLabel>{label}</FormLabel>
@@ -63,6 +64,7 @@ const FormCombobox = <T extends FieldValues>({
             <PopoverTrigger asChild disabled={field.disabled}>
               <FormControl>
                 <Button
+                  name={field.name}
                   variant="outline"
                   role="combobox"
                   className={cn(
@@ -83,6 +85,7 @@ const FormCombobox = <T extends FieldValues>({
                 <CommandInput
                   placeholder="Search framework..."
                   className="h-9"
+                  onBlur={field.onBlur}
                 />
                 <CommandEmpty>No framework found.</CommandEmpty>
                 <CommandGroup>
@@ -91,7 +94,7 @@ const FormCombobox = <T extends FieldValues>({
                       value={option.label}
                       key={option.value}
                       onSelect={() => {
-                        form.setValue(name, option.value);
+                        field.onChange(name, option.value);
                       }}
                     >
                       {option.label}

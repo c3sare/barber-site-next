@@ -10,28 +10,33 @@ export const addHeroBoxComponent = adminAction(
   async (data) => {
     const { id, ...props } = data;
 
-    await db.footerComponent.upsert({
-      where: {
-        id: id ?? undefined,
-      },
-      create: {
-        component: "HERO_BOX",
-        data: JSON.stringify(props),
-        images: {
-          connect: {
-            id: props.image,
+    if (!id)
+      await db.footerComponent.create({
+        data: {
+          component: "HERO_BOX",
+          data: JSON.stringify(props),
+          images: {
+            connect: {
+              id: props.image,
+            },
           },
         },
-      },
-      update: {
-        data: JSON.stringify(props),
-        images: {
-          connect: {
-            id: props.image,
+      });
+    else {
+      await db.footerComponent.update({
+        where: {
+          id,
+        },
+        data: {
+          data: JSON.stringify(props),
+          images: {
+            connect: {
+              id: props.image,
+            },
           },
         },
-      },
-    });
+      });
+    }
 
     return {
       success: true,

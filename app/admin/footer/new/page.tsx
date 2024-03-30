@@ -8,5 +8,9 @@ export default async function NewComponentPage() {
     url: img.url,
   }));
 
-  return <FooterFormSwitcher images={images} />;
+  return (
+    <div className="mx-auto max-w-2xl">
+      <FooterFormSwitcher images={images} />
+    </div>
+  );
 }

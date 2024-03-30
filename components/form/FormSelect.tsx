@@ -1,6 +1,6 @@
 "use client";
 
-import { Control, FieldValues, Path } from "react-hook-form";
+import { Control, FieldValue, FieldValues, Path } from "react-hook-form";
 import {
   FormControl,
   FormDescription,
@@ -24,6 +24,7 @@ type FormSelectProps<T extends FieldValues> = {
   placeholder?: string;
   label: string;
   className?: string;
+  defaultValue?: FieldValue<T>;
   options: (
     | {
         label: string;
@@ -42,18 +43,20 @@ const FormSelect = <T extends FieldValues>({
   name,
   options,
   disabled,
+  defaultValue,
 }: FormSelectProps<T>) => {
   return (
     <FormField
       control={control}
       name={name}
       disabled={disabled}
+      defaultValue={defaultValue}
       render={({ field }) => (
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <Select
             onValueChange={field.onChange}
-            defaultValue={field.value}
+            value={field.value}
             disabled={field.disabled}
           >
             <FormControl>

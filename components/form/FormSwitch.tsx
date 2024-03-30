@@ -1,6 +1,6 @@
 "use client";
 
-import { Control, FieldValues, Path } from "react-hook-form";
+import { Control, FieldValue, FieldValues, Path } from "react-hook-form";
 import {
   FormControl,
   FormDescription,
@@ -18,6 +18,7 @@ type FormSwitchProps<T extends FieldValues> = {
   label: string;
   className?: string;
   disabled?: boolean;
+  defaultValue?: FieldValue<T>;
 };
 
 const FormSwitch = <T extends FieldValues>({
@@ -27,12 +28,14 @@ const FormSwitch = <T extends FieldValues>({
   label,
   className,
   disabled,
+  defaultValue
 }: FormSwitchProps<T>) => {
   return (
     <FormField
       control={control}
       name={name}
       disabled={disabled}
+      defaultValue={defaultValue}
       render={({ field: { value, onChange, ...rest } }) => (
         <FormItem
           className={cn(

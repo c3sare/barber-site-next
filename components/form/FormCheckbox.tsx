@@ -1,13 +1,12 @@
 "use client";
 
-import { Control, FieldValues, Path } from "react-hook-form";
+import { Control, FieldValue, FieldValues, Path } from "react-hook-form";
 import {
   FormControl,
   FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "../ui/form";
 import { Checkbox } from "../ui/checkbox";
 import { cn } from "@/lib/utils";
@@ -19,6 +18,7 @@ type FormInput<T extends FieldValues> = {
   label: string;
   className?: string;
   disabled?: boolean;
+  defaultValue?: FieldValue<T>;
 };
 
 const FormCheckbox = <T extends FieldValues>({
@@ -28,12 +28,14 @@ const FormCheckbox = <T extends FieldValues>({
   label,
   className,
   disabled,
+  defaultValue,
 }: FormInput<T>) => {
   return (
     <FormField
       control={control}
       name={name}
       disabled={disabled}
+      defaultValue={defaultValue}
       render={({ field: { value, onChange, ...rest } }) => (
         <FormItem
           className={cn(

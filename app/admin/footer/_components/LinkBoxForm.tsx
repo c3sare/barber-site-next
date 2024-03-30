@@ -9,6 +9,8 @@ import { linkBoxSchema } from "@/validators/linkBoxSchema";
 import { useAction } from "next-safe-action/hooks";
 import { useFieldArray } from "react-hook-form";
 import { z } from "zod";
+import { Card } from "@/components/ui/card";
+import { XIcon } from "lucide-react";
 
 type LinkBoxFormProps = {
   id?: string;
@@ -24,9 +26,16 @@ export const LinkBoxForm: React.FC<LinkBoxFormProps> = ({
     schema: linkBoxSchema,
     defaultValues,
   });
-  const { fields: links, append } = useFieldArray({
+  const {
+    fields: links,
+    append,
+    remove,
+  } = useFieldArray({
     name: "links",
     control: form.control,
+    rules: {
+      maxLength: 6,
+    },
   });
 
   const onSubmit = form.handleSubmit((data) => {
@@ -36,30 +45,44 @@ export const LinkBoxForm: React.FC<LinkBoxFormProps> = ({
   return (
     <Form {...form}>
       <form onSubmit={onSubmit}>
-        <FormInput control={form.control} name="title" label="Box title" />
+        <FormInput
+          control={form.control}
+          name="title"
+          label="Box title"
+          defaultValue=""
+        />
         <div className="p-2 my-2 flex flex-wrap items-center gap-2">
           <h2 className="w-full text-3xl">Links</h2>
           {links.map((link, i) => (
-            <div key={link.id} className="p-2">
+            <Card key={link.id} className="p-2 relative">
               <FormInput
                 control={form.control}
                 name={`links.${i}.name`}
                 label="Name"
+                defaultValue=""
               />
               <FormInput
                 control={form.control}
                 name={`links.${i}.url`}
                 label="URL"
+                defaultValue=""
               />
-            </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute top-0 right-0 rounded-full"
+                onClick={() => remove(i)}
+              >
+                <XIcon />
+              </Button>
+            </Card>
           ))}
-          <Button
-            type="button"
-            className="mx-auto"
-            onClick={() => append({ name: "", url: "" })}
-          >
-            Add another link
-          </Button>
+
+          {links.length < 6 && (
+            <Button type="button" onClick={() => append({ name: "", url: "" })}>
+              Add another link
+            </Button>
+          )}
         </div>
         <Button type="submit">Submit</Button>
       </form>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Control, FieldValues, Path } from "react-hook-form";
+import { Control, FieldValue, FieldValues, Path } from "react-hook-form";
 import {
   FormControl,
   FormDescription,
@@ -20,6 +20,7 @@ type FormTextareaProps<T extends FieldValues> = {
   label: string;
   className?: string;
   disabled?: boolean;
+  defaultValue?: FieldValue<T>;
 };
 
 const FormTextarea = <T extends FieldValues>({
@@ -30,12 +31,14 @@ const FormTextarea = <T extends FieldValues>({
   placeholder,
   className,
   disabled,
+  defaultValue,
 }: FormTextareaProps<T>) => {
   return (
     <FormField
       control={control}
       name={name}
       disabled={disabled}
+      defaultValue={defaultValue}
       render={({ field }) => (
         <FormItem>
           <FormLabel>{label}</FormLabel>

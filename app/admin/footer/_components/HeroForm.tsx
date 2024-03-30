@@ -9,6 +9,10 @@ import { heroComponentSchema } from "@/validators/heroComponentSchema";
 import { useAction } from "next-safe-action/hooks";
 import { addHeroBoxComponent } from "@/actions/admin/footer/addHeroBoxComponent";
 import { z } from "zod";
+import { useState } from "react";
+import { FormInput } from "@/components/form/FormInput";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 type HeroFormProps = {
   images: {
@@ -25,6 +29,9 @@ export const HeroForm: React.FC<HeroFormProps> = ({
   id,
   defaultValues,
 }) => {
+  const [isActiveButton, setIsActiveButton] = useState<boolean>(
+    !!defaultValues?.button
+  );
   const action = useAction(addHeroBoxComponent);
   const form = useZodForm({
     schema: heroComponentSchema,
@@ -45,6 +52,28 @@ export const HeroForm: React.FC<HeroFormProps> = ({
           name="image"
           values={images}
         />
+        <div className="flex items-center space-x-2 my-4">
+          <Checkbox
+            id="button-active"
+            checked={isActiveButton}
+            onCheckedChange={(value) => setIsActiveButton(!!value)}
+          />
+          <Label htmlFor="button-active">Show link button</Label>
+        </div>
+        {isActiveButton && (
+          <div className="my-2">
+            <FormInput
+              name={`button.text`}
+              label="Button text"
+              control={form.control}
+            />
+            <FormInput
+              name={`button.url`}
+              label="Button link"
+              control={form.control}
+            />
+          </div>
+        )}
         <Button type="submit">Submit</Button>
       </form>
     </Form>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Control, FieldValues, Path } from "react-hook-form";
+import { Control, FieldValue, FieldValues, Path } from "react-hook-form";
 import {
   FormControl,
   FormField,
@@ -17,6 +17,7 @@ type FormInput<T extends FieldValues> = {
   description?: React.ReactNode;
   label: string;
   className?: string;
+  defaultValue?: FieldValue<T>;
   options: (
     | {
         value: string;
@@ -34,19 +35,21 @@ const FormRadioGroup = <T extends FieldValues>({
   className,
   options,
   disabled,
+  defaultValue,
 }: FormInput<T>) => {
   return (
     <FormField
       control={control}
       name={name}
       disabled={disabled}
+      defaultValue={defaultValue}
       render={({ field }) => (
         <FormItem className="space-y-3">
           <FormLabel>{label}</FormLabel>
           <FormControl>
             <RadioGroup
               onValueChange={field.onChange}
-              defaultValue={field.value}
+              value={field.value}
               disabled={field.disabled}
               className={cn("flex flex-col space-y-1", className)}
             >

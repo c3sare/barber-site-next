@@ -1,4 +1,4 @@
 export type PhotoGalleryDataType = {
   title: string;
-  photos: string[];
+  images: { imageId: string }[];
 };

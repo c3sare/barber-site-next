@@ -50,7 +50,7 @@ export const MultiActionsDropDown = <TData extends unknown>({
 
   const selectedFilesIds = table
     .getFilteredSelectedRowModel()
-    .flatRows.map((item) => item.getValue("id") as string);
+    .flatRows.map((item) => (item.original as { id: string }).id);
 
   const handleDeleteSelectedFiles = () =>
     deleteAction.execute(selectedFilesIds);

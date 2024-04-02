@@ -37,8 +37,8 @@ export const HeroBox: React.FC<HeroBoxProps> = ({
       {!!button && (
         <Button size="lg" asChild>
           {React.createElement(
-            button.link.type === "internal" ? Link : "a",
-            { href: button.link.url },
+            !button.url.includes("http") ? Link : "a",
+            { href: button.url },
             button.text
           )}
         </Button>

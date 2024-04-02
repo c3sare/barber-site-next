@@ -10,6 +10,7 @@ import {
 import { useState } from "react";
 import { HeroForm } from "./HeroForm";
 import { LinkBoxForm } from "./LinkBoxForm";
+import { GalleryForm } from "./GalleryForm";
 
 type ImagesType = { id: string; name: string; url: string }[];
 
@@ -28,6 +29,11 @@ const formWithComponents = [
     value: "LINK_BOX",
     name: "Link Box",
     component: LinkBoxForm,
+  },
+  {
+    value: "GALLERY_BOX",
+    name: "Gallery Box",
+    component: GalleryForm,
   },
 ] as const;
 

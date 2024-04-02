@@ -3,9 +3,6 @@ export type HeroDataType = {
   text: string;
   button?: {
     text: string;
-    link: {
-      type: "internal" | "external";
-      url: string;
-    };
+    url: string;
   };
 };

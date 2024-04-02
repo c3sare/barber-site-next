@@ -25,7 +25,7 @@ type FormSelectLibraryImageProps<T extends FieldValues> = {
   control: Control<T>;
   name: Path<T>;
   description?: React.ReactNode;
-  label: string;
+  label?: string;
   className?: string;
   disabled?: boolean;
   values: {
@@ -44,7 +44,7 @@ const FormSelectLibraryImage = <T extends FieldValues>({
   className,
   disabled,
   values,
-  defaultValue
+  defaultValue,
 }: FormSelectLibraryImageProps<T>) => {
   const [isVisibleDropDown, setIsVisibleDropdown] = useState(false);
 
@@ -64,7 +64,7 @@ const FormSelectLibraryImage = <T extends FieldValues>({
 
         return (
           <FormItem>
-            <FormLabel>{label}</FormLabel>
+            {!!label && <FormLabel>{label}</FormLabel>}
             <FormControl>
               <DropdownMenu
                 open={isVisibleDropDown}

@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { Item } from "@/components/lightbox";
 import { ZoomIcon } from "@/components/icons/ZoomIcon";
@@ -10,20 +12,18 @@ type PhotoGalleryProps = {
   images: File[];
 };
 
-export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
-  data: { title, photos },
-  images,
-}) => {
+export const PhotoGallery: React.FC<PhotoGalleryProps> = ({ data, images }) => {
   return (
     <div className="w-full md:w-1/2 lg:w-1/3 float-left px-4 mb-6">
       <h5 className="text-white before:content-none after:bg-white text-2xl">
-        {title}
+        {data.title}
       </h5>
       <Gallery withCaption>
-        {photos.map((id, i) => {
-          const img = images.find((img) => img.id === id);
+        {data.images.map(({ imageId }, i) => {
+          const img = images.find((img) => img.id === imageId);
 
-          if (!img) throw new Error(`Theres no image with id '${id}' in array`);
+          if (!img)
+            throw new Error(`Theres no image with id '${imageId}' in array`);
 
           return (
             <Item

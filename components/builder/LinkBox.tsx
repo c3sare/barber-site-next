@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { File } from "@prisma/client";
 import React from "react";
@@ -10,23 +12,23 @@ type LinkBoxProps = {
 
 export const LinkBox: React.FC<LinkBoxProps> = ({ data: { title, links } }) => {
   return (
-    <div className="w-full md:w-1/2 lg:w-1/4 float-left px-4 mb-6">
+    <div className="w-full md:w-1/2 lg:w-1/5 float-left px-4 mb-6">
       <h5 className="text-white before:content-none after:bg-white text-2xl">
         {title}
       </h5>
       <ul className="flex flex-col gap-2">
-        {links.map(({ href, type, text }, i) => (
+        {links.map(({ url, name }, i) => (
           <li
             key={i}
             className="before:content-['>'] before:font-bold flex gap-1 text-sm"
           >
             {React.createElement(
-              type === "internal" ? Link : "a",
+              !url.includes("http") ? Link : "a",
               {
-                href,
+                href: url,
                 className: "hover:text-primary transition-colors duration-500",
               },
-              text
+              name
             )}
           </li>
         ))}

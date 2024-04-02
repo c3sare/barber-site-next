@@ -2,6 +2,7 @@
 
 import { db } from "@/lib/db";
 import { adminAction } from "@/lib/safe-action";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 const schema = z.object({
@@ -14,23 +15,26 @@ const schema = z.object({
   ),
 });
 
-export const addLinkBoxComponent = adminAction(
+export const upsertLinkBoxComponent = adminAction(
   schema.and(z.object({ id: z.optional(z.string().nullable()) })),
   async (data) => {
     const { id, ...props } = data;
 
-    const component = await db.footerComponent.upsert({
+    await db.footerComponent.upsert({
       where: {
-        id: id ?? undefined,
+        id: id ?? "??????????????????????",
+        component: "LINK_BOX",
       },
       create: {
         component: "LINK_BOX",
-        data: JSON.stringify(props),
+        data: props,
       },
       update: {
-        data: JSON.stringify(props),
+        data: props,
       },
     });
+
+    revalidatePath("/admin/footer");
 
     return { success: true };
   }

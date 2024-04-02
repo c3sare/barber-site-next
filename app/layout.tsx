@@ -3,8 +3,6 @@ import { Bebas_Neue, Inter } from "next/font/google";
 import "photoswipe/dist/photoswipe.css";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { SessionProvider } from "next-auth/react";
-import { auth } from "@/auth";
 import LayoutHeader from "./(frontend)/_header/LayoutHeader";
 import LayoutFooter from "./(frontend)/_footer/LayoutFooter";
 import { Providers } from "./providers";
@@ -26,8 +24,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
-
   return (
     <html lang="en" suppressHydrationWarning>
       <body

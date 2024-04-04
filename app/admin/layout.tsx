@@ -14,6 +14,7 @@ export default async function AdminLayout({
       <TabsList>
         <TabsLink href="/admin">Home</TabsLink>
         <TabsLink href="/admin/footer">Footer</TabsLink>
+        <TabsLink href="/admin/pages">Pages</TabsLink>
         <TabsLink href="/admin/menu">Menu</TabsLink>
         <TabsLink href="/admin/file-library">File Library</TabsLink>
       </TabsList>

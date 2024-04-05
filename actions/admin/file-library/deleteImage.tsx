@@ -3,7 +3,7 @@
 import { delete_resources } from "@/lib/cloudinary";
 import { db } from "@/lib/db";
 import { adminAction } from "@/lib/safe-action";
-import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 export const deleteImage = adminAction(
@@ -32,7 +32,7 @@ export const deleteImage = adminAction(
 
     await delete_resources(imageIds);
 
-    revalidateTag("file-library");
+    revalidatePath("/admin/file-library");
 
     return { success: true };
   }

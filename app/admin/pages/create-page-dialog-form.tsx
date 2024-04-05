@@ -16,7 +16,6 @@ import { createSlug } from "@/lib/utils";
 import { createPageSchema } from "@/validators/createPageSchema";
 import { useAction } from "next-safe-action/hooks";
 import { useState } from "react";
-import { z } from "zod";
 
 export const CreatePageDialogForm = () => {
   const { toast } = useToast();

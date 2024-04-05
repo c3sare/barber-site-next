@@ -6,7 +6,7 @@ import { actionWithAuth } from "@/lib/safe-action";
 import { bufferToBase64Url } from "@/utils/bufferToBase64Url";
 import { uploadImagesSchema } from "@/validators/uploadImagesSchema";
 import { FileType } from "@prisma/client";
-import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { getPlaiceholder } from "plaiceholder";
 
 export const uploadImages = actionWithAuth(
@@ -65,7 +65,7 @@ export const uploadImages = actionWithAuth(
       })
     );
 
-    revalidateTag("file-library");
+    revalidatePath("/admin/file-library");
 
     return items.map(({ author, url, ...file }) => ({
       ...file,

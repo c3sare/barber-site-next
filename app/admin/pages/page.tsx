@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Settings2Icon, TrashIcon } from "lucide-react";
 import Link from "next/link";
 import { CreatePageDialogForm } from "./create-page-dialog-form";
+import { DeletePageDialog } from "./delete-page-dialog";
 
 export default async function PagesPage() {
   const pages = await getPages();
@@ -23,11 +24,11 @@ export default async function PagesPage() {
                   <Settings2Icon />
                 </Link>
               </Button>
-              <Button asChild variant="ghost" size="icon">
-                <Link href={`/admin/pages/${page.id}`}>
+              <DeletePageDialog id={page.id}>
+                <Button variant="ghost" size="icon">
                   <TrashIcon />
-                </Link>
-              </Button>
+                </Button>
+              </DeletePageDialog>
             </div>
           </div>
         ))}

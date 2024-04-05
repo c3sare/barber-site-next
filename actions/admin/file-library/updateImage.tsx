@@ -3,7 +3,7 @@
 import { db } from "@/lib/db";
 import { adminAction } from "@/lib/safe-action";
 import { editImageSchema } from "@/validators/editImageSchema";
-import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 
 export const updateImage = adminAction(
   editImageSchema,
@@ -25,7 +25,7 @@ export const updateImage = adminAction(
       },
     });
 
-    revalidateTag("file-library");
+    revalidatePath("/admin/file-library");
 
     return { ...updateImage, author: author.name!, preview: url };
   }

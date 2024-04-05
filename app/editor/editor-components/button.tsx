@@ -1,9 +1,14 @@
 import { Button as ButtonShadcn } from "@/components/ui/button";
+import { useNode } from "@craftjs/core";
 
 type Props = {
-  children?: React.ReactNode;
+  text: string;
 };
 
-export const Button = ({ children }: Props) => {
-  return <ButtonShadcn>{children}</ButtonShadcn>;
+export const Button = ({ text }: Props) => {
+  const {
+    connectors: { drag },
+  } = useNode<HTMLButtonElement>();
+
+  return <ButtonShadcn ref={drag as any}>{text}</ButtonShadcn>;
 };

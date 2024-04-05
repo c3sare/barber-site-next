@@ -5,5 +5,5 @@ type Props = {
 };
 
 export const Button = ({ children }: Props) => {
-  return <Button>{children}</Button>;
+  return <ButtonShadcn>{children}</ButtonShadcn>;
 };

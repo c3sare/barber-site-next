@@ -12,6 +12,8 @@ import {
 import { Form } from "@/components/ui/form";
 import { useToast } from "@/components/ui/use-toast";
 import { useZodForm } from "@/hooks/useZodForm";
+import { createSlug } from "@/lib/utils";
+import { createPageSchema } from "@/validators/createPageSchema";
 import { useAction } from "next-safe-action/hooks";
 import { useState } from "react";
 import { z } from "zod";
@@ -32,11 +34,10 @@ export const CreatePageDialogForm = () => {
     },
   });
   const form = useZodForm({
-    schema: z.object({
-      name: z.string().min(1, "Name is required"),
-    }),
+    schema: createPageSchema,
     defaultValues: {
       name: "",
+      slug: "",
     },
   });
 
@@ -60,6 +61,16 @@ export const CreatePageDialogForm = () => {
               label="Title"
               placeholder="Type a page name..."
               name="name"
+              disabled={isLoading}
+              onChange={(value) => {
+                form.setValue("slug", createSlug(value));
+              }}
+            />
+            <FormInput
+              control={form.control}
+              label="Slug"
+              placeholder="Typa a page slug..."
+              name="slug"
               disabled={isLoading}
             />
             <Button

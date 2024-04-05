@@ -132,6 +132,7 @@ model FooterComponent {
 model Page {
   id        String     @id @default(cuid())
   name      String
+  slug      String     @unique
   data      Json
   createdBy User?      @relation(fields: [creatorId], references: [id], onDelete: SetNull)
   creatorId String?

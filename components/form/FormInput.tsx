@@ -23,6 +23,7 @@ type FormInput<T extends FieldValues> = {
   autoComplete?: string;
   disabled?: boolean;
   defaultValue?: PathValue<T, Path<T>>;
+  onChange?: (value: string) => void;
 };
 
 export const FormInput = <T extends FieldValues>({
@@ -36,6 +37,7 @@ export const FormInput = <T extends FieldValues>({
   autoComplete,
   disabled,
   defaultValue,
+  onChange,
 }: FormInput<T>) => {
   return (
     <FormField
@@ -52,6 +54,12 @@ export const FormInput = <T extends FieldValues>({
               placeholder={placeholder}
               autoComplete={autoComplete}
               {...field}
+              onChange={(e) => {
+                void field.onChange(e);
+                if (onChange) {
+                  onChange(e.target.value);
+                }
+              }}
             />
           </FormControl>
           {description ? (

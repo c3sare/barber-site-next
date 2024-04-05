@@ -2,7 +2,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
 type Props = {
-  id: number;
+  id: string;
 };
 
 export const SortableItem = ({ id }: Props) => {

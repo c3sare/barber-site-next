@@ -1,6 +1,6 @@
 import { getPages } from "@/actions/admin/pages/getPages";
 import { Button } from "@/components/ui/button";
-import { Settings2Icon } from "lucide-react";
+import { Settings2Icon, TrashIcon } from "lucide-react";
 import Link from "next/link";
 import { CreatePageDialogForm } from "./create-page-dialog-form";
 
@@ -10,14 +10,22 @@ export default async function PagesPage() {
   return (
     <>
       <CreatePageDialogForm />
-      <div className="w-full max-w-7xl p-4 mx-auto flex flex-col">
+      <div className="w-full p-4 mx-auto flex flex-col gap-2">
         {pages.map((page) => (
-          <div className="w-full px-4 py-2 border">
+          <div
+            key={page.id}
+            className="w-full px-4 py-2 border flex justify-between items-center"
+          >
             <div>{page.name}</div>
-            <div>
+            <div className="space-x-2">
               <Button asChild variant="ghost" size="icon">
                 <Link href={`/admin/pages/${page.id}`}>
                   <Settings2Icon />
+                </Link>
+              </Button>
+              <Button asChild variant="ghost" size="icon">
+                <Link href={`/admin/pages/${page.id}`}>
+                  <TrashIcon />
                 </Link>
               </Button>
             </div>

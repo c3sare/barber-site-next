@@ -18,7 +18,7 @@ export const HeroBox: React.FC<HeroBoxProps> = ({
 
   if (!logo) throw new Error("There's not 'image' in 'images' array");
 
-  const aspectRatio = logo.width / logo.height;
+  const aspectRatio = logo.height / logo.width;
 
   const width = 228;
   const height = Math.round(width * aspectRatio);

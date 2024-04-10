@@ -1,3 +1,5 @@
+"use client";
+
 import { useNode } from "@craftjs/core";
 import React from "react";
 
@@ -14,7 +16,7 @@ export const Root = ({ children }: Props) => {
       ref={(ref) => {
         connect(drag(ref!));
       }}
-      className="bg-rose-500 min-h-full w-full"
+      className="mx-auto w-full max-w-7xl"
     >
       {children}
     </div>

@@ -1,3 +1,5 @@
+"use client";
+
 import { Button as ButtonShadcn } from "@/components/ui/button";
 import { useNode } from "@craftjs/core";
 

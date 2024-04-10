@@ -1,5 +1,6 @@
+"use client";
+
 import { useEditor, useNode } from "@craftjs/core";
-import React, { useEffect, useState } from "react";
 import ContentEditable from "react-contenteditable";
 
 type Props = {

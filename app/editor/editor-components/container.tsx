@@ -1,3 +1,5 @@
+"use client";
+
 import { useNode } from "@craftjs/core";
 
 type Props = {

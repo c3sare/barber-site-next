@@ -1,3 +1,5 @@
+"use client";
+
 import { Element, useNode } from "@craftjs/core";
 import { Container } from "./container";
 

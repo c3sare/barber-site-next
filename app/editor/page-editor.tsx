@@ -26,9 +26,11 @@ export default function PageEditor({ content = "" }: Props) {
       <EditorTopBar />
       <div className="w-full flex">
         <EditorComponentBar />
-        <Frame data={data}>
-          <Element data-cy="root" is={Root} canvas />
-        </Frame>
+        <div className="bg-gray-200 w-full max-w-7xl mx-auto my-4">
+          <Frame data={data}>
+            <Element data-cy="root" is={Root} canvas />
+          </Frame>
+        </div>
         <EditorComponentOptionsBar />
       </div>
     </Editor>

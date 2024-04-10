@@ -9,13 +9,13 @@ type Props = {
 
 export const Button = ({ text }: Props) => {
   const {
-    connectors: { drag },
+    connectors: { connect },
   } = useNode<HTMLButtonElement>();
 
   return (
     <ButtonShadcn
       ref={(ref) => {
-        drag(ref!);
+        connect(ref!);
       }}
     >
       {text}

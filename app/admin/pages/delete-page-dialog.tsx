@@ -3,7 +3,6 @@
 import { deletePage } from "@/actions/admin/pages/deletePage";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,

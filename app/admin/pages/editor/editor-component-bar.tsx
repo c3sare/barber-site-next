@@ -11,8 +11,8 @@ import { Text } from "./editor-components/text";
 
 export const EditorComponentBar = () => {
   return (
-    <div className="w-20 h-screen border-r flex flex-col items-center py-4">
-      <TooltipProvider>
+    <div className="w-20 h-screen border-r flex flex-col gap-1 items-center py-4">
+      <TooltipProvider delayDuration={0} skipDelayDuration={0}>
         <EditorComponentDragElement
           title="Button"
           element={<ButtonShadcn text="text" />}

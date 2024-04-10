@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { actionWithAuth } from "@/lib/safe-action";
+import { adminAction } from "@/lib/safe-action";
 import { z } from "zod";
 import lz from "lzutf8";
 
@@ -15,7 +15,7 @@ function isValidJson(str: string) {
   }
 }
 
-export const savePageContent = actionWithAuth(
+export const savePageContent = adminAction(
   z.object({
     id: z.string(),
     content: z.string().refine(isValidJson, { message: "Content isn't json" }),

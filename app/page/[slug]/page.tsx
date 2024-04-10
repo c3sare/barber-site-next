@@ -2,11 +2,11 @@ import { db } from "@/lib/db";
 import lz from "lzutf8";
 import { notFound } from "next/navigation";
 import { Editor, Frame } from "./editor-lib";
-import { Button } from "@/app/editor/editor-components/button";
-import { Container } from "@/app/editor/editor-components/container";
-import { Root } from "@/app/editor/editor-components/root";
-import { Text } from "@/app/editor/editor-components/text";
-import { ThreeRowContainer } from "@/app/editor/editor-components/three-row-container";
+import { Button } from "@/app/admin/pages/editor/editor-components/button";
+import { Container } from "@/app/admin/pages/editor/editor-components/container";
+import { Root } from "@/app/admin/pages/editor/editor-components/root";
+import { Text } from "@/app/admin/pages/editor/editor-components/text";
+import { ThreeRowContainer } from "@/app/admin/pages/editor/editor-components/three-row-container";
 
 type Props = {
   params: {

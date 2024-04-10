@@ -1,22 +1,22 @@
 "use client";
 
 import { useNode } from "@craftjs/core";
+import React from "react";
 
 type Props = {
   children?: React.ReactNode;
 };
 
-export const Container = ({ children }: Props) => {
+export const Root = ({ children }: Props) => {
   const {
-    connectors: { connect, drag },
+    connectors: { connect },
   } = useNode();
-
   return (
     <div
       ref={(ref) => {
-        connect(drag(ref!));
+        connect(ref!);
       }}
-      className="w-full min-h-16 bg-black"
+      className="mx-auto w-full max-w-7xl pb-4"
     >
       {children}
     </div>

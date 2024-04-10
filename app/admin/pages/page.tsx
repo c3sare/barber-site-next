@@ -20,7 +20,7 @@ export default async function PagesPage() {
             <div>{page.name}</div>
             <div className="space-x-2">
               <Button asChild variant="ghost" size="icon">
-                <Link href={`/editor/${page.id}`}>
+                <Link href={`/admin/pages/editor/${page.id}`}>
                   <Settings2Icon />
                 </Link>
               </Button>

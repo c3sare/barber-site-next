@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { Loader } from "lucide-react";
 import dynamic from "next/dynamic";
@@ -19,6 +20,10 @@ type Props = {
 };
 
 export default async function EditorPage({ params: { id } }: Props) {
+  const session = await auth();
+
+  if (session?.user.role !== "ADMIN") return notFound();
+
   const page = await db.page.findUnique({
     where: {
       id,

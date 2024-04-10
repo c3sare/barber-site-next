@@ -9,8 +9,9 @@ import { Container } from "./editor-components/container";
 import { ThreeRowContainer } from "./editor-components/three-row-container";
 import { Text } from "./editor-components/text";
 import { EditorTopBar } from "./editor-top-bar";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import lz from "lzutf8";
+import { RenderNode } from "./render-node";
 
 type Props = {
   content: string;
@@ -22,11 +23,14 @@ export default function PageEditor({ content = "" }: Props) {
   );
 
   return (
-    <Editor resolver={{ Button, Container, Root, ThreeRowContainer, Text }}>
+    <Editor
+      resolver={{ Button, Container, Root, ThreeRowContainer, Text }}
+      onRender={RenderNode}
+    >
       <EditorTopBar />
       <div className="w-full flex">
         <EditorComponentBar />
-        <div className="bg-gray-200 w-full max-w-7xl mx-auto my-4">
+        <div className="bg-gray-100 w-full max-w-7xl mx-auto my-4">
           <Frame data={data}>
             <Element data-cy="root" is={Root} canvas />
           </Frame>

@@ -24,7 +24,7 @@ export const Text = ({ text, fontSize }: Props) => {
 
   return (
     <ContentEditable
-      innerRef={connect}
+      innerRef={(ref: any) => connect(ref!)}
       disabled={!enabled}
       html={text}
       onChange={(e) =>
@@ -34,7 +34,8 @@ export const Text = ({ text, fontSize }: Props) => {
         )
       }
       tagName="p"
-      style={{ fontSize: `${fontSize}px`, color: "white" }}
+      className="outline-none"
+      style={{ fontSize: `${fontSize}px` }}
     />
   );
 };

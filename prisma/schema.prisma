@@ -133,7 +133,7 @@ model Page {
   id        String     @id @default(cuid())
   name      String
   slug      String     @unique
-  data      Json
+  data      String
   createdBy User?      @relation(fields: [creatorId], references: [id], onDelete: SetNull)
   creatorId String?
   createdAt DateTime   @default(now())

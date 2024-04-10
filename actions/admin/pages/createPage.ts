@@ -12,7 +12,7 @@ export const createPage = adminAction(
       data: {
         name,
         slug,
-        data: {},
+        data: "{}",
       },
     });
 

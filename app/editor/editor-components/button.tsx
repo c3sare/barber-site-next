@@ -10,5 +10,13 @@ export const Button = ({ text }: Props) => {
     connectors: { drag },
   } = useNode<HTMLButtonElement>();
 
-  return <ButtonShadcn ref={drag as any}>{text}</ButtonShadcn>;
+  return (
+    <ButtonShadcn
+      ref={(ref) => {
+        drag(ref!);
+      }}
+    >
+      {text}
+    </ButtonShadcn>
+  );
 };

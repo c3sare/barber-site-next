@@ -5,7 +5,9 @@ import { ButtonIcon } from "@radix-ui/react-icons";
 import { Button as ButtonShadcn } from "./editor-components/button";
 import { EditorComponentDragElement } from "./editor-component-drag-element";
 import { Container } from "./editor-components/container";
-import { ContainerIcon } from "lucide-react";
+import { ContainerIcon, TextIcon } from "lucide-react";
+import { ThreeRowContainer } from "./editor-components/three-row-container";
+import { Text } from "./editor-components/text";
 
 export const EditorComponentBar = () => {
   return (
@@ -19,6 +21,18 @@ export const EditorComponentBar = () => {
         </EditorComponentDragElement>
         <EditorComponentDragElement title="Container" element={<Container />}>
           <ContainerIcon className="size-6" />
+        </EditorComponentDragElement>
+        <EditorComponentDragElement
+          title="Three Row Container"
+          element={<ThreeRowContainer />}
+        >
+          <ContainerIcon className="size-6" />
+        </EditorComponentDragElement>
+        <EditorComponentDragElement
+          title="Text"
+          element={<Text fontSize={24} text={"Text"} />}
+        >
+          <TextIcon className="size-6" />
         </EditorComponentDragElement>
       </TooltipProvider>
     </div>

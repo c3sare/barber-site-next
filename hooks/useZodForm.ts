@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { FieldValues, useForm } from "react-hook-form";
+import { Resolver, useForm } from "react-hook-form";
 import { ZodSchema, z } from "zod";
 
 type PropsType<Z extends ZodSchema> = Omit<
@@ -21,7 +21,7 @@ export const useZodForm = <Z extends ZodSchema>({
 
   return {
     ...useForm<z.infer<typeof schema>>({
-      resolver: zodResolver(schema),
+      resolver: zodResolver(schema) as Resolver<z.TypeOf<Z>, any>,
       ...props,
     }),
     isLoading,

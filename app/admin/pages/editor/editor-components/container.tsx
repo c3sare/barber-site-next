@@ -1,24 +1,23 @@
 "use client";
 
 import { useNode } from "@craftjs/core";
+import { Container as ContainerRO } from "../components/container";
 
 type Props = {
   children?: React.ReactNode;
 };
 
-export const Container = ({ children }: Props) => {
+export const Container = (props: Props) => {
   const {
     connectors: { connect },
   } = useNode();
 
   return (
-    <div
+    <ContainerRO
       ref={(ref) => {
         connect(ref!);
       }}
-      className="w-full min-h-16"
-    >
-      {children}
-    </div>
+      {...props}
+    />
   );
 };

@@ -1,24 +1,23 @@
 "use client";
 
-import { Button as ButtonShadcn } from "@/components/ui/button";
+import { Button as ButtonRO } from "../components/button";
 import { useNode } from "@craftjs/core";
 
 type Props = {
   text: string;
 };
 
-export const Button = ({ text }: Props) => {
+export const Button = (props: Props) => {
   const {
     connectors: { connect },
   } = useNode<HTMLButtonElement>();
 
   return (
-    <ButtonShadcn
+    <ButtonRO
       ref={(ref) => {
         connect(ref!);
       }}
-    >
-      {text}
-    </ButtonShadcn>
+      {...props}
+    />
   );
 };

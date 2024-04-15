@@ -2,6 +2,7 @@
 
 import { useNode } from "@craftjs/core";
 import React from "react";
+import { Root as RootRO } from "../components/root";
 
 type Props = {
   children?: React.ReactNode;
@@ -12,13 +13,12 @@ export const Root = ({ children }: Props) => {
     connectors: { connect },
   } = useNode();
   return (
-    <div
+    <RootRO
       ref={(ref) => {
         connect(ref!);
       }}
-      className="mx-auto w-full max-w-7xl pb-4"
     >
       {children}
-    </div>
+    </RootRO>
   );
 };

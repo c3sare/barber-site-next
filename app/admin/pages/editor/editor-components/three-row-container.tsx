@@ -2,14 +2,14 @@
 
 import { Element, useNode } from "@craftjs/core";
 import { Container } from "./container";
+import { ThreeRowContainer as ThreeRowContainerRO } from "../components/three-row-container";
 
 export const ThreeRowContainer = () => {
   const {
     connectors: { connect },
   } = useNode();
   return (
-    <div
-      className="flex flex-nowrap gap-2"
+    <ThreeRowContainerRO
       ref={(ref) => {
         connect(ref!);
       }}
@@ -17,6 +17,6 @@ export const ThreeRowContainer = () => {
       <Element id="container_1" is={Container} canvas />
       <Element id="container_2" is={Container} canvas />
       <Element id="container_3" is={Container} canvas />
-    </div>
+    </ThreeRowContainerRO>
   );
 };

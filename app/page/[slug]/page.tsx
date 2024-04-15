@@ -1,12 +1,8 @@
 import { db } from "@/lib/db";
-import lz from "lzutf8";
 import { notFound } from "next/navigation";
 import { Editor, Frame } from "./editor-lib";
-import { Button } from "@/app/admin/pages/editor/editor-components/button";
-import { Container } from "@/app/admin/pages/editor/editor-components/container";
-import { Root } from "@/app/admin/pages/editor/editor-components/root";
-import { Text } from "@/app/admin/pages/editor/editor-components/text";
-import { ThreeRowContainer } from "@/app/admin/pages/editor/editor-components/three-row-container";
+import { components } from "./components";
+import { RenderPage } from "./RenderPage";
 
 type Props = {
   params: {
@@ -23,16 +19,7 @@ export default async function PageBuilderContent({ params: { slug } }: Props) {
 
   if (!page) return notFound();
 
-  const content = lz.decompress(lz.decodeBase64(page.data));
-
-  return (
-    <Editor
-      enabled={false}
-      resolver={{ Button, Container, ThreeRowContainer, Root, Text }}
-    >
-      <Frame data={content} />
-    </Editor>
-  );
+  return <RenderPage data={page.data} />;
 }
 
 export async function generateStaticParams() {

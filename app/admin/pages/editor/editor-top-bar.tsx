@@ -11,6 +11,7 @@ import { useEditor } from "@craftjs/core";
 import { Loader2Icon, Redo2Icon, Undo2Icon } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export const EditorTopBar = () => {
   const { toast } = useToast();
@@ -30,9 +31,22 @@ export const EditorTopBar = () => {
     },
   });
   const { id } = useParams<{ id: string }>();
-  const { query } = useEditor((state) => ({
+  const { query, actions, canRedo, canUndo } = useEditor((state, query) => ({
     enabled: state.options.enabled,
+    selected: state.events.selected,
+    canUndo: query.history.canUndo(),
+    canRedo: query.history.canRedo(),
   }));
+
+  useEffect(() => {
+    const handleScroll = () => {
+      actions.selectNode(undefined);
+    };
+
+    window.addEventListener("scroll", handleScroll, true);
+
+    return () => window.removeEventListener("scroll", handleScroll, true);
+  }, []);
 
   const isLoading = action.status === "executing";
 
@@ -41,8 +55,13 @@ export const EditorTopBar = () => {
       <div>
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger>
-              <Button variant="ghost" size="sm">
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                disabled={!canUndo}
+                onClick={actions.history.undo}
+              >
                 <Undo2Icon className="size-4" />
               </Button>
             </TooltipTrigger>
@@ -51,8 +70,13 @@ export const EditorTopBar = () => {
             </TooltipContent>
           </Tooltip>
           <Tooltip>
-            <TooltipTrigger>
-              <Button variant="ghost" size="sm">
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                disabled={!canRedo}
+                onClick={actions.history.redo}
+              >
                 <Redo2Icon className="size-4" />
               </Button>
             </TooltipTrigger>

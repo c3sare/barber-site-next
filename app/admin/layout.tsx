@@ -18,7 +18,7 @@ export default async function AdminLayout({
         <TabsLink href="/admin/menu">Menu</TabsLink>
         <TabsLink href="/admin/file-library">File Library</TabsLink>
       </TabsList>
-      <div className="w-full p-4">{children}</div>
+      <div className="w-full py-4">{children}</div>
     </div>
   );
 }

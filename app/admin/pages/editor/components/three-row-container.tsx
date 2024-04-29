@@ -26,3 +26,5 @@ export const ThreeRowContainer = forwardRef<HTMLDivElement, Props>(
     );
   }
 );
+
+ThreeRowContainer.displayName = "ThreeRowContainer";

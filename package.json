@@ -96,7 +96,7 @@
     "@types/validator": "^13.11.9",
     "autoprefixer": "^10.4.19",
     "drizzle-kit": "^0.20.17",
-    "eslint": "^9.1.1",
+    "eslint": "8",
     "eslint-config-next": "^14.2.3",
     "postcss": "^8.4.38",
     "prisma": "^5.13.0",

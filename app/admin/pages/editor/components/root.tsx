@@ -15,3 +15,5 @@ export const Root = forwardRef<HTMLDivElement, Props>(
     );
   }
 );
+
+Root.displayName = "Root";

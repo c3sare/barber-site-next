@@ -46,7 +46,7 @@ export const EditorTopBar = () => {
     window.addEventListener("scroll", handleScroll, true);
 
     return () => window.removeEventListener("scroll", handleScroll, true);
-  }, []);
+  }, [actions]);
 
   const isLoading = action.status === "executing";
 

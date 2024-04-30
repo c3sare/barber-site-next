@@ -10,7 +10,7 @@ import {
   boolean,
   index,
 } from "drizzle-orm/pg-core";
-import { sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 
 export const userRole = pgEnum("UserRole", ["USER", "ADMIN"]);
 export const fileType = pgEnum("FileType", ["VIDEO", "AUDIO", "IMAGE"]);
@@ -35,6 +35,16 @@ export const twoFactorConfirmation = pgTable(
       ),
     };
   }
+);
+
+export const twoFactorConfirmationRelations = relations(
+  twoFactorConfirmation,
+  ({ many, one }) => ({
+    user: one(user, {
+      fields: [twoFactorConfirmation.userId],
+      references: [user.id],
+    }),
+  })
 );
 
 export const verificationToken = pgTable(
@@ -72,6 +82,13 @@ export const file = pgTable("File", {
     .notNull()
     .references(() => user.id, { onDelete: "restrict", onUpdate: "cascade" }),
 });
+
+export const fileRelations = relations(file, ({ many, one }) => ({
+  file: one(user, {
+    fields: [file.userId],
+    references: [user.id],
+  }),
+}));
 
 export const passwordResetToken = pgTable(
   "PasswordResetToken",
@@ -148,6 +165,21 @@ export const menuItem = pgTable(
   }
 );
 
+export const menuItemRelations = relations(menuItem, ({ many, one }) => ({
+  items: one(menu, {
+    fields: [menuItem.creatorId],
+    references: [menu.id],
+  }),
+  parent: one(menuItem, {
+    fields: [menuItem.parentId],
+    references: [menuItem.id],
+  }),
+  page: one(page, {
+    fields: [menuItem.pageId],
+    references: [page.id],
+  }),
+}));
+
 export const footerComponent = pgTable("FooterComponent", {
   id: text("id").primaryKey().notNull(),
   component: footerComponentEnum("component").notNull(),
@@ -212,6 +244,13 @@ export const page = pgTable(
   }
 );
 
+export const pageRelations = relations(page, ({ many, one }) => ({
+  page: one(user, {
+    fields: [page.creatorId],
+    references: [user.id],
+  }),
+}));
+
 export const account = pgTable(
   "Account",
   {
@@ -240,6 +279,13 @@ export const account = pgTable(
   }
 );
 
+export const accountRelations = relations(account, ({ many, one }) => ({
+  account: one(user, {
+    fields: [account.userId],
+    references: [user.id],
+  }),
+}));
+
 export const menu = pgTable("Menu", {
   id: text("id").primaryKey().notNull(),
   title: text("title").notNull(),
@@ -254,6 +300,13 @@ export const menu = pgTable("Menu", {
     onUpdate: "cascade",
   }),
 });
+
+export const menuRelations = relations(menu, ({ many, one }) => ({
+  menu: one(user, {
+    fields: [menu.creatorId],
+    references: [user.id],
+  }),
+}));
 
 export const usedFooterImages = pgTable(
   "_usedFooterImages",
@@ -276,6 +329,20 @@ export const usedFooterImages = pgTable(
   }
 );
 
+export const usedFooterImagesRelations = relations(
+  usedFooterImages,
+  ({ many, one }) => ({
+    footerComponent: one(footerComponent, {
+      fields: [usedFooterImages.b],
+      references: [footerComponent.id],
+    }),
+    files: one(file, {
+      fields: [usedFooterImages.a],
+      references: [file.id],
+    }),
+  })
+);
+
 export const pageFiles = pgTable(
   "_PageFiles",
   {
@@ -293,3 +360,14 @@ export const pageFiles = pgTable(
     };
   }
 );
+
+export const pageFilesRelations = relations(pageFiles, ({ many, one }) => ({
+  file: one(file, {
+    fields: [pageFiles.a],
+    references: [file.id],
+  }),
+  page: one(page, {
+    fields: [pageFiles.b],
+    references: [page.id],
+  }),
+}));

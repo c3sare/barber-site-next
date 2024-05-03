@@ -19,7 +19,7 @@ import React, { useState } from "react";
 
 type DeleteDialogProps = {
   children?: React.ReactNode;
-  id: string;
+  id: number;
 };
 
 export const DeleteDialog = ({ children, id }: DeleteDialogProps) => {

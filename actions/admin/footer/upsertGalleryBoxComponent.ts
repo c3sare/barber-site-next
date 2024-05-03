@@ -1,16 +1,16 @@
 "use server";
 
-import { file, footerComponent, usedFooterImages } from "@/drizzle/schema";
+import { footerComponent } from "@/drizzle/schema";
 import db from "@/lib/drizzle";
 import { adminAction } from "@/lib/safe-action";
 import { galleryComponentSchema } from "@/validators/galleryComponentSchema";
-import { and, eq, notInArray } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 export const upsertGalleryBoxComponent = adminAction(
   galleryComponentSchema.and(
-    z.object({ id: z.string().optional().nullable() })
+    z.object({ id: z.number().optional().nullable() })
   ),
   async ({ images, id, title }) => {
     const imagesWithoutDuplicates = [
@@ -23,38 +23,32 @@ export const upsertGalleryBoxComponent = adminAction(
     if (imagesWithoutDuplicates.length !== checkImages.length)
       throw new Error("Images from from aren't exist.");
 
-    const imageIds = checkImages.map((item) => ({
-      id: item.id,
-    }));
+    let footerComp: (typeof footerComponent.$inferSelect)[];
 
-    const footerComp = await db
-      .insert(footerComponent)
-      .values({
-        data: { images, title },
-        component: "PHOTO_GALLERY",
-      })
-      .onConflictDoUpdate({
-        target: footerComponent.id,
-        set: {
+    if (id) {
+      footerComp = await db
+        .update(footerComponent)
+        .set({
           data: { images, title },
-        },
-      })
-      .returning();
-
-    await db
-      .insert(usedFooterImages)
-      .values(imageIds.map((item) => ({ a: item.id, b: footerComp.at(0)!.id })))
-      .onConflictDoNothing();
-
-    await db.delete(usedFooterImages).where(
-      and(
-        notInArray(
-          usedFooterImages.a,
-          imageIds.map((item) => item.id)
-        ),
-        eq(usedFooterImages.b, footerComp.at(0)!.id)
-      )
-    );
+          imageIds: imagesWithoutDuplicates,
+        })
+        .where(
+          and(
+            eq(footerComponent.id, id),
+            eq(footerComponent.component, "PHOTO_GALLERY")
+          )
+        )
+        .returning();
+    } else {
+      footerComp = await db
+        .insert(footerComponent)
+        .values({
+          data: { images, title },
+          component: "PHOTO_GALLERY",
+          imageIds: imagesWithoutDuplicates,
+        })
+        .returning();
+    }
 
     revalidatePath("/admin/footer");
 

@@ -8,28 +8,13 @@ import {
   jsonb,
   boolean,
   index,
+  primaryKey,
+  serial,
 } from "drizzle-orm/pg-core";
 import { relations, sql } from "drizzle-orm";
 import { createId } from "@paralleldrive/cuid2";
-import { customType } from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "next-auth/adapters";
-
-const DateTime = customType<{
-  data: Date;
-  driverData: string;
-  config?: { withTimezone?: boolean; precision?: number };
-}>({
-  dataType(config) {
-    const precision =
-      typeof config?.precision !== "undefined" ? `(${config.precision})` : "";
-    return `timestamp${precision}${
-      config?.withTimezone ? " with time zone" : ""
-    }`;
-  },
-  fromDriver(value: string): Date {
-    return new Date(value);
-  },
-});
+import { timestamp } from "./customTypes";
 
 export const userRole = pgEnum("UserRole", ["USER", "ADMIN"]);
 export const fileType = pgEnum("FileType", ["VIDEO", "AUDIO", "IMAGE"]);
@@ -42,7 +27,7 @@ export const footerComponentEnum = pgEnum("FooterComponentEnum", [
 export const twoFactorConfirmation = pgTable(
   "TwoFactorConfirmation",
   {
-    id: text("id").primaryKey().default(createId()),
+    id: serial("id").primaryKey(),
     userId: text("userId")
       .notNull()
       .references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" }),
@@ -69,10 +54,10 @@ export const twoFactorConfirmationRelations = relations(
 export const verificationToken = pgTable(
   "VerificationToken",
   {
-    id: text("id").primaryKey().default(createId()),
+    id: serial("id").primaryKey(),
     email: text("email").notNull(),
     token: text("token").notNull(),
-    expires: DateTime("expires", { precision: 3 }).notNull(),
+    expires: timestamp("expires").notNull(),
   },
   (table) => {
     return {
@@ -91,7 +76,7 @@ export const file = pgTable("File", {
   type: fileType("type").notNull(),
   width: integer("width").notNull(),
   height: integer("height").notNull(),
-  uploadedAt: DateTime("uploadedAt", { precision: 3 })
+  uploadedAt: timestamp("uploadedAt")
     .notNull()
     .default(sql`now()`),
   blurDataUrl: text("blurDataUrl").notNull(),
@@ -109,10 +94,10 @@ export const fileRelations = relations(file, ({ one }) => ({
 export const passwordResetToken = pgTable(
   "PasswordResetToken",
   {
-    id: text("id").primaryKey().default(createId()),
+    id: serial("id").primaryKey(),
     email: text("email").notNull(),
     token: text("token").notNull(),
-    expires: DateTime("expires", { precision: 3 })
+    expires: timestamp("expires")
       .notNull()
       .default(sql`now()`),
   },
@@ -130,10 +115,10 @@ export const passwordResetToken = pgTable(
 export const twoFactorToken = pgTable(
   "TwoFactorToken",
   {
-    id: text("id").primaryKey().default(createId()),
+    id: serial("id").primaryKey(),
     email: text("email").notNull(),
     token: text("token").notNull(),
-    expires: DateTime("expires", { precision: 3 }).notNull(),
+    expires: timestamp("expires").notNull(),
   },
   (table) => {
     return {
@@ -149,19 +134,19 @@ export const twoFactorToken = pgTable(
 export const menuItem = pgTable(
   "MenuItem",
   {
-    id: text("id").primaryKey().default(createId()),
-    pageId: text("pageId")
+    id: serial("id").primaryKey(),
+    pageId: integer("pageId")
       .notNull()
       .references(() => page.id, { onDelete: "cascade", onUpdate: "cascade" }),
-    menuId: text("menuId").references(() => menu.id, {
+    menuId: integer("menuId").references(() => menu.id, {
       onDelete: "cascade",
       onUpdate: "cascade",
     }),
-    parentId: text("parentId"),
-    createdAt: DateTime("createdAt", { precision: 3 })
+    parentId: integer("parentId"),
+    createdAt: timestamp("createdAt")
       .notNull()
       .default(sql`now()`),
-    updatedAt: DateTime("updatedAt", { precision: 3 })
+    updatedAt: timestamp("updatedAt")
       .notNull()
       .default(sql`now()`),
     creatorId: text("creatorId").references(() => user.id, {
@@ -190,37 +175,33 @@ export const menuItemRelations = relations(menuItem, ({ one }) => ({
 }));
 
 export const footerComponent = pgTable("FooterComponent", {
-  id: text("id").primaryKey().default(createId()),
+  id: serial("id").primaryKey(),
   component: footerComponentEnum("component").notNull(),
   data: jsonb("data").notNull(),
+  imageIds: text("imageIds").array().notNull(),
 });
 
-export const footerComponentRelations = relations(
-  footerComponent,
-  ({ many }) => ({
-    images: many(usedFooterImages),
-  })
-);
-
 export const user = pgTable(
-  "User",
+  "user",
   {
-    id: text("id").primaryKey().default(createId()),
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => createId()),
     name: text("name"),
     email: text("email"),
-    emailVerified: DateTime("emailVerified", { precision: 3 }),
+    emailVerified: timestamp("emailVerified"),
     verifyPasscode: text("verifyPasscode"),
-    passcodeCreatedAt: DateTime("passcodeCreatedAt", { precision: 3 }),
+    passcodeCreatedAt: timestamp("passcodeCreatedAt"),
     changePasswordToken: text("changePasswordToken"),
     image: text("image"),
     password: text("password"),
     role: userRole("role").default("USER").notNull(),
     isTwoFactorEnabled: boolean("isTwoFactorEnabled").default(false).notNull(),
     phone: text("phone"),
-    createdAt: DateTime("createdAt", { precision: 3 })
+    createdAt: timestamp("createdAt")
       .notNull()
       .default(sql`now()`),
-    updatedAt: DateTime("updatedAt", { precision: 3 })
+    updatedAt: timestamp("updatedAt")
       .notNull()
       .default(sql`now()`)
       .$onUpdateFn(() => sql`now()`),
@@ -239,7 +220,7 @@ export const userRelations = relations(user, ({ many }) => ({
 export const page = pgTable(
   "Page",
   {
-    id: text("id").primaryKey().default(createId()),
+    id: serial("id").primaryKey(),
     name: text("name").notNull(),
     slug: text("slug").notNull(),
     data: text("data").notNull(),
@@ -247,10 +228,10 @@ export const page = pgTable(
       onDelete: "set null",
       onUpdate: "cascade",
     }),
-    createdAt: DateTime("createdAt", { precision: 3 })
+    createdAt: timestamp("createdAt")
       .notNull()
       .default(sql`now()`),
-    updatedAt: DateTime("updatedAt", { precision: 3 })
+    updatedAt: timestamp("updatedAt")
       .notNull()
       .default(sql`now()`)
       .$onUpdateFn(() => sql`now()`),
@@ -267,11 +248,11 @@ export const pageRelations = relations(page, ({ one }) => ({
 }));
 
 export const account = pgTable(
-  "Account",
+  "account",
   {
     userId: text("userId")
       .notNull()
-      .references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" }),
+      .references(() => user.id, { onDelete: "cascade" }),
     type: text("type").$type<AdapterAccount["type"]>().notNull(),
     provider: text("provider").notNull(),
     providerAccountId: text("providerAccountId").notNull(),
@@ -283,14 +264,11 @@ export const account = pgTable(
     idToken: text("id_token"),
     sessionState: text("session_state"),
   },
-  (table) => {
-    return {
-      userIdIdx: index("Account_userId_idx").on(table.userId),
-      providerProviderAccountIdKey: uniqueIndex(
-        "Account_provider_providerAccountId_key"
-      ).on(table.provider, table.providerAccountId),
-    };
-  }
+  (table) => ({
+    compoundKey: primaryKey({
+      columns: [table.providerAccountId, table.provider],
+    }),
+  })
 );
 
 export const accountRelations = relations(account, ({ one }) => ({
@@ -298,12 +276,12 @@ export const accountRelations = relations(account, ({ one }) => ({
 }));
 
 export const menu = pgTable("Menu", {
-  id: text("id").primaryKey().default(createId()),
+  id: serial("id").primaryKey(),
   title: text("title").notNull(),
-  createdAt: DateTime("createdAt", { precision: 3 })
+  createdAt: timestamp("createdAt")
     .notNull()
     .default(sql`now()`),
-  updatedAt: DateTime("updatedAt", { precision: 3 })
+  updatedAt: timestamp("updatedAt")
     .notNull()
     .default(sql`now()`)
     .$onUpdateFn(() => sql`now()`),
@@ -313,45 +291,13 @@ export const menu = pgTable("Menu", {
   }),
 });
 
-export const usedFooterImages = pgTable(
-  "_usedFooterImages",
-  {
-    a: text("A")
-      .notNull()
-      .references(() => file.id, { onDelete: "cascade", onUpdate: "cascade" }),
-    b: text("B")
-      .notNull()
-      .references(() => footerComponent.id, {
-        onDelete: "cascade",
-        onUpdate: "cascade",
-      }),
-  },
-  (table) => {
-    return {
-      abUnique: uniqueIndex("_usedFooterImages_AB_unique").on(table.a, table.b),
-      bIdx: index().on(table.b),
-    };
-  }
-);
-
-export const usedFooterImagesRelations = relations(
-  usedFooterImages,
-  ({ one }) => ({
-    file: one(file, { fields: [usedFooterImages.a], references: [file.id] }),
-    component: one(footerComponent, {
-      fields: [usedFooterImages.b],
-      references: [footerComponent.id],
-    }),
-  })
-);
-
 export const pageFiles = pgTable(
   "_PageFiles",
   {
     a: text("A")
       .notNull()
       .references(() => file.id, { onDelete: "cascade", onUpdate: "cascade" }),
-    b: text("B")
+    b: integer("B")
       .notNull()
       .references(() => page.id, { onDelete: "cascade", onUpdate: "cascade" }),
   },

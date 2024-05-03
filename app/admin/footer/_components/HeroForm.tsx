@@ -21,7 +21,7 @@ type HeroFormProps = {
     url: string;
     name: string;
   }[];
-  id?: string;
+  id?: number;
   defaultValues?: z.infer<typeof heroComponentSchema>;
 };
 

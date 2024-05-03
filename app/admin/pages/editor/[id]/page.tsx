@@ -25,7 +25,7 @@ export default async function EditorPage({ params: { id } }: Props) {
   if (session?.user.role !== "ADMIN") return notFound();
 
   const page = await db.query.page.findFirst({
-    where: (page, { eq }) => eq(page.id, id),
+    where: (page, { eq }) => eq(page.id, Number(id)),
   });
 
   if (!page) return notFound();

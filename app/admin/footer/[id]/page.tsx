@@ -32,7 +32,7 @@ export default async function FooterComponentEditPage({
   });
 
   const component = await db.query.footerComponent.findFirst({
-    where: (footerComponent, { eq }) => eq(footerComponent.id, id),
+    where: (footerComponent, { eq }) => eq(footerComponent.id, Number(id)),
   });
 
   const componentData = component!.data;

@@ -15,7 +15,7 @@ import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 
 type LinkBoxFormProps = {
-  id?: string;
+  id?: number;
   defaultValues?: z.infer<typeof linkBoxSchema>;
 };
 

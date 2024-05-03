@@ -14,7 +14,7 @@ import { useTransition } from "react";
 import { useFieldArray } from "react-hook-form";
 
 type GalleryFormProps = {
-  id?: string;
+  id?: number;
   images: {
     id: string;
     url: string;

@@ -1,45 +1,52 @@
 "use server";
 
-import { footerComponent, usedFooterImages } from "@/drizzle/schema";
+import { footerComponent } from "@/drizzle/schema";
 import db from "@/lib/drizzle";
 import { adminAction } from "@/lib/safe-action";
 import { heroComponentSchema } from "@/validators/heroComponentSchema";
-import { and, eq, not } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 export const upsertHeroBoxComponent = adminAction(
-  heroComponentSchema.and(z.object({ id: z.optional(z.string().nullable()) })),
+  heroComponentSchema.and(
+    z.object({ id: z.optional(z.number().nonnegative().nullable()) })
+  ),
   async (data) => {
     const { id, ...props } = data;
 
-    const footerComp = await db
-      .insert(footerComponent)
-      .values({
-        component: "HERO_BOX",
-        data: props,
-      })
-      .onConflictDoUpdate({
-        target: footerComponent.id,
-        set: {
+    let footerComp: (typeof footerComponent.$inferSelect)[];
+
+    const checkImages = await db.query.file.findFirst({
+      where: (file, { eq }) => eq(file.id, props.image),
+    });
+
+    if (!checkImages) throw new Error("Image don't exists");
+
+    if (id) {
+      footerComp = await db
+        .update(footerComponent)
+        .set({
           data: props,
-        },
-      })
-      .returning();
-
-    await db
-      .insert(usedFooterImages)
-      .values({ a: props.image, b: footerComp.at(0)!.id })
-      .onConflictDoNothing();
-
-    await db
-      .delete(usedFooterImages)
-      .where(
-        and(
-          not(eq(usedFooterImages.a, props.image)),
-          eq(usedFooterImages.b, footerComp.at(0)!.id)
+          imageIds: [props.image],
+        })
+        .where(
+          and(
+            eq(footerComponent.id, id),
+            eq(footerComponent.component, "HERO_BOX")
+          )
         )
-      );
+        .returning();
+    } else {
+      footerComp = await db
+        .insert(footerComponent)
+        .values({
+          component: "HERO_BOX",
+          data: props,
+          imageIds: [props.image],
+        })
+        .returning();
+    }
 
     revalidatePath("/admin/footer");
 

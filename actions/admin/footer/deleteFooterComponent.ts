@@ -7,10 +7,13 @@ import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
-export const deleteFooterComponent = adminAction(z.string(), async (id) => {
-  await db.delete(footerComponent).where(eq(footerComponent.id, id));
+export const deleteFooterComponent = adminAction(
+  z.number().int().nonnegative(),
+  async (id) => {
+    await db.delete(footerComponent).where(eq(footerComponent.id, id));
 
-  revalidatePath("/admin/footer");
+    revalidatePath("/admin/footer");
 
-  return { success: true };
-});
+    return { success: true };
+  }
+);

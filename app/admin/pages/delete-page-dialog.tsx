@@ -16,7 +16,7 @@ import { useState } from "react";
 
 type Props = {
   children: React.ReactNode;
-  id: string;
+  id: number;
 };
 
 export const DeletePageDialog = ({ children, id }: Props) => {

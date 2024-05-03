@@ -28,7 +28,7 @@ export const remindPassword = action(
         .where(eq(user.email, email));
 
       if (!currentUser) {
-        console.log("User can't be updated");
+        console.error("User can't be updated");
         return { success: true };
       }
 

@@ -3,6 +3,7 @@
 import { footerComponent } from "@/drizzle/schema";
 import db from "@/lib/drizzle";
 import { adminAction } from "@/lib/safe-action";
+import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -17,21 +18,28 @@ const schema = z.object({
 });
 
 export const upsertLinkBoxComponent = adminAction(
-  schema.and(z.object({ id: z.optional(z.string().nullable()) })),
+  schema.and(z.object({ id: z.optional(z.number().nonnegative().nullable()) })),
   async (data) => {
     const { id, ...props } = data;
 
-    await db
-      .insert(footerComponent)
-      .values({
+    if (id) {
+      await db
+        .update(footerComponent)
+        .set({
+          data: props,
+          imageIds: [],
+        })
+        .where(
+          and(
+            eq(footerComponent.id, id),
+            eq(footerComponent.component, "LINK_BOX")
+          )
+        );
+    } else
+      await db.insert(footerComponent).values({
         component: "LINK_BOX",
         data: props,
-      })
-      .onConflictDoUpdate({
-        target: footerComponent.id,
-        set: {
-          data: props,
-        },
+        imageIds: [],
       });
 
     revalidatePath("/admin/footer");

@@ -27,14 +27,14 @@ export const {
 } = NextAuth({
   pages: {
     signIn: "/login",
-    error: "/error",
+    error: "/login",
   },
   events: {
     async linkAccount({ user: userLink }) {
       await db
         .update(user)
         .set({ emailVerified: new Date() })
-        .where(eq(user.id, userLink.id as string));
+        .where(eq(user.id, userLink.id!));
     },
   },
   callbacks: {

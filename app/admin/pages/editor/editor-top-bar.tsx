@@ -11,7 +11,7 @@ import { useEditor } from "@craftjs/core";
 import { Loader2Icon, Redo2Icon, Undo2Icon } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export const EditorTopBar = () => {
   const { toast } = useToast();
@@ -92,7 +92,7 @@ export const EditorTopBar = () => {
         disabled={isLoading}
         onClick={() => {
           action.execute({
-            id,
+            id: Number(id),
             content: query.serialize(),
           });
         }}

@@ -18,7 +18,7 @@ export const uploadImages = actionWithAuth(
     data,
     {
       session: {
-        user: { id },
+        user: { id: userId },
       },
     }
   ) => {
@@ -50,14 +50,14 @@ export const uploadImages = actionWithAuth(
             blurDataUrl,
             url: fileUpload.secure_url,
             desc: "",
-            userId: id!,
+            userId: userId!,
           })
           .returning();
 
         const uploadedFile = data[0]!;
 
         const author = await db.query.user.findFirst({
-          where: (user, { eq }) => eq(user.id, file.userId),
+          where: (user, { eq }) => eq(user.id, userId!),
         });
 
         return { ...uploadedFile, author: { name: author?.name ?? "" } };

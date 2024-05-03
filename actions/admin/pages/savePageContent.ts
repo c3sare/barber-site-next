@@ -19,7 +19,7 @@ function isValidJson(str: string) {
 
 export const savePageContent = adminAction(
   z.object({
-    id: z.string(),
+    id: z.number().int().nonnegative(),
     content: z.string().refine(isValidJson, { message: "Content isn't json" }),
   }),
   async ({ id, content }) => {

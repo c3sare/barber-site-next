@@ -1,8 +1,8 @@
-import { UserRole } from "@prisma/client";
 import NextAuth, { type DefaultSession } from "next-auth";
+import { user } from "./drizzle/schema";
 
 export type ExtendedUser = DefaultSession["user"] & {
-  role: UserRole;
+  role: (typeof user.$inferSelect)["role"];
   isTwoFactorEnabled: boolean;
   isOAuth: boolean;
 };

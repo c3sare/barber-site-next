@@ -1,5 +1,5 @@
-import { auth } from "@/auth";
-import { db } from "@/lib/db";
+import { auth } from "@/auth.config";
+import db from "@/lib/drizzle";
 import { Loader } from "lucide-react";
 import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
@@ -24,10 +24,8 @@ export default async function EditorPage({ params: { id } }: Props) {
 
   if (session?.user.role !== "ADMIN") return notFound();
 
-  const page = await db.page.findUnique({
-    where: {
-      id,
-    },
+  const page = await db.query.page.findFirst({
+    where: (page, { eq }) => eq(page.id, id),
   });
 
   if (!page) return notFound();

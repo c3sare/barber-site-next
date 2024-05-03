@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { auth } from "@/auth.config";
 import { notFound } from "next/navigation";
 import { TabsLink, TabsList } from "@/components/ui/tabs-link";
 

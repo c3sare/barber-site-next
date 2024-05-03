@@ -1,9 +1,9 @@
-import { db } from "@/lib/db";
+import db from "@/lib/drizzle";
 import { FooterFormSwitcher } from "../_components/FooterFormSwitcher";
 
 export default async function NewComponentPage() {
-  const images = await db.file.findMany({
-    select: {
+  const images = await db.query.file.findMany({
+    columns: {
       id: true,
       name: true,
       url: true,

@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { auth } from "@/auth.config";
 import { SessionProvider as NextAuthSessionProvider } from "next-auth/react";
 
 export const SessionProvider: React.FC<React.PropsWithChildren> = async ({

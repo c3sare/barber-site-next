@@ -1,18 +1,20 @@
 "use server";
 
-import { db } from "@/lib/db";
+import db from "@/lib/drizzle";
 import { action } from "@/lib/safe-action";
 import { passcodeVerifySchema } from "@/validators/passcodeVerifySchema";
+import { eq, isNull } from "drizzle-orm";
+import { user as userSchema } from "@/drizzle/schema";
 
 export const verifyEmail = action(
   passcodeVerifySchema,
   async ({ email, passcode }) => {
-    const user = await db.user.findUniqueOrThrow({
-      where: {
-        email,
-        emailVerified: null,
-      },
+    const user = await db.query.user.findFirst({
+      where: (users, { eq, and }) =>
+        and(eq(users.email, email), isNull(users.emailVerified)),
     });
+
+    if (!user) return { success: true };
 
     if (user.verifyPasscode !== passcode)
       return {
@@ -20,16 +22,14 @@ export const verifyEmail = action(
         message: "Invalid passcode",
       };
 
-    await db.user.update({
-      where: {
-        email,
-      },
-      data: {
+    await db
+      .update(userSchema)
+      .set({
         emailVerified: new Date(),
         verifyPasscode: null,
         passcodeCreatedAt: null,
-      },
-    });
+      })
+      .where(eq(userSchema.email, email));
 
     return {
       success: true,

@@ -1,16 +1,14 @@
 "use server";
 
-import { db } from "@/lib/db";
+import db from "@/lib/drizzle";
 import { action } from "@/lib/safe-action";
 import { z } from "zod";
 
 export const getLeftTimeToResendPasscode = action(
   z.string().email(),
   async (email) => {
-    const user = await db.user.findUnique({
-      where: {
-        email,
-      },
+    const user = await db.query.user.findFirst({
+      where: (user, { eq }) => eq(user.email, email),
     });
 
     if (!user || !user.passcodeCreatedAt)

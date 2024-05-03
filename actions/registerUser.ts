@@ -1,7 +1,8 @@
 "use server";
 
+import { user } from "@/drizzle/schema";
 import AfterRegisterEmail from "@/emails/after-register";
-import { db } from "@/lib/db";
+import db from "@/lib/drizzle";
 import { mail } from "@/lib/mail";
 import { action } from "@/lib/safe-action";
 import { verifyCaptcha } from "@/lib/verifyCaptcha";
@@ -22,10 +23,8 @@ export const registerUser = action(
         message: "Captcha value isn't valid",
       };
 
-    const currentUser = await db.user.findUnique({
-      where: {
-        email,
-      },
+    const currentUser = await db.query.user.findFirst({
+      where: (user, { eq }) => eq(user.email, email),
     });
 
     if (currentUser) {
@@ -40,8 +39,8 @@ export const registerUser = action(
 
     const passcode = generatePasscode();
 
-    const user = await db.user.create({
-      data: {
+    const createdUser = await db.insert(user).values([
+      {
         email,
         name,
         phone,
@@ -49,9 +48,9 @@ export const registerUser = action(
         verifyPasscode: passcode,
         passcodeCreatedAt: new Date(),
       },
-    });
+    ]);
 
-    if (!user) throw new Error("Couldn't create user.");
+    if (!createdUser) throw new Error("Couldn't create user.");
 
     const mailer = await mail();
 

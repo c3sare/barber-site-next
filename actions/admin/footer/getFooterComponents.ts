@@ -1,12 +1,19 @@
-import { db } from "@/lib/db";
+import db from "@/lib/drizzle";
 import { cache } from "react";
 
 export const getFooterComponents = cache(async () => {
-  const footerComponents = await db.footerComponent.findMany({
-    include: {
-      images: true,
+  const footerComponents = await db.query.footerComponent.findMany({
+    with: {
+      images: {
+        with: {
+          file: true,
+        },
+      },
     },
   });
 
-  return footerComponents;
+  return footerComponents.map(({ images, ...item }) => ({
+    ...item,
+    images: images.map(({ file }) => file),
+  }));
 });

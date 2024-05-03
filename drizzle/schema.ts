@@ -4,13 +4,32 @@ import {
   foreignKey,
   pgEnum,
   text,
-  timestamp,
   integer,
   jsonb,
   boolean,
   index,
 } from "drizzle-orm/pg-core";
 import { relations, sql } from "drizzle-orm";
+import { createId } from "@paralleldrive/cuid2";
+import { customType } from "drizzle-orm/pg-core";
+import type { AdapterAccount } from "next-auth/adapters";
+
+const DateTime = customType<{
+  data: Date;
+  driverData: string;
+  config?: { withTimezone?: boolean; precision?: number };
+}>({
+  dataType(config) {
+    const precision =
+      typeof config?.precision !== "undefined" ? `(${config.precision})` : "";
+    return `timestamp${precision}${
+      config?.withTimezone ? " with time zone" : ""
+    }`;
+  },
+  fromDriver(value: string): Date {
+    return new Date(value);
+  },
+});
 
 export const userRole = pgEnum("UserRole", ["USER", "ADMIN"]);
 export const fileType = pgEnum("FileType", ["VIDEO", "AUDIO", "IMAGE"]);
@@ -23,7 +42,7 @@ export const footerComponentEnum = pgEnum("FooterComponentEnum", [
 export const twoFactorConfirmation = pgTable(
   "TwoFactorConfirmation",
   {
-    id: text("id").primaryKey().notNull(),
+    id: text("id").primaryKey().default(createId()),
     userId: text("userId")
       .notNull()
       .references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" }),
@@ -39,7 +58,7 @@ export const twoFactorConfirmation = pgTable(
 
 export const twoFactorConfirmationRelations = relations(
   twoFactorConfirmation,
-  ({ many, one }) => ({
+  ({ one }) => ({
     user: one(user, {
       fields: [twoFactorConfirmation.userId],
       references: [user.id],
@@ -50,10 +69,10 @@ export const twoFactorConfirmationRelations = relations(
 export const verificationToken = pgTable(
   "VerificationToken",
   {
-    id: text("id").primaryKey().notNull(),
+    id: text("id").primaryKey().default(createId()),
     email: text("email").notNull(),
     token: text("token").notNull(),
-    expires: timestamp("expires", { precision: 3, mode: "string" }).notNull(),
+    expires: DateTime("expires", { precision: 3 }).notNull(),
   },
   (table) => {
     return {
@@ -72,9 +91,9 @@ export const file = pgTable("File", {
   type: fileType("type").notNull(),
   width: integer("width").notNull(),
   height: integer("height").notNull(),
-  uploadedAt: timestamp("uploadedAt", { precision: 3, mode: "string" })
-    .defaultNow()
-    .notNull(),
+  uploadedAt: DateTime("uploadedAt", { precision: 3 })
+    .notNull()
+    .default(sql`now()`),
   blurDataUrl: text("blurDataUrl").notNull(),
   url: text("url").notNull(),
   desc: text("desc").notNull(),
@@ -83,20 +102,19 @@ export const file = pgTable("File", {
     .references(() => user.id, { onDelete: "restrict", onUpdate: "cascade" }),
 });
 
-export const fileRelations = relations(file, ({ many, one }) => ({
-  file: one(user, {
-    fields: [file.userId],
-    references: [user.id],
-  }),
+export const fileRelations = relations(file, ({ one }) => ({
+  author: one(user, { fields: [file.userId], references: [user.id] }),
 }));
 
 export const passwordResetToken = pgTable(
   "PasswordResetToken",
   {
-    id: text("id").primaryKey().notNull(),
+    id: text("id").primaryKey().default(createId()),
     email: text("email").notNull(),
     token: text("token").notNull(),
-    expires: timestamp("expires", { precision: 3, mode: "string" }).notNull(),
+    expires: DateTime("expires", { precision: 3 })
+      .notNull()
+      .default(sql`now()`),
   },
   (table) => {
     return {
@@ -112,10 +130,10 @@ export const passwordResetToken = pgTable(
 export const twoFactorToken = pgTable(
   "TwoFactorToken",
   {
-    id: text("id").primaryKey().notNull(),
+    id: text("id").primaryKey().default(createId()),
     email: text("email").notNull(),
     token: text("token").notNull(),
-    expires: timestamp("expires", { precision: 3, mode: "string" }).notNull(),
+    expires: DateTime("expires", { precision: 3 }).notNull(),
   },
   (table) => {
     return {
@@ -131,7 +149,7 @@ export const twoFactorToken = pgTable(
 export const menuItem = pgTable(
   "MenuItem",
   {
-    id: text("id").primaryKey().notNull(),
+    id: text("id").primaryKey().default(createId()),
     pageId: text("pageId")
       .notNull()
       .references(() => page.id, { onDelete: "cascade", onUpdate: "cascade" }),
@@ -140,12 +158,12 @@ export const menuItem = pgTable(
       onUpdate: "cascade",
     }),
     parentId: text("parentId"),
-    createdAt: timestamp("createdAt", { precision: 3, mode: "string" })
-      .defaultNow()
-      .notNull(),
-    updatedAt: timestamp("updatedAt", { precision: 3, mode: "string" })
-      .defaultNow()
-      .notNull(),
+    createdAt: DateTime("createdAt", { precision: 3 })
+      .notNull()
+      .default(sql`now()`),
+    updatedAt: DateTime("updatedAt", { precision: 3 })
+      .notNull()
+      .default(sql`now()`),
     creatorId: text("creatorId").references(() => user.id, {
       onDelete: "set null",
       onUpdate: "cascade",
@@ -165,52 +183,47 @@ export const menuItem = pgTable(
   }
 );
 
-export const menuItemRelations = relations(menuItem, ({ many, one }) => ({
-  items: one(menu, {
-    fields: [menuItem.creatorId],
-    references: [menu.id],
-  }),
-  parent: one(menuItem, {
-    fields: [menuItem.parentId],
-    references: [menuItem.id],
-  }),
-  page: one(page, {
-    fields: [menuItem.pageId],
-    references: [page.id],
-  }),
+export const menuItemRelations = relations(menuItem, ({ one }) => ({
+  creator: one(user, { fields: [menuItem.creatorId], references: [user.id] }),
+  menu: one(menu, { fields: [menuItem.menuId], references: [menu.id] }),
+  page: one(page, { fields: [menuItem.pageId], references: [page.id] }),
 }));
 
 export const footerComponent = pgTable("FooterComponent", {
-  id: text("id").primaryKey().notNull(),
+  id: text("id").primaryKey().default(createId()),
   component: footerComponentEnum("component").notNull(),
   data: jsonb("data").notNull(),
 });
 
+export const footerComponentRelations = relations(
+  footerComponent,
+  ({ many }) => ({
+    images: many(usedFooterImages),
+  })
+);
+
 export const user = pgTable(
   "User",
   {
-    id: text("id").primaryKey().notNull(),
+    id: text("id").primaryKey().default(createId()),
     name: text("name"),
     email: text("email"),
-    emailVerified: timestamp("emailVerified", { precision: 3, mode: "string" }),
+    emailVerified: DateTime("emailVerified", { precision: 3 }),
     verifyPasscode: text("verifyPasscode"),
-    passcodeCreatedAt: timestamp("passcodeCreatedAt", {
-      precision: 3,
-      mode: "string",
-    }),
+    passcodeCreatedAt: DateTime("passcodeCreatedAt", { precision: 3 }),
     changePasswordToken: text("changePasswordToken"),
     image: text("image"),
     password: text("password"),
     role: userRole("role").default("USER").notNull(),
     isTwoFactorEnabled: boolean("isTwoFactorEnabled").default(false).notNull(),
     phone: text("phone"),
-    createdAt: timestamp("createdAt", { precision: 3, mode: "string" })
-      .defaultNow()
-      .notNull(),
-    updatedAt: timestamp("updatedAt", {
-      precision: 3,
-      mode: "string",
-    }).notNull(),
+    createdAt: DateTime("createdAt", { precision: 3 })
+      .notNull()
+      .default(sql`now()`),
+    updatedAt: DateTime("updatedAt", { precision: 3 })
+      .notNull()
+      .default(sql`now()`)
+      .$onUpdateFn(() => sql`now()`),
   },
   (table) => {
     return {
@@ -219,10 +232,14 @@ export const user = pgTable(
   }
 );
 
+export const userRelations = relations(user, ({ many }) => ({
+  accounts: many(account),
+}));
+
 export const page = pgTable(
   "Page",
   {
-    id: text("id").primaryKey().notNull(),
+    id: text("id").primaryKey().default(createId()),
     name: text("name").notNull(),
     slug: text("slug").notNull(),
     data: text("data").notNull(),
@@ -230,12 +247,13 @@ export const page = pgTable(
       onDelete: "set null",
       onUpdate: "cascade",
     }),
-    createdAt: timestamp("createdAt", { precision: 3, mode: "string" })
-      .defaultNow()
-      .notNull(),
-    updatedAt: timestamp("updatedAt", { precision: 3, mode: "string" })
-      .defaultNow()
-      .notNull(),
+    createdAt: DateTime("createdAt", { precision: 3 })
+      .notNull()
+      .default(sql`now()`),
+    updatedAt: DateTime("updatedAt", { precision: 3 })
+      .notNull()
+      .default(sql`now()`)
+      .$onUpdateFn(() => sql`now()`),
   },
   (table) => {
     return {
@@ -244,21 +262,17 @@ export const page = pgTable(
   }
 );
 
-export const pageRelations = relations(page, ({ many, one }) => ({
-  page: one(user, {
-    fields: [page.creatorId],
-    references: [user.id],
-  }),
+export const pageRelations = relations(page, ({ one }) => ({
+  creator: one(user, { fields: [page.creatorId], references: [user.id] }),
 }));
 
 export const account = pgTable(
   "Account",
   {
-    id: text("id").primaryKey().notNull(),
     userId: text("userId")
       .notNull()
       .references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" }),
-    type: text("type").notNull(),
+    type: text("type").$type<AdapterAccount["type"]>().notNull(),
     provider: text("provider").notNull(),
     providerAccountId: text("providerAccountId").notNull(),
     refreshToken: text("refresh_token"),
@@ -279,34 +293,25 @@ export const account = pgTable(
   }
 );
 
-export const accountRelations = relations(account, ({ many, one }) => ({
-  account: one(user, {
-    fields: [account.userId],
-    references: [user.id],
-  }),
+export const accountRelations = relations(account, ({ one }) => ({
+  user: one(user, { fields: [account.userId], references: [user.id] }),
 }));
 
 export const menu = pgTable("Menu", {
-  id: text("id").primaryKey().notNull(),
+  id: text("id").primaryKey().default(createId()),
   title: text("title").notNull(),
-  createdAt: timestamp("createdAt", { precision: 3, mode: "string" })
-    .defaultNow()
-    .notNull(),
-  updatedAt: timestamp("updatedAt", { precision: 3, mode: "string" })
-    .defaultNow()
-    .notNull(),
+  createdAt: DateTime("createdAt", { precision: 3 })
+    .notNull()
+    .default(sql`now()`),
+  updatedAt: DateTime("updatedAt", { precision: 3 })
+    .notNull()
+    .default(sql`now()`)
+    .$onUpdateFn(() => sql`now()`),
   creatorId: text("creatorId").references(() => user.id, {
     onDelete: "set null",
     onUpdate: "cascade",
   }),
 });
-
-export const menuRelations = relations(menu, ({ many, one }) => ({
-  menu: one(user, {
-    fields: [menu.creatorId],
-    references: [user.id],
-  }),
-}));
 
 export const usedFooterImages = pgTable(
   "_usedFooterImages",
@@ -331,14 +336,11 @@ export const usedFooterImages = pgTable(
 
 export const usedFooterImagesRelations = relations(
   usedFooterImages,
-  ({ many, one }) => ({
-    footerComponent: one(footerComponent, {
+  ({ one }) => ({
+    file: one(file, { fields: [usedFooterImages.a], references: [file.id] }),
+    component: one(footerComponent, {
       fields: [usedFooterImages.b],
       references: [footerComponent.id],
-    }),
-    files: one(file, {
-      fields: [usedFooterImages.a],
-      references: [file.id],
     }),
   })
 );
@@ -361,13 +363,7 @@ export const pageFiles = pgTable(
   }
 );
 
-export const pageFilesRelations = relations(pageFiles, ({ many, one }) => ({
-  file: one(file, {
-    fields: [pageFiles.a],
-    references: [file.id],
-  }),
-  page: one(page, {
-    fields: [pageFiles.b],
-    references: [page.id],
-  }),
+export const pageFilesRelations = relations(pageFiles, ({ one }) => ({
+  file: one(file, { fields: [pageFiles.a], references: [file.id] }),
+  page: one(page, { fields: [pageFiles.b], references: [page.id] }),
 }));

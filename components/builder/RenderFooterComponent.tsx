@@ -15,6 +15,8 @@ export const RenderFooterComponent = ({
   const componentData = data as any;
 
   switch (component) {
+    default:
+      return null;
     case "HERO_BOX":
       return <HeroBox data={componentData} images={images} />;
     case "LINK_BOX":

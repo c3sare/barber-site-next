@@ -1,6 +1,7 @@
 "use server";
 
-import { db } from "@/lib/db";
+import { footerComponent } from "@/drizzle/schema";
+import db from "@/lib/drizzle";
 import { adminAction } from "@/lib/safe-action";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
@@ -20,19 +21,18 @@ export const upsertLinkBoxComponent = adminAction(
   async (data) => {
     const { id, ...props } = data;
 
-    await db.footerComponent.upsert({
-      where: {
-        id: id ?? "??????????????????????",
-        component: "LINK_BOX",
-      },
-      create: {
+    await db
+      .insert(footerComponent)
+      .values({
         component: "LINK_BOX",
         data: props,
-      },
-      update: {
-        data: props,
-      },
-    });
+      })
+      .onConflictDoUpdate({
+        target: footerComponent.id,
+        set: {
+          data: props,
+        },
+      });
 
     revalidatePath("/admin/footer");
 

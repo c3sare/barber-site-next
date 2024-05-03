@@ -1,12 +1,7 @@
-import { db } from "@/lib/db";
+import db from "@/lib/drizzle";
 
 export const getFooterListComponents = async () => {
-  const footer = await db.footerComponent.findMany({
-    select: {
-      id: true,
-      component: true,
-    },
-  });
+  const footer = await db.query.footerComponent.findMany({});
 
-  return footer;
+  return footer.map(({ id, component }) => ({ id, component }));
 };

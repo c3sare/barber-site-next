@@ -1,4 +1,4 @@
-import { File } from "@prisma/client";
+import { file } from "@/drizzle/schema";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,7 +7,7 @@ import { HeroDataType } from "./types/HeroDataType";
 
 type HeroBoxProps = {
   data: HeroDataType;
-  images: File[];
+  images: (typeof file.$inferSelect)[];
 };
 
 export const HeroBox: React.FC<HeroBoxProps> = ({

@@ -1,8 +1,10 @@
 "use server";
 
-import { db } from "@/lib/db";
+import { file, footerComponent, usedFooterImages } from "@/drizzle/schema";
+import db from "@/lib/drizzle";
 import { adminAction } from "@/lib/safe-action";
 import { galleryComponentSchema } from "@/validators/galleryComponentSchema";
+import { and, eq, notInArray } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -14,12 +16,8 @@ export const upsertGalleryBoxComponent = adminAction(
     const imagesWithoutDuplicates = [
       ...(new Set(images.map((item) => item.imageId)) as unknown as string[]),
     ];
-    const checkImages = await db.file.findMany({
-      where: {
-        id: {
-          in: imagesWithoutDuplicates,
-        },
-      },
+    const checkImages = await db.query.file.findMany({
+      where: (file, { inArray }) => inArray(file.id, imagesWithoutDuplicates),
     });
 
     if (imagesWithoutDuplicates.length !== checkImages.length)
@@ -29,25 +27,34 @@ export const upsertGalleryBoxComponent = adminAction(
       id: item.id,
     }));
 
-    await db.footerComponent.upsert({
-      where: {
-        id: id ?? "??????????????????????",
-        component: "PHOTO_GALLERY",
-      },
-      create: {
+    const footerComp = await db
+      .insert(footerComponent)
+      .values({
         data: { images, title },
         component: "PHOTO_GALLERY",
-        images: {
-          connect: imageIds,
+      })
+      .onConflictDoUpdate({
+        target: footerComponent.id,
+        set: {
+          data: { images, title },
         },
-      },
-      update: {
-        data: { images, title },
-        images: {
-          connect: imageIds,
-        },
-      },
-    });
+      })
+      .returning();
+
+    await db
+      .insert(usedFooterImages)
+      .values(imageIds.map((item) => ({ a: item.id, b: footerComp.at(0)!.id })))
+      .onConflictDoNothing();
+
+    await db.delete(usedFooterImages).where(
+      and(
+        notInArray(
+          usedFooterImages.a,
+          imageIds.map((item) => item.id)
+        ),
+        eq(usedFooterImages.b, footerComp.at(0)!.id)
+      )
+    );
 
     revalidatePath("/admin/footer");
 

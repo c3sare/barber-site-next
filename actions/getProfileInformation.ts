@@ -1,13 +1,13 @@
-import { auth } from "@/auth";
-import { db } from "@/lib/db";
+import { auth } from "@/auth.config";
+import db from "@/lib/drizzle";
 
 export const getCurrentUserProfileInformations = async () => {
   const session = await auth();
 
-  const user = await db.user.findUnique({
-    where: {
-      id: session?.user.id,
-    },
+  if (!session?.user.id) throw new Error("User not logged in!");
+
+  const user = await db.query.user.findFirst({
+    where: (user, { eq }) => eq(user.id, session?.user.id!),
   });
 
   return {

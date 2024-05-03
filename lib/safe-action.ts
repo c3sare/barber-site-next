@@ -1,9 +1,9 @@
-import { auth } from "@/auth";
+import { auth } from "@/auth.config";
 import { DEFAULT_SERVER_ERROR, createSafeActionClient } from "next-safe-action";
 import { Ratelimit } from "@upstash/ratelimit";
 import { redis } from "./redis";
 import { headers } from "next/headers";
-import { db } from "./db";
+import db from "./drizzle";
 
 export class ServerActionErrorClient extends Error {
   constructor(message: string) {
@@ -61,10 +61,8 @@ export const adminAction = createSafeActionClient({
     if (!session?.user.id || session?.user.role !== "ADMIN")
       throw new ServerActionErrorClient("User isn't authorized!");
 
-    const user = await db.user.findUnique({
-      where: {
-        id: session.user.id,
-      },
+    const user = await db.query.user.findFirst({
+      where: (user, { eq }) => eq(user.id, session.user.id!),
     });
 
     if (!user || user.role !== "ADMIN")

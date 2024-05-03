@@ -4,12 +4,12 @@ import Image from "next/image";
 import { Item } from "@/components/lightbox";
 import { ZoomIcon } from "@/components/icons/ZoomIcon";
 import { Gallery } from "@/components/lightbox";
-import { File } from "@prisma/client";
 import { PhotoGalleryDataType } from "./types/PhotoGalleryDataType";
+import { file } from "@/drizzle/schema";
 
 type PhotoGalleryProps = {
   data: PhotoGalleryDataType;
-  images: File[];
+  images: (typeof file.$inferSelect)[];
 };
 
 export const PhotoGallery: React.FC<PhotoGalleryProps> = ({ data, images }) => {

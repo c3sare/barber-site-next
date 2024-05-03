@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import db from "@/lib/drizzle";
 import { GalleryForm } from "../_components/GalleryForm";
 import { LinkBoxForm } from "../_components/LinkBoxForm";
 import { HeroForm } from "../_components/HeroForm";
@@ -23,18 +23,16 @@ type HeroBoxValues = z.infer<typeof heroComponentSchema>;
 export default async function FooterComponentEditPage({
   params: { id },
 }: FooterComponentEditPageProps) {
-  const images = await db.file.findMany({
-    select: {
+  const images = await db.query.file.findMany({
+    columns: {
       id: true,
       name: true,
       url: true,
     },
   });
 
-  const component = await db.footerComponent.findUnique({
-    where: {
-      id,
-    },
+  const component = await db.query.footerComponent.findFirst({
+    where: (footerComponent, { eq }) => eq(footerComponent.id, id),
   });
 
   const componentData = component!.data;

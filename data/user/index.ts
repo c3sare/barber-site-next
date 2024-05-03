@@ -1,10 +1,12 @@
-import { db } from "@/lib/db";
+import db from "@/lib/drizzle";
 
 export const getUserByEmail = async (email: string) => {
   try {
-    const user = await db.user.findUnique({ where: { email } });
+    const user = await db.query.user.findFirst({
+      where: (user, { eq }) => eq(user.email, email),
+    });
 
-    return user;
+    return user ?? null;
   } catch {
     return null;
   }
@@ -12,9 +14,11 @@ export const getUserByEmail = async (email: string) => {
 
 export const getUserById = async (id: string) => {
   try {
-    const user = await db.user.findUnique({ where: { id } });
+    const user = await db.query.user.findFirst({
+      where: (user, { eq }) => eq(user.id, id),
+    });
 
-    return user;
+    return user ?? null;
   } catch {
     return null;
   }

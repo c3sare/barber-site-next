@@ -1,25 +1,25 @@
 "use server";
 
-import { db } from "@/lib/db";
+import { user } from "@/drizzle/schema";
+import db from "@/lib/drizzle";
 import { actionWithAuth } from "@/lib/safe-action";
 import { profileInformationsSchema } from "@/validators/profileInformationsSchema";
+import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 export const updateProfileInformation = actionWithAuth(
   profileInformationsSchema,
   async ({ email, name, phone }, { session }) => {
-    const user = await db.user.update({
-      where: {
-        id: session.user.id,
-      },
-      data: {
+    const updatedUser = await db
+      .update(user)
+      .set({
         email,
         name,
         phone,
-      },
-    });
+      })
+      .where(eq(user.id, session.user.id!));
 
-    if (!user)
+    if (!updatedUser)
       return {
         success: false,
       };

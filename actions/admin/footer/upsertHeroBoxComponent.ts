@@ -1,8 +1,10 @@
 "use server";
 
-import { db } from "@/lib/db";
+import { footerComponent, usedFooterImages } from "@/drizzle/schema";
+import db from "@/lib/drizzle";
 import { adminAction } from "@/lib/safe-action";
 import { heroComponentSchema } from "@/validators/heroComponentSchema";
+import { and, eq, not } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -11,29 +13,33 @@ export const upsertHeroBoxComponent = adminAction(
   async (data) => {
     const { id, ...props } = data;
 
-    await db.footerComponent.upsert({
-      where: {
-        id: id ?? "??????????????????????",
-        component: "HERO_BOX",
-      },
-      create: {
+    const footerComp = await db
+      .insert(footerComponent)
+      .values({
         component: "HERO_BOX",
         data: props,
-        images: {
-          connect: {
-            id: props.image,
-          },
+      })
+      .onConflictDoUpdate({
+        target: footerComponent.id,
+        set: {
+          data: props,
         },
-      },
-      update: {
-        data: props,
-        images: {
-          connect: {
-            id: props.image,
-          },
-        },
-      },
-    });
+      })
+      .returning();
+
+    await db
+      .insert(usedFooterImages)
+      .values({ a: props.image, b: footerComp.at(0)!.id })
+      .onConflictDoNothing();
+
+    await db
+      .delete(usedFooterImages)
+      .where(
+        and(
+          not(eq(usedFooterImages.a, props.image)),
+          eq(usedFooterImages.b, footerComp.at(0)!.id)
+        )
+      );
 
     revalidatePath("/admin/footer");
 

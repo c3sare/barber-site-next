@@ -1,21 +1,21 @@
 "use server";
 
-import { db } from "@/lib/db";
+import { user } from "@/drizzle/schema";
+import db from "@/lib/drizzle";
 import { actionWithAuth } from "@/lib/safe-action";
 import { changePasswordSchema } from "@/validators/changePasswordSchema";
 import bcrypt from "bcryptjs";
+import { eq } from "drizzle-orm";
 
 export const updateUserPassword = actionWithAuth(
   changePasswordSchema,
   async ({ newPassword, password }, { session }) => {
     try {
-      const currentUser = await db.user.findUniqueOrThrow({
-        where: {
-          id: session.user.id,
-        },
+      const currentUser = await db.query.user.findFirst({
+        where: (user, { eq }) => eq(user.id, session.user.id!),
       });
 
-      if (!currentUser.password)
+      if (!currentUser?.password)
         throw new Error("Used account is created by oauth provider");
 
       const isValidCurrentPassword = await bcrypt.compare(
@@ -31,16 +31,14 @@ export const updateUserPassword = actionWithAuth(
 
       const newPasswordHash = await bcrypt.hash(newPassword, 10);
 
-      const user = await db.user.update({
-        where: {
-          id: session.user.id,
-        },
-        data: {
+      const updatedUser = await db
+        .update(user)
+        .set({
           password: newPasswordHash,
-        },
-      });
+        })
+        .where(eq(user.id, session.user.id!));
 
-      if (!user)
+      if (!updatedUser)
         return {
           success: false,
         };

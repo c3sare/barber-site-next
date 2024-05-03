@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import db from "@/lib/drizzle";
 import { ChangePasswordForm } from "./_components/ChangePasswordForm";
 import { RemindPasswordForm } from "./_components/RemindPasswordForm";
 import { notFound } from "next/navigation";
@@ -14,11 +14,9 @@ export default async function RemindPasswordPage({
   searchParams: { id, token },
 }: RemindPasswordPageProps) {
   if (id && token) {
-    const user = await db.user.findUnique({
-      where: {
-        id,
-        changePasswordToken: token,
-      },
+    const user = await db.query.user.findFirst({
+      where: (user, { eq, and }) =>
+        and(eq(user.id, id), eq(user.changePasswordToken, token)),
     });
 
     if (!user) return notFound();

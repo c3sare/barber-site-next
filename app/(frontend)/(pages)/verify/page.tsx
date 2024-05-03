@@ -1,10 +1,13 @@
-import { auth } from "@/auth";
+import { auth } from "@/auth.config";
 import { Button } from "@/components/ui/button";
-import { db } from "@/lib/db";
+import db from "@/lib/drizzle";
 import { notFound } from "next/navigation";
 import z from "zod";
 import Link from "next/link";
 import { PasscodeForm } from "./_components/PasscodeForm";
+
+import { user as userSchema } from "@/drizzle/schema";
+import { and, eq, isNull } from "drizzle-orm";
 
 type VerifyPageProps = {
   searchParams: {
@@ -27,12 +30,10 @@ export default async function VerifyPage({
   if (passcode)
     if (passcode.length !== 6 || isNaN(Number(passcode))) return notFound();
 
-  const user = await db.user.findUnique({
-    where: {
-      email,
-      emailVerified: null,
-    },
-    include: {
+  const user = await db.query.user.findFirst({
+    where: (user, { eq, and, isNull }) =>
+      and(eq(user.email, email), isNull(user.emailVerified)),
+    with: {
       accounts: true,
     },
   });
@@ -41,17 +42,20 @@ export default async function VerifyPage({
 
   if (passcode) {
     if (user.verifyPasscode === passcode) {
-      const user = await db.user.update({
-        where: {
-          email,
-          verifyPasscode: passcode,
-          emailVerified: null,
-        },
-        data: {
+      const user = await db
+        .update(userSchema)
+        .set({
           emailVerified: new Date(),
           verifyPasscode: null,
-        },
-      });
+        })
+        .where(
+          and(
+            eq(userSchema.email, email),
+            eq(userSchema.verifyPasscode, passcode),
+            isNull(userSchema.emailVerified)
+          )
+        )
+        .returning();
 
       if (!user)
         return (

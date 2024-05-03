@@ -1,9 +1,11 @@
 "use server";
 
-import { db } from "@/lib/db";
+import db from "@/lib/drizzle";
 import { adminAction } from "@/lib/safe-action";
 import { z } from "zod";
 import lz from "lzutf8";
+import { page } from "@/drizzle/schema";
+import { eq } from "drizzle-orm";
 
 function isValidJson(str: string) {
   try {
@@ -25,14 +27,12 @@ export const savePageContent = adminAction(
 
     const data = lz.encodeBase64(lz.compress(content));
 
-    await db.page.update({
-      where: {
-        id,
-      },
-      data: {
+    await db
+      .update(page)
+      .set({
         data,
-      },
-    });
+      })
+      .where(eq(page.id, id));
 
     return {
       success: true,

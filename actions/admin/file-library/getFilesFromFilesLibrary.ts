@@ -1,13 +1,9 @@
-import { db } from "@/lib/db";
+import db from "@/lib/drizzle";
 
 export const getFilesFromFilesLibrary = async () => {
-  const data = await db.file.findMany({
-    include: {
-      author: {
-        select: {
-          name: true,
-        },
-      },
+  const data = await db.query.file.findMany({
+    with: {
+      author: true,
     },
   });
 

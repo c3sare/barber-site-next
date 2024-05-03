@@ -1,6 +1,7 @@
 "use server";
 
-import { db } from "@/lib/db";
+import { page } from "@/drizzle/schema";
+import db from "@/lib/drizzle";
 import { adminAction } from "@/lib/safe-action";
 import { createPageSchema } from "@/validators/createPageSchema";
 import { revalidatePath } from "next/cache";
@@ -8,16 +9,17 @@ import { revalidatePath } from "next/cache";
 export const createPage = adminAction(
   createPageSchema,
   async ({ name, slug }) => {
-    const page = await db.page.create({
-      data: {
+    const createdPage = await db
+      .insert(page)
+      .values({
         name,
         slug,
         data: "{}",
-      },
-    });
+      })
+      .returning();
 
     revalidatePath("/admin/pages");
 
-    return { success: true, page };
+    return { success: true, page: createdPage };
   }
 );

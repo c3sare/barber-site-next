@@ -1,7 +1,7 @@
 "use server";
 
-import { signIn } from "@/auth";
-import { db } from "@/lib/db";
+import { signIn } from "@/auth.config";
+import db from "@/lib/drizzle";
 import { action } from "@/lib/safe-action";
 import { verifyCaptcha } from "@/lib/verifyCaptcha";
 import { loginSchema } from "@/validators/loginSchema";
@@ -27,11 +27,9 @@ export const loginUser = action(
       };
     }
 
-    const user = await db.user.findUnique({
-      where: {
-        email,
-      },
-      include: {
+    const user = await db.query.user.findFirst({
+      where: (user, { eq }) => eq(user.email, email),
+      with: {
         accounts: true,
       },
     });

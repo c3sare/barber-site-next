@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { File } from "@prisma/client";
 import React from "react";
 import { LinkBoxDataType } from "./types/LinkBoxDataType";
+import { file } from "@/drizzle/schema";
 
 type LinkBoxProps = {
-  images: File[];
+  images: (typeof file.$inferSelect)[];
   data: LinkBoxDataType;
 };
 

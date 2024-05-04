@@ -192,7 +192,7 @@ export const user = pgTable(
       .$defaultFn(() => createId()),
     name: text("name"),
     email: text("email"),
-    emailVerified: timestamp("email_verified"),
+    emailVerified: timestamp("emailVerified"),
     verifyPasscode: text("verify_passcode"),
     passcodeCreatedAt: timestamp("passcode_created_at"),
     changePasswordToken: text("change_password_token"),
@@ -259,12 +259,12 @@ export const pageRelations = relations(page, ({ one }) => ({
 export const account = pgTable(
   "account",
   {
-    userId: text("user_id")
+    userId: text("userId")
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
     type: text("type").$type<AdapterAccount["type"]>().notNull(),
     provider: text("provider").notNull(),
-    providerAccountId: text("provider_account_id").notNull(),
+    providerAccountId: text("providerAccountId").notNull(),
     refreshToken: text("refresh_token"),
     accessToken: text("access_token"),
     expiresAt: integer("expires_at"),

@@ -178,8 +178,21 @@ export const footerComponent = pgTable("FooterComponent", {
   id: serial("id").primaryKey(),
   component: footerComponentEnum("component").notNull(),
   data: jsonb("data").notNull(),
-  imageIds: text("imageIds").array().notNull(),
+  imageIds: text("imageIds")
+    .references(() => file.id, {
+      onDelete: "cascade",
+    })
+    .array()
+    .default(sql`ARRAY[]::text[]`)
+    .notNull(),
 });
+
+export const footerComponentRelations = relations(
+  footerComponent,
+  ({ many }) => ({
+    images: many(file),
+  })
+);
 
 export const user = pgTable(
   "user",
@@ -235,6 +248,13 @@ export const page = pgTable(
       .notNull()
       .default(sql`now()`)
       .$onUpdateFn(() => sql`now()`),
+    imageIds: text("imageIds")
+      .references(() => file.id, {
+        onDelete: "cascade",
+      })
+      .array()
+      .default(sql`ARRAY[]::text[]`)
+      .notNull(),
   },
   (table) => {
     return {
@@ -243,8 +263,9 @@ export const page = pgTable(
   }
 );
 
-export const pageRelations = relations(page, ({ one }) => ({
+export const pageRelations = relations(page, ({ one, many }) => ({
   creator: one(user, { fields: [page.creatorId], references: [user.id] }),
+  images: many(file),
 }));
 
 export const account = pgTable(
@@ -290,26 +311,3 @@ export const menu = pgTable("Menu", {
     onUpdate: "cascade",
   }),
 });
-
-export const pageFiles = pgTable(
-  "_PageFiles",
-  {
-    a: text("A")
-      .notNull()
-      .references(() => file.id, { onDelete: "cascade", onUpdate: "cascade" }),
-    b: integer("B")
-      .notNull()
-      .references(() => page.id, { onDelete: "cascade", onUpdate: "cascade" }),
-  },
-  (table) => {
-    return {
-      abUnique: uniqueIndex("_PageFiles_AB_unique").on(table.a, table.b),
-      bIdx: index().on(table.b),
-    };
-  }
-);
-
-export const pageFilesRelations = relations(pageFiles, ({ one }) => ({
-  file: one(file, { fields: [pageFiles.a], references: [file.id] }),
-  page: one(page, { fields: [pageFiles.b], references: [page.id] }),
-}));

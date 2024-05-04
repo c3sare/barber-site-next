@@ -2,8 +2,11 @@ import GithubIcon from "@/components/icons/GithubIcon";
 import GoogleIcon from "@/components/icons/GoogleIcon";
 import { GoogleLogin } from "./actions/GoogleLogin";
 import { GithubLogin } from "./actions/GithubLogin";
+import { TransitionStartFunction } from "react";
 
-const AlternativeLoginOptions = ({ disabled }: { disabled?: boolean }) => {
+type Props = { disabled?: boolean; startTransition: TransitionStartFunction };
+
+const AlternativeLoginOptions = ({ disabled, startTransition }: Props) => {
   return (
     <>
       <div className="w-full my-4 mx-4 relative text-center before:absolute before:top-1/2 before:-translate-y-1/2 before:left-0 before:w-[calc(100%_-_16px)] before:h-[1px] before:bg-black max-w-[300px]">
@@ -14,7 +17,7 @@ const AlternativeLoginOptions = ({ disabled }: { disabled?: boolean }) => {
           disabled={disabled}
           type="button"
           className="w-[140px] h-[40px] flex items-center gap-2 rounded-sm text-white bg-[#d62d20] font-bold py-2 px-8 hover:opacity-90 transition-opacity disabled:opacity-70"
-          onClick={async () => await GoogleLogin()}
+          onClick={() => startTransition(async () => await GoogleLogin())}
         >
           <GoogleIcon width={16} height={16} />
           <span>Google</span>
@@ -22,7 +25,7 @@ const AlternativeLoginOptions = ({ disabled }: { disabled?: boolean }) => {
         <button
           disabled={disabled}
           type="button"
-          onClick={async () => await GithubLogin()}
+          onClick={() => startTransition(async () => await GithubLogin())}
           className="w-[140px] h-[40px] flex items-center gap-2 rounded-sm text-white bg-[#0d1117] font-bold py-2 px-8 hover:opacity-90 transition-opacity disabled:opacity-70"
         >
           <GithubIcon width={16} height={16} />

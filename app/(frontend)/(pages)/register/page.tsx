@@ -9,7 +9,6 @@ import { registerSchema } from "@/validators/registerSchema";
 import FormCheckbox from "@/components/form/FormCheckbox";
 import { useState, useTransition } from "react";
 import AlternativeLoginOptions from "../(index)/(auth)/_components/AlternativeLoginOptions";
-import { useAction } from "@/hooks/useAction";
 import { registerUser } from "@/actions/registerUser";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
@@ -32,49 +31,49 @@ export default function Register() {
       terms: false,
     },
   });
-  const serverAction = useAction(registerUser, {
-    onSuccess: (data) => {
-      if (data.type === "success") {
-        startTransition(() =>
-          router.push(`/verify?email=${form.getValues("email")}`)
+
+  const onSubmit = form.handleSubmit((data) => {
+    async function transition() {
+      if (usedEmails.includes(data.email)) {
+        form.setError(
+          "email",
+          { message: "User with this email already exist" },
+          { shouldFocus: true }
         );
-        toast({ title: "Success", description: data.message });
+        return;
+      }
+
+      if (!executeRecaptcha) {
+        toast({ title: "Info", description: "Try again later" });
+        return;
+      }
+
+      const captcha = await executeRecaptcha("submit");
+      const { data: registerData } = await registerUser({ ...data, captcha });
+
+      if (registerData?.type === "success") {
+        startTransition(() => router.push(`/verify?email=${data.email}`));
+        toast({ title: "Success", description: registerData.message });
       } else {
         toast({
           variant: "destructive",
           title: "Error",
-          description: data.message ?? "Something went wrong...",
+          description: registerData?.message ?? "Something went wrong...",
         });
-        if (data.field) {
-          if (data.field === "email") {
+        if (registerData?.field) {
+          if (registerData.field === "email") {
             setUsedEmails((prev) => [...prev, form.getValues("email")]);
           }
 
           form.setError(
-            data.field,
-            { message: data.message },
+            registerData.field,
+            { message: registerData.message },
             { shouldFocus: true }
           );
         }
       }
-    },
-  });
-
-  const isLoading = serverAction.status === "executing" || isPending;
-
-  const onSubmit = form.handleSubmit(async (data) => {
-    if (usedEmails.includes(data.email))
-      return form.setError(
-        "email",
-        { message: "User with this email already exist" },
-        { shouldFocus: true }
-      );
-
-    if (!executeRecaptcha)
-      return toast({ title: "Info", description: "Try again later" });
-
-    const captcha = await executeRecaptcha("submit");
-    serverAction.execute({ ...data, captcha });
+    }
+    startTransition(() => transition());
   });
 
   return (
@@ -90,21 +89,21 @@ export default function Register() {
             autoComplete="email"
             className="w-[300px]"
             label="E-mail"
-            disabled={isLoading}
+            disabled={isPending}
           />
           <FormInput
             control={form.control}
             name="name"
             className="w-[300px]"
             label="Name"
-            disabled={isLoading}
+            disabled={isPending}
           />
           <FormInput
             control={form.control}
             name="phone"
             className="w-[300px]"
             label="Phone number"
-            disabled={isLoading}
+            disabled={isPending}
           />
           <FormInput
             control={form.control}
@@ -113,7 +112,7 @@ export default function Register() {
             autoComplete="password"
             label="Password"
             type="password"
-            disabled={isLoading}
+            disabled={isPending}
           />
           <FormInput
             control={form.control}
@@ -122,12 +121,12 @@ export default function Register() {
             autoComplete="re-password"
             label="Repeat Password"
             type="password"
-            disabled={isLoading}
+            disabled={isPending}
           />
           <FormCheckbox
             control={form.control}
             name="terms"
-            disabled={isLoading}
+            disabled={isPending}
             label="Accept terms policy"
             className="w-full"
             description={
@@ -136,12 +135,15 @@ export default function Register() {
               </Link>
             }
           />
-          <Button disabled={isLoading} type="submit">
+          <Button disabled={isPending} type="submit">
             Register
           </Button>
         </form>
       </Form>
-      <AlternativeLoginOptions disabled={isLoading} />
+      <AlternativeLoginOptions
+        startTransition={startTransition}
+        disabled={isPending}
+      />
       <span className="text-xs my-4">
         You already have an account?{" "}
         <Link className="text-primary hover:underline" href="/login">

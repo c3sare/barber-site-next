@@ -3,11 +3,11 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Toaster } from "@/components/ui/toaster";
 // import { ThemeProvider } from "@/providers/ThemeProvider";
 import { RecaptchaV3Provider } from "@/providers/RecaptchaV3Provider";
-import { SessionProvider } from "@/providers/SessionProvider";
+import { SessionProvider } from "next-auth/react";
 
 export const Providers: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
-    <SessionProvider>
+    <SessionProvider basePath="/api/auth">
       <Toaster />
       <SpeedInsights />
       {/* <ThemeProvider> */}

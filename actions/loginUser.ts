@@ -7,6 +7,7 @@ import { verifyCaptcha } from "@/lib/verifyCaptcha";
 import { loginSchema } from "@/validators/loginSchema";
 import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
+import { isRedirectError } from "next/dist/client/components/redirect";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
@@ -56,22 +57,14 @@ export const loginUser = action(
       return redirect(`/verify?email=${user.email}`);
 
     try {
-      return await signIn("credentials", {
+      await signIn("credentials", {
         email,
         password,
         redirectTo: callbackUrl ?? "/",
       });
-    } catch (error) {
-      if (error instanceof AuthError) {
-        switch (error.type) {
-          case "CredentialsSignin":
-            return { type: "error", message: "Invalid credentials!" };
-          default:
-            return { type: "error", message: "Something went wrong!" };
-        }
-      }
-
-      throw error;
+    } catch (err) {
+      console.log(err);
+      redirect(callbackUrl ?? "/");
     }
   }
 );

@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import Link from "next/link";
 import Image from "next/image";
-import { logoutUser } from "@/actions/logoutUser";
 import {
   FileClockIcon,
   ListOrderedIcon,
@@ -12,8 +11,11 @@ import {
   ShieldEllipsisIcon,
 } from "lucide-react";
 import AccountListItem from "./AccountListItem";
+import { useTransition } from "react";
+import { signOut } from "next-auth/react";
 
 export default function Account() {
+  const [isPending, startTransition] = useTransition();
   const user = useCurrentUser();
 
   return user ? (
@@ -55,7 +57,11 @@ export default function Account() {
         )}
       </ul>
       <div className="w-full my-2">
-        <Button className="mx-auto block" onClick={() => logoutUser()}>
+        <Button
+          disabled={isPending}
+          className="mx-auto block"
+          onClick={() => startTransition(() => signOut())}
+        >
           Logout
         </Button>
       </div>

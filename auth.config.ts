@@ -5,6 +5,7 @@ import { getUserById } from "@/data/user";
 // import { getTwoFactorConfirmationByUserId } from "@/data/two-factor-confirmation";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { getAccountByUserId } from "./data/account";
+import * as schema from "./drizzle/schema";
 
 import bcrypt from "bcryptjs";
 import Credentials from "next-auth/providers/credentials";
@@ -29,81 +30,86 @@ export const {
     signIn: "/login",
     error: "/login",
   },
-  events: {
-    async linkAccount({ user: userLink }) {
-      await db
-        .update(user)
-        .set({ emailVerified: new Date() })
-        .where(eq(user.id, userLink.id!));
-    },
-  },
-  callbacks: {
-    async signIn({ user, account }) {
-      // Allow OAuth without email verification
-      if (account?.provider !== "credentials") return true;
+  // events: {
+  //   async linkAccount({ user: userLink }) {
+  //     await db
+  //       .update(user)
+  //       .set({ emailVerified: new Date() })
+  //       .where(eq(user.id, userLink.id!));
+  //   },
+  // },
+  // callbacks: {
+  //   async signIn({ user, account }) {
+  //     // Allow OAuth without email verification
+  //     if (account?.provider !== "credentials") return true;
 
-      // const existingUser = await getUserById(user.id!);
+  //     // const existingUser = await getUserById(user.id!);
 
-      // // Prevent sign in without email verification
-      // if (!existingUser?.emailVerified) return false;
+  //     // // Prevent sign in without email verification
+  //     // if (!existingUser?.emailVerified) return false;
 
-      // if (existingUser.isTwoFactorEnabled) {
-      //   const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(
-      //     existingUser.id
-      //   );
+  //     // if (existingUser.isTwoFactorEnabled) {
+  //     //   const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(
+  //     //     existingUser.id
+  //     //   );
 
-      //   if (!twoFactorConfirmation) return false;
+  //     //   if (!twoFactorConfirmation) return false;
 
-      //   // Delete two factor confirmation for next sign in
-      //   await db.twoFactorConfirmation.delete({
-      //     where: { id: twoFactorConfirmation.id },
-      //   });
-      // }
+  //     //   // Delete two factor confirmation for next sign in
+  //     //   await db.twoFactorConfirmation.delete({
+  //     //     where: { id: twoFactorConfirmation.id },
+  //     //   });
+  //     // }
 
-      return true;
-    },
-    async session({ token, session }) {
-      if (token.sub && session.user) {
-        session.user.id = token.sub;
-      }
+  //     return true;
+  //   },
+  //   async session({ token, session }) {
+  //     if (token.sub && session.user) {
+  //       session.user.id = token.sub;
+  //     }
 
-      if (token.role && session.user) {
-        session.user.role = token.role as UserRole;
-      }
+  //     if (token.role && session.user) {
+  //       session.user.role = token.role as UserRole;
+  //     }
 
-      if (session.user) {
-        session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean;
-      }
+  //     if (session.user) {
+  //       session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean;
+  //     }
 
-      if (session.user) {
-        session.user.name = token.name;
-        session.user.email = token.email!;
-        session.user.image = token.image as null | string;
-        session.user.isOAuth = token.isOAuth as boolean;
-      }
+  //     if (session.user) {
+  //       session.user.name = token.name;
+  //       session.user.email = token.email!;
+  //       session.user.image = token.image as null | string;
+  //       session.user.isOAuth = token.isOAuth as boolean;
+  //     }
 
-      return session;
-    },
-    async jwt({ token }) {
-      if (!token.sub) return token;
+  //     return session;
+  //   },
+  //   async jwt({ token }) {
+  //     if (!token.sub) return token;
 
-      const existingUser = await getUserById(token.sub);
+  //     const existingUser = await getUserById(token.sub);
 
-      if (!existingUser) return token;
+  //     if (!existingUser) return token;
 
-      const existingAccount = await getAccountByUserId(existingUser.id);
+  //     const existingAccount = await getAccountByUserId(existingUser.id);
 
-      token.isOAuth = !!existingAccount;
-      token.name = existingUser.name;
-      token.email = existingUser.email;
-      token.role = existingUser.role;
-      token.image = existingUser.image;
-      token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
+  //     token.isOAuth = !!existingAccount;
+  //     token.name = existingUser.name;
+  //     token.email = existingUser.email;
+  //     token.role = existingUser.role;
+  //     token.image = existingUser.image;
+  //     token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
 
-      return token;
-    },
-  },
-  adapter: DrizzleAdapter(db),
+  //     return token;
+  //   },
+  // },
+  adapter: DrizzleAdapter(db, {
+    usersTable: schema.user,
+    sessionsTable: schema.sessions,
+    accountsTable: schema.account,
+    verificationTokensTable: schema.verificationToken,
+  }),
   session: { strategy: "jwt" },
   providers: [
     Google({

@@ -7,14 +7,13 @@ import {
   integer,
   jsonb,
   boolean,
-  index,
   primaryKey,
   serial,
+  timestamp,
 } from "drizzle-orm/pg-core";
 import { relations, sql } from "drizzle-orm";
 import { createId } from "@paralleldrive/cuid2";
 import type { AdapterAccount } from "next-auth/adapters";
-import { timestamp } from "./customTypes";
 
 export const userRole = pgEnum("user_role", ["USER", "ADMIN"]);
 export const fileType = pgEnum("file_type", ["VIDEO", "AUDIO", "IMAGE"]);
@@ -52,22 +51,15 @@ export const twoFactorConfirmationRelations = relations(
 );
 
 export const verificationToken = pgTable(
-  "verification_token",
+  "verificationToken",
   {
-    id: serial("id").primaryKey(),
-    email: text("email").notNull(),
+    identifier: text("identifier").notNull(),
     token: text("token").notNull(),
-    expires: timestamp("expires").notNull(),
+    expires: timestamp("expires", { mode: "date" }).notNull(),
   },
-  (table) => {
-    return {
-      tokenKey: uniqueIndex("verification_token_key").on(table.token),
-      emailTokenKey: uniqueIndex("verification_email_token_key").on(
-        table.email,
-        table.token
-      ),
-    };
-  }
+  (vt) => ({
+    compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
+  })
 );
 
 export const file = pgTable("file", {
@@ -76,7 +68,7 @@ export const file = pgTable("file", {
   type: fileType("type").notNull(),
   width: integer("width").notNull(),
   height: integer("height").notNull(),
-  uploadedAt: timestamp("uploaded_at")
+  uploadedAt: timestamp("uploaded_at", { mode: "date" })
     .notNull()
     .default(sql`now()`),
   blurDataUrl: text("blur_data_url").notNull(),
@@ -97,7 +89,7 @@ export const passwordResetToken = pgTable(
     id: serial("id").primaryKey(),
     email: text("email").notNull(),
     token: text("token").notNull(),
-    expires: timestamp("expires")
+    expires: timestamp("expires", { mode: "date" })
       .notNull()
       .default(sql`now()`),
   },
@@ -118,7 +110,7 @@ export const twoFactorToken = pgTable(
     id: serial("id").primaryKey(),
     email: text("email").notNull(),
     token: text("token").notNull(),
-    expires: timestamp("expires").notNull(),
+    expires: timestamp("expires", { mode: "date" }).notNull(),
   },
   (table) => {
     return {
@@ -143,10 +135,10 @@ export const menuItem = pgTable(
       onUpdate: "cascade",
     }),
     parentId: integer("parent_id"),
-    createdAt: timestamp("created_at")
+    createdAt: timestamp("created_at", { mode: "date" })
       .notNull()
       .default(sql`now()`),
-    updatedAt: timestamp("updated_at")
+    updatedAt: timestamp("updated_at", { mode: "date" })
       .notNull()
       .default(sql`now()`),
     creatorId: text("creator_id").references(() => user.id, {
@@ -184,39 +176,29 @@ export const footerComponent = pgTable("footer_component", {
     .notNull(),
 });
 
-export const user = pgTable(
-  "user",
-  {
-    id: text("id")
-      .primaryKey()
-      .$defaultFn(() => createId()),
-    name: text("name"),
-    email: text("email"),
-    emailVerified: timestamp("emailVerified"),
-    verifyPasscode: text("verify_passcode"),
-    passcodeCreatedAt: timestamp("passcode_created_at"),
-    changePasswordToken: text("change_password_token"),
-    image: text("image"),
-    password: text("password"),
-    role: userRole("role").default("USER").notNull(),
-    isTwoFactorEnabled: boolean("is_two_factor_enabled")
-      .default(false)
-      .notNull(),
-    phone: text("phone"),
-    createdAt: timestamp("created_at")
-      .notNull()
-      .default(sql`now()`),
-    updatedAt: timestamp("updated_at")
-      .notNull()
-      .default(sql`now()`)
-      .$onUpdateFn(() => sql`now()`),
-  },
-  (table) => {
-    return {
-      emailKey: uniqueIndex("user_email_key").on(table.email),
-    };
-  }
-);
+export const user = pgTable("user", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => createId()),
+  name: text("name"),
+  email: text("email").notNull(),
+  emailVerified: timestamp("emailVerified", { mode: "date" }),
+  verifyPasscode: text("verify_passcode"),
+  passcodeCreatedAt: timestamp("passcode_created_at", { mode: "date" }),
+  changePasswordToken: text("change_password_token"),
+  image: text("image"),
+  password: text("password"),
+  role: userRole("role").default("USER").notNull(),
+  isTwoFactorEnabled: boolean("is_two_factor_enabled").default(false).notNull(),
+  phone: text("phone"),
+  createdAt: timestamp("created_at", { mode: "date" })
+    .notNull()
+    .default(sql`now()`),
+  updatedAt: timestamp("updated_at", { mode: "date" })
+    .notNull()
+    .default(sql`now()`)
+    .$onUpdateFn(() => sql`now()`),
+});
 
 export const userRelations = relations(user, ({ many }) => ({
   accounts: many(account),
@@ -233,10 +215,10 @@ export const page = pgTable(
       onDelete: "set null",
       onUpdate: "cascade",
     }),
-    createdAt: timestamp("created_at")
+    createdAt: timestamp("created_at", { mode: "date" })
       .notNull()
       .default(sql`now()`),
-    updatedAt: timestamp("updated_at")
+    updatedAt: timestamp("updated_at", { mode: "date" })
       .notNull()
       .default(sql`now()`)
       .$onUpdateFn(() => sql`now()`),
@@ -256,6 +238,14 @@ export const pageRelations = relations(page, ({ one }) => ({
   creator: one(user, { fields: [page.creatorId], references: [user.id] }),
 }));
 
+export const sessions = pgTable("session", {
+  sessionToken: text("sessionToken").primaryKey(),
+  userId: text("userId")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  expires: timestamp("expires", { mode: "date" }).notNull(),
+});
+
 export const account = pgTable(
   "account",
   {
@@ -265,17 +255,17 @@ export const account = pgTable(
     type: text("type").$type<AdapterAccount["type"]>().notNull(),
     provider: text("provider").notNull(),
     providerAccountId: text("providerAccountId").notNull(),
-    refreshToken: text("refresh_token"),
-    accessToken: text("access_token"),
-    expiresAt: integer("expires_at"),
-    tokenType: text("token_type"),
+    refresh_token: text("refresh_token"),
+    access_token: text("access_token"),
+    expires_at: integer("expires_at"),
+    token_type: text("token_type"),
     scope: text("scope"),
-    idToken: text("id_token"),
-    sessionState: text("session_state"),
+    id_token: text("id_token"),
+    session_state: text("session_state"),
   },
   (table) => ({
     compoundKey: primaryKey({
-      columns: [table.providerAccountId, table.provider],
+      columns: [table.provider, table.providerAccountId],
     }),
   })
 );
@@ -287,10 +277,10 @@ export const accountRelations = relations(account, ({ one }) => ({
 export const menu = pgTable("menu", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
-  createdAt: timestamp("created_at")
+  createdAt: timestamp("created_at", { mode: "date" })
     .notNull()
     .default(sql`now()`),
-  updatedAt: timestamp("updated_at")
+  updatedAt: timestamp("updated_at", { mode: "date" })
     .notNull()
     .default(sql`now()`)
     .$onUpdateFn(() => sql`now()`),

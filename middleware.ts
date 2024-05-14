@@ -1,51 +1,53 @@
-// import {
-//   DEFAULT_LOGIN_REDIRECT,
-//   apiAuthPrefix,
-//   authRoutes,
-//   protectedRoutes,
-// } from "@/routes";
-// import includesStartsWith from "./utils/includesStartsWith";
-export { auth as middleware } from "./auth.config";
+import {
+  DEFAULT_LOGIN_REDIRECT,
+  apiAuthPrefix,
+  authRoutes,
+  protectedRoutes,
+} from "@/routes";
+import includesStartsWith from "./utils/includesStartsWith";
+import authConfig from "./auth";
+import NextAuth from "next-auth";
 
-// export default auth((req) => {
-//   const { nextUrl } = req;
-//   const isLoggedIn = !!req.auth;
+const { auth } = NextAuth(authConfig);
 
-//   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
-//   const isProtectedRoute = includesStartsWith(
-//     protectedRoutes,
-//     nextUrl.pathname
-//   );
-//   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+export default auth((req) => {
+  const { nextUrl } = req;
+  const isLoggedIn = !!req.auth;
 
-//   if (isApiAuthRoute) {
-//     return;
-//   }
+  const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
+  const isProtectedRoute = includesStartsWith(
+    protectedRoutes,
+    nextUrl.pathname
+  );
+  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
-//   if (isAuthRoute) {
-//     if (isLoggedIn) {
-//       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
-//     }
-//     return;
-//   }
+  if (isApiAuthRoute) {
+    return;
+  }
 
-//   if (!isLoggedIn && isProtectedRoute) {
-//     let callbackUrl = nextUrl.pathname;
-//     if (nextUrl.search) {
-//       callbackUrl += nextUrl.search;
-//     }
+  if (isAuthRoute) {
+    if (isLoggedIn) {
+      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+    }
+    return;
+  }
 
-//     const encodedCallbackUrl = encodeURIComponent(callbackUrl);
+  if (!isLoggedIn && isProtectedRoute) {
+    let callbackUrl = nextUrl.pathname;
+    if (nextUrl.search) {
+      callbackUrl += nextUrl.search;
+    }
 
-//     return Response.redirect(
-//       new URL(`/login?callbackUrl=${encodedCallbackUrl}`, nextUrl)
-//     );
-//   }
+    const encodedCallbackUrl = encodeURIComponent(callbackUrl);
 
-//   return;
-// });
+    return Response.redirect(
+      new URL(`/login?callbackUrl=${encodedCallbackUrl}`, nextUrl)
+    );
+  }
 
-// Optionally, don't invoke Middleware on some paths
+  return;
+});
+
 export const config = {
   matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };

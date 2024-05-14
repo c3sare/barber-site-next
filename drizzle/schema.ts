@@ -196,8 +196,7 @@ export const user = pgTable("user", {
     .default(sql`now()`),
   updatedAt: timestamp("updated_at", { mode: "date" })
     .notNull()
-    .default(sql`now()`)
-    .$onUpdateFn(() => sql`now()`),
+    .default(sql`now()`),
 });
 
 export const userRelations = relations(user, ({ many }) => ({
@@ -220,8 +219,7 @@ export const page = pgTable(
       .default(sql`now()`),
     updatedAt: timestamp("updated_at", { mode: "date" })
       .notNull()
-      .default(sql`now()`)
-      .$onUpdateFn(() => sql`now()`),
+      .default(sql`now()`),
     imageIds: text("image_ids")
       .array()
       .default(sql`ARRAY[]::text[]`)
@@ -282,8 +280,7 @@ export const menu = pgTable("menu", {
     .default(sql`now()`),
   updatedAt: timestamp("updated_at", { mode: "date" })
     .notNull()
-    .default(sql`now()`)
-    .$onUpdateFn(() => sql`now()`),
+    .default(sql`now()`),
   creatorId: text("creator_id").references(() => user.id, {
     onDelete: "set null",
     onUpdate: "cascade",

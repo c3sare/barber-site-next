@@ -1,10 +1,8 @@
 {
-  "id": "00000000-0000-0000-0000-000000000000",
-  "prevId": "",
-  "version": "5",
-  "dialect": "pg",
+  "version": "6",
+  "dialect": "postgresql",
   "tables": {
-    "TwoFactorConfirmation": {
+    "public.TwoFactorConfirmation": {
       "name": "TwoFactorConfirmation",
       "schema": "",
       "columns": {
@@ -34,22 +32,22 @@
         "TwoFactorConfirmation_userId_fkey": {
           "name": "TwoFactorConfirmation_userId_fkey",
           "tableFrom": "TwoFactorConfirmation",
-          "tableTo": "User",
-          "schemaTo": "public",
           "columnsFrom": [
             "userId"
           ],
+          "tableTo": "User",
+          "schemaTo": "public",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "VerificationToken": {
+    "public.VerificationToken": {
       "name": "VerificationToken",
       "schema": "",
       "columns": {
@@ -99,7 +97,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "File": {
+    "public.File": {
       "name": "File",
       "schema": "",
       "columns": {
@@ -170,22 +168,22 @@
         "File_userId_fkey": {
           "name": "File_userId_fkey",
           "tableFrom": "File",
-          "tableTo": "User",
-          "schemaTo": "public",
           "columnsFrom": [
             "userId"
           ],
+          "tableTo": "User",
+          "schemaTo": "public",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "restrict",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "restrict"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "PasswordResetToken": {
+    "public.PasswordResetToken": {
       "name": "PasswordResetToken",
       "schema": "",
       "columns": {
@@ -235,7 +233,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "TwoFactorToken": {
+    "public.TwoFactorToken": {
       "name": "TwoFactorToken",
       "schema": "",
       "columns": {
@@ -285,7 +283,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "MenuItem": {
+    "public.MenuItem": {
       "name": "MenuItem",
       "schema": "",
       "columns": {
@@ -345,64 +343,64 @@
         "MenuItem_pageId_fkey": {
           "name": "MenuItem_pageId_fkey",
           "tableFrom": "MenuItem",
-          "tableTo": "Page",
-          "schemaTo": "public",
           "columnsFrom": [
             "pageId"
           ],
+          "tableTo": "Page",
+          "schemaTo": "public",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "MenuItem_menuId_fkey": {
           "name": "MenuItem_menuId_fkey",
           "tableFrom": "MenuItem",
-          "tableTo": "Menu",
-          "schemaTo": "public",
           "columnsFrom": [
             "menuId"
           ],
+          "tableTo": "Menu",
+          "schemaTo": "public",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "MenuItem_parentId_fkey": {
           "name": "MenuItem_parentId_fkey",
           "tableFrom": "MenuItem",
-          "tableTo": "MenuItem",
-          "schemaTo": "public",
           "columnsFrom": [
             "parentId"
           ],
+          "tableTo": "MenuItem",
+          "schemaTo": "public",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "set null",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "set null"
         },
         "MenuItem_creatorId_fkey": {
           "name": "MenuItem_creatorId_fkey",
           "tableFrom": "MenuItem",
-          "tableTo": "User",
-          "schemaTo": "public",
           "columnsFrom": [
             "creatorId"
           ],
+          "tableTo": "User",
+          "schemaTo": "public",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "set null",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "set null"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "FooterComponent": {
+    "public.FooterComponent": {
       "name": "FooterComponent",
       "schema": "",
       "columns": {
@@ -430,7 +428,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "User": {
+    "public.User": {
       "name": "User",
       "schema": "",
       "columns": {
@@ -535,7 +533,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "Page": {
+    "public.Page": {
       "name": "Page",
       "schema": "",
       "columns": {
@@ -597,22 +595,22 @@
         "Page_creatorId_fkey": {
           "name": "Page_creatorId_fkey",
           "tableFrom": "Page",
-          "tableTo": "User",
-          "schemaTo": "public",
           "columnsFrom": [
             "creatorId"
           ],
+          "tableTo": "User",
+          "schemaTo": "public",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "set null",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "set null"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "Account": {
+    "public.Account": {
       "name": "Account",
       "schema": "",
       "columns": {
@@ -710,22 +708,22 @@
         "Account_userId_fkey": {
           "name": "Account_userId_fkey",
           "tableFrom": "Account",
-          "tableTo": "User",
-          "schemaTo": "public",
           "columnsFrom": [
             "userId"
           ],
+          "tableTo": "User",
+          "schemaTo": "public",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "Menu": {
+    "public.Menu": {
       "name": "Menu",
       "schema": "",
       "columns": {
@@ -767,22 +765,22 @@
         "Menu_creatorId_fkey": {
           "name": "Menu_creatorId_fkey",
           "tableFrom": "Menu",
-          "tableTo": "User",
-          "schemaTo": "public",
           "columnsFrom": [
             "creatorId"
           ],
+          "tableTo": "User",
+          "schemaTo": "public",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "set null",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "set null"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "_usedFooterImages": {
+    "public._usedFooterImages": {
       "name": "_usedFooterImages",
       "schema": "",
       "columns": {
@@ -820,36 +818,36 @@
         "_usedFooterImages_A_fkey": {
           "name": "_usedFooterImages_A_fkey",
           "tableFrom": "_usedFooterImages",
-          "tableTo": "File",
-          "schemaTo": "public",
           "columnsFrom": [
             "A"
           ],
+          "tableTo": "File",
+          "schemaTo": "public",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "_usedFooterImages_B_fkey": {
           "name": "_usedFooterImages_B_fkey",
           "tableFrom": "_usedFooterImages",
-          "tableTo": "FooterComponent",
-          "schemaTo": "public",
           "columnsFrom": [
             "B"
           ],
+          "tableTo": "FooterComponent",
+          "schemaTo": "public",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "_PageFiles": {
+    "public._PageFiles": {
       "name": "_PageFiles",
       "schema": "",
       "columns": {
@@ -887,30 +885,30 @@
         "_PageFiles_A_fkey": {
           "name": "_PageFiles_A_fkey",
           "tableFrom": "_PageFiles",
-          "tableTo": "File",
-          "schemaTo": "public",
           "columnsFrom": [
             "A"
           ],
+          "tableTo": "File",
+          "schemaTo": "public",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "_PageFiles_B_fkey": {
           "name": "_PageFiles_B_fkey",
           "tableFrom": "_PageFiles",
-          "tableTo": "Page",
-          "schemaTo": "public",
           "columnsFrom": [
             "B"
           ],
+          "tableTo": "Page",
+          "schemaTo": "public",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -918,28 +916,31 @@
     }
   },
   "enums": {
-    "UserRole": {
+    "public.UserRole": {
       "name": "UserRole",
-      "values": {
-        "USER": "USER",
-        "ADMIN": "ADMIN"
-      }
+      "schema": "public",
+      "values": [
+        "USER",
+        "ADMIN"
+      ]
     },
-    "FileType": {
+    "public.FileType": {
       "name": "FileType",
-      "values": {
-        "VIDEO": "VIDEO",
-        "AUDIO": "AUDIO",
-        "IMAGE": "IMAGE"
-      }
+      "schema": "public",
+      "values": [
+        "VIDEO",
+        "AUDIO",
+        "IMAGE"
+      ]
     },
-    "FooterComponentEnum": {
+    "public.FooterComponentEnum": {
       "name": "FooterComponentEnum",
-      "values": {
-        "HERO_BOX": "HERO_BOX",
-        "LINK_BOX": "LINK_BOX",
-        "PHOTO_GALLERY": "PHOTO_GALLERY"
-      }
+      "schema": "public",
+      "values": [
+        "HERO_BOX",
+        "LINK_BOX",
+        "PHOTO_GALLERY"
+      ]
     }
   },
   "schemas": {},
@@ -947,5 +948,7 @@
     "schemas": {},
     "tables": {},
     "columns": {}
-  }
+  },
+  "id": "00000000-0000-0000-0000-000000000000",
+  "prevId": ""
 }

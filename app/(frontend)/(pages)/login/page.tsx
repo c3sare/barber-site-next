@@ -14,9 +14,10 @@ import { loginUser } from "@/actions/loginUser";
 import { useToast } from "@/components/ui/use-toast";
 import { useState, useTransition } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { useSession } from "next-auth/react";
 
 const SignInPage = () => {
-  const router = useRouter();
+  const { update } = useSession();
   const [isPending, startTransition] = useTransition();
   const { executeRecaptcha } = useGoogleReCaptcha();
   const [usedNotExistEmails, setUsedNotExistEmails] = useState<string[]>([]);
@@ -84,7 +85,7 @@ const SignInPage = () => {
             description: loginData.message,
           });
       } else {
-        window.location.reload();
+        update();
       }
     }
     startTransition(() => transition());

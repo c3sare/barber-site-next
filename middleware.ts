@@ -1,49 +1,49 @@
-import {
-  DEFAULT_LOGIN_REDIRECT,
-  apiAuthPrefix,
-  authRoutes,
-  protectedRoutes,
-} from "@/routes";
-import includesStartsWith from "./utils/includesStartsWith";
-import { auth } from "./auth.config";
+// import {
+//   DEFAULT_LOGIN_REDIRECT,
+//   apiAuthPrefix,
+//   authRoutes,
+//   protectedRoutes,
+// } from "@/routes";
+// import includesStartsWith from "./utils/includesStartsWith";
+export { auth as middleware } from "./auth.config";
 
-export default auth((req) => {
-  const { nextUrl } = req;
-  const isLoggedIn = !!req.auth;
+// export default auth((req) => {
+//   const { nextUrl } = req;
+//   const isLoggedIn = !!req.auth;
 
-  const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
-  const isProtectedRoute = includesStartsWith(
-    protectedRoutes,
-    nextUrl.pathname
-  );
-  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+//   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
+//   const isProtectedRoute = includesStartsWith(
+//     protectedRoutes,
+//     nextUrl.pathname
+//   );
+//   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
-  if (isApiAuthRoute) {
-    return;
-  }
+//   if (isApiAuthRoute) {
+//     return;
+//   }
 
-  if (isAuthRoute) {
-    if (isLoggedIn) {
-      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
-    }
-    return;
-  }
+//   if (isAuthRoute) {
+//     if (isLoggedIn) {
+//       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+//     }
+//     return;
+//   }
 
-  if (!isLoggedIn && isProtectedRoute) {
-    let callbackUrl = nextUrl.pathname;
-    if (nextUrl.search) {
-      callbackUrl += nextUrl.search;
-    }
+//   if (!isLoggedIn && isProtectedRoute) {
+//     let callbackUrl = nextUrl.pathname;
+//     if (nextUrl.search) {
+//       callbackUrl += nextUrl.search;
+//     }
 
-    const encodedCallbackUrl = encodeURIComponent(callbackUrl);
+//     const encodedCallbackUrl = encodeURIComponent(callbackUrl);
 
-    return Response.redirect(
-      new URL(`/login?callbackUrl=${encodedCallbackUrl}`, nextUrl)
-    );
-  }
+//     return Response.redirect(
+//       new URL(`/login?callbackUrl=${encodedCallbackUrl}`, nextUrl)
+//     );
+//   }
 
-  return;
-});
+//   return;
+// });
 
 // Optionally, don't invoke Middleware on some paths
 export const config = {

@@ -12,7 +12,14 @@ const nextConfig = {
       },
     ],
   },
-  output: process.env.RAILWAY === "true" ? "standalone" : undefined,
+  output: process.env.STANDALONE === "true" ? "standalone" : undefined,
+  webpack: (config) => {
+    config.externals = [...config.externals, "bcrypt"];
+    return config;
+  },
+  experimental: {
+    serverComponentsExternalPackages: ["bcrypt"],
+  },
 };
 
 export default nextConfig;

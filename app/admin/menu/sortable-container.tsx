@@ -1,44 +1,44 @@
 "use client";
 
-import {
-  DndContext,
-  DragEndEvent,
-  KeyboardSensor,
-  PointerSensor,
-  closestCenter,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import {
-  SortableContext,
-  arrayMove,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
+import { DragEndEvent } from "@dnd-kit/core";
+import { arrayMove } from "@dnd-kit/sortable";
 import { useState } from "react";
 import { SortableItem } from "./sortable-item";
+import { DndContainer } from "./dnd-container";
+
+const defaultItems = [
+  {
+    id: 1,
+    name: "test 1",
+    children: [
+      {
+        id: 2,
+        name: "test 2",
+      },
+    ],
+  },
+  {
+    id: 3,
+    name: "test 3",
+    children: [
+      {
+        id: 4,
+        name: "test 4",
+      },
+    ],
+  },
+];
 
 export const SortableContainer = () => {
-  const [items, setItems] = useState<string[]>([
-    "test1",
-    "test2",
-    "test3",
-    "test4",
-  ]);
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
+  const [items, setItems] = useState(defaultItems);
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
 
     if (active?.id !== over?.id) {
       setItems((items) => {
-        const oldIndex = items.indexOf(active.id as string);
-        const newIndex = items.indexOf(over?.id as string);
+        const oldIndex = items.findIndex((item) => item.id === active.id);
+        const newIndex = items.findIndex((item) => item.id === over?.id);
 
         return arrayMove(items, oldIndex, newIndex);
       });
@@ -46,16 +46,12 @@ export const SortableContainer = () => {
   }
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
-    >
-      <SortableContext items={items} strategy={verticalListSortingStrategy}>
-        {items.map((id) => (
-          <SortableItem key={id} id={id} />
-        ))}
-      </SortableContext>
-    </DndContext>
+    <DndContainer onDragEnd={handleDragEnd} items={items}>
+      {items.map((item) => (
+        <SortableItem key={item.id} item={item} items={items}>
+          {item.name}
+        </SortableItem>
+      ))}
+    </DndContainer>
   );
 };

@@ -39,9 +39,10 @@ const Node = ({ node, data }: { node: NodeType; data: Data }) => {
 };
 
 export const RenderPage = ({ data }: { data: string }) => {
-  const content: Data = JSON.parse(lz.decompress(lz.decodeBase64(data)));
+  const content: Data =
+    data === "{}" ? null : JSON.parse(lz.decompress(lz.decodeBase64(data)));
 
-  // return JSON.stringify(content);
+  if (!content) return null;
 
   return <Node node={content.ROOT} data={content} />;
 };

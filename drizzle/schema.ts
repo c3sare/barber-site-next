@@ -14,6 +14,7 @@ import {
 import { relations, sql } from "drizzle-orm";
 import { createId } from "@paralleldrive/cuid2";
 import type { AdapterAccount } from "next-auth/adapters";
+import { url } from "inspector";
 
 export const userRole = pgEnum("user_role", ["USER", "ADMIN"]);
 export const fileType = pgEnum("file_type", ["VIDEO", "AUDIO", "IMAGE"]);
@@ -123,42 +124,30 @@ export const twoFactorToken = pgTable(
   }
 );
 
-export const menuItem = pgTable(
-  "menu_item",
-  {
-    id: serial("id").primaryKey(),
-    pageId: integer("page_id")
-      .notNull()
-      .references(() => page.id, { onDelete: "cascade", onUpdate: "cascade" }),
-    menuId: integer("menu_id").references(() => menu.id, {
-      onDelete: "cascade",
-      onUpdate: "cascade",
-    }),
-    parentId: integer("parent_id"),
-    createdAt: timestamp("created_at", { mode: "date" })
-      .notNull()
-      .default(sql`now()`),
-    updatedAt: timestamp("updated_at", { mode: "date" })
-      .notNull()
-      .default(sql`now()`),
-    creatorId: text("creator_id").references(() => user.id, {
-      onDelete: "set null",
-      onUpdate: "cascade",
-    }),
-    order: integer("order").notNull(),
-  },
-  (table) => {
-    return {
-      menuItemParentIdFkey: foreignKey({
-        columns: [table.parentId],
-        foreignColumns: [table.id],
-        name: "menu_item_parentId_fkey",
-      })
-        .onUpdate("cascade")
-        .onDelete("set null"),
-    };
-  }
-);
+export const menuItem = pgTable("menu_item", {
+  id: serial("id").primaryKey(),
+  pageId: integer("page_id").references(() => page.id, {
+    onDelete: "cascade",
+    onUpdate: "cascade",
+  }),
+  menuId: integer("menu_id").references(() => menu.id, {
+    onDelete: "cascade",
+    onUpdate: "cascade",
+  }),
+  url: text("url"),
+  name: text("name").notNull(),
+  createdAt: timestamp("created_at", { mode: "date" })
+    .notNull()
+    .default(sql`now()`),
+  updatedAt: timestamp("updated_at", { mode: "date" })
+    .notNull()
+    .default(sql`now()`),
+  creatorId: text("creator_id").references(() => user.id, {
+    onDelete: "set null",
+    onUpdate: "cascade",
+  }),
+  order: integer("order").notNull(),
+});
 
 export const menuItemRelations = relations(menuItem, ({ one }) => ({
   creator: one(user, { fields: [menuItem.creatorId], references: [user.id] }),
@@ -286,3 +275,7 @@ export const menu = pgTable("menu", {
     onUpdate: "cascade",
   }),
 });
+
+export const menuRelations = relations(menu, ({ many }) => ({
+  items: many(menuItem),
+}));

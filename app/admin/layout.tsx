@@ -1,10 +1,12 @@
 import { auth } from "@/auth.config";
 import { notFound } from "next/navigation";
 import { TabsLink, TabsList } from "@/components/ui/tabs-link";
+import { unstable_noStore } from "next/cache";
 
 export default async function AdminLayout({
   children,
 }: React.PropsWithChildren) {
+  unstable_noStore();
   const session = await auth();
 
   if (!session?.user.id || session?.user.role !== "ADMIN") return notFound();

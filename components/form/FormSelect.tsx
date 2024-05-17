@@ -27,9 +27,9 @@ type FormSelectProps<T extends FieldValues> = {
   defaultValue?: FieldValue<T>;
   options: (
     | {
-        label: string;
-        value: string;
-      }
+      label: string;
+      value: string | number;
+    }
     | string
   )[];
   disabled?: boolean;
@@ -45,6 +45,9 @@ const FormSelect = <T extends FieldValues>({
   disabled,
   defaultValue,
 }: FormSelectProps<T>) => {
+
+  const isNumber = typeof options[0] === "object" ? typeof options[0].value === "number" : typeof options[0] === "number";
+
   return (
     <FormField
       control={control}
@@ -55,8 +58,8 @@ const FormSelect = <T extends FieldValues>({
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <Select
-            onValueChange={field.onChange}
-            value={field.value}
+            onValueChange={value => field.onChange(isNumber ? Number(value) : value)}
+            value={String(field.value)}
             disabled={field.disabled}
           >
             <FormControl>
@@ -71,7 +74,7 @@ const FormSelect = <T extends FieldValues>({
                 const label =
                   typeof option === "string" ? option : option.label;
                 return (
-                  <SelectItem key={value} value={value}>
+                  <SelectItem key={value} value={String(value)}>
                     {label}
                   </SelectItem>
                 );

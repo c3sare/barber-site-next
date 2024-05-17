@@ -1,9 +1,10 @@
-# fly.toml app configuration file generated for barber-site-next-long-wind-4794 on 2024-05-15T09:12:34+02:00
+# fly.toml app configuration file generated for barber-site-next-wispy-firefly-4130 on 2024-05-15T13:52:16+02:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'barber-site-next-long-wind-4794'
+app = 'barber-site-next-wispy-firefly-4130'
+primary_region = 'waw'
 
 [build]
 

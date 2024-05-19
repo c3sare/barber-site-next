@@ -14,7 +14,7 @@ type Props = {
 };
 
 export default async function MenuPage({ params: { id } }: Props) {
-  const menu = await getMenuById(id);
+  const menu = await getMenuById(Number(id));
 
   if (!menu) return notFound();
 

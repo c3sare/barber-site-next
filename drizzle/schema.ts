@@ -130,10 +130,12 @@ export const menuItem = pgTable("menu_item", {
     onDelete: "cascade",
     onUpdate: "cascade",
   }),
-  menuId: integer("menu_id").references(() => menu.id, {
-    onDelete: "cascade",
-    onUpdate: "cascade",
-  }),
+  menuId: integer("menu_id")
+    .notNull()
+    .references(() => menu.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
   url: text("url"),
   name: text("name").notNull(),
   createdAt: timestamp("created_at", { mode: "date" })

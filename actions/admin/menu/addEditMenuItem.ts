@@ -23,10 +23,16 @@ export const addEditMenuItem = adminAction(
 
         await db
           .insert(menuItem)
-          .values({ ...data, menuId, creatorId: userId, order: order + 1 });
+          .values({
+            pageId: null,
+            ...data,
+            menuId,
+            creatorId: userId,
+            order: order + 1,
+          });
       } else {
         db.update(menuItem)
-          .set({ ...data, creatorId: userId })
+          .set({ pageId: null, ...data, creatorId: userId })
           .where(eq(menuItem.id, id));
       }
 

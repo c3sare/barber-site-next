@@ -127,7 +127,7 @@ export const twoFactorToken = pgTable(
 export const menuItem = pgTable("menu_item", {
   id: serial("id").primaryKey(),
   pageId: integer("page_id").references(() => page.id, {
-    onDelete: "cascade",
+    onDelete: "set null",
     onUpdate: "cascade",
   }),
   menuId: integer("menu_id")

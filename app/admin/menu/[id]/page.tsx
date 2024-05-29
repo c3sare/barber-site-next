@@ -23,14 +23,9 @@ export default async function MenuPage({ params: { id } }: Props) {
   return (
     <div>
       <TitleForm title={menu.title} id={menu.id} />
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button className="mx-auto block mb-2">Add new menu item</Button>
-        </DialogTrigger>
-        <DialogContent>
-          <MenuItemForm menuId={menu.id} pages={pages} />
-        </DialogContent>
-      </Dialog>
+      <MenuItemForm menuId={menu.id} pages={pages}>
+        <Button className="mx-auto block mb-2">Add new menu item</Button>
+      </MenuItemForm>
       <SortableContainer menuItems={menu.items} pages={pages} />
     </div>
   );

@@ -3,29 +3,18 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Edit2Icon } from "lucide-react";
 import { Handler } from "./handler";
-import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { MenuItemForm } from "./menu-item-form";
 import { getPages } from "@/actions/admin/menu/getPages";
 import { menuItem } from "@/drizzle/schema";
+import { DeleteDialog } from "./delete-dialog";
 
-type Props<T> = {
+type Props = {
   item: typeof menuItem.$inferSelect;
   children?: React.ReactNode;
   pages: Awaited<ReturnType<typeof getPages>>;
 };
 
-export const SortableItem = <T extends unknown>({
-  item,
-  children,
-  pages,
-}: Props<T>) => {
-  const [collapsed, setCollapsed] = useState(false);
+export const SortableItem = ({ item, children, pages }: Props) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: item.id });
 
@@ -45,28 +34,19 @@ export const SortableItem = <T extends unknown>({
         <span className="text-sm leading-none mx-2">{children}</span>
       </div>
       <div>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setCollapsed(!collapsed)}
-            >
-              <Edit2Icon className="size-4 text-slate-500" />
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>Menu Item</DialogHeader>
-            <MenuItemForm
-              pages={pages}
-              id={item.id}
-              menuId={item.menuId}
-              pageId={item.pageId}
-              url={item.url}
-              name={item.name}
-            />
-          </DialogContent>
-        </Dialog>
+        <DeleteDialog id={item.id} />
+        <MenuItemForm
+          pages={pages}
+          id={item.id}
+          menuId={item.menuId}
+          pageId={item.pageId}
+          url={item.url}
+          name={item.name}
+        >
+          <Button variant="ghost" size="sm">
+            <Edit2Icon className="size-4 text-slate-500" />
+          </Button>
+        </MenuItemForm>
       </div>
     </div>
   );

@@ -16,6 +16,7 @@ import { useState, useTransition } from "react";
 import { addMenu } from "@/actions/admin/menu/addMenu";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { LoadingButton } from "@/components/loading-button";
 
 export const MenuForm = () => {
   const router = useRouter();
@@ -73,13 +74,13 @@ export const MenuForm = () => {
               name="title"
               label="Title"
             />
-            <Button
+            <LoadingButton
               className="mx-auto block"
               disabled={isPending}
               type="submit"
             >
               Submit
-            </Button>
+            </LoadingButton>
           </form>
         </FormProvider>
       </DialogContent>

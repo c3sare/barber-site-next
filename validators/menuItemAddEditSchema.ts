@@ -8,7 +8,11 @@ export const menuItemAddEditSchema = z
   .and(
     z
       .object({
-        type: z.literal("page"),
+        type: z.literal("page", {
+          message: "",
+          required_error: "",
+          invalid_type_error: "",
+        }),
         pageId: z
           .number()
           .min(1, "Page id is required")
@@ -16,7 +20,11 @@ export const menuItemAddEditSchema = z
       })
       .or(
         z.object({
-          type: z.literal("link"),
+          type: z.literal("link", {
+            message: "",
+            required_error: "",
+            invalid_type_error: "",
+          }),
           url: z
             .string()
             .min(1, "Url is required")

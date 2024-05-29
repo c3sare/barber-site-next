@@ -2,11 +2,10 @@
 
 import { DragEndEvent } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
-import { FormEvent, useState, useTransition } from "react";
+import { FormEvent, useEffect, useState, useTransition } from "react";
 import { SortableItem } from "./sortable-item";
 import { DndContainer } from "./dnd-container";
 import { FormProvider } from "react-hook-form";
-import { Button } from "@/components/ui/button";
 import { useZodForm } from "@/hooks/useZodForm";
 import { z } from "zod";
 import { menuItem } from "@/drizzle/schema";
@@ -14,6 +13,7 @@ import { getPages } from "@/actions/admin/menu/getPages";
 import { changeMenuItemsOrder } from "@/actions/admin/menu/changeMenuItemsOrder";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
+import { LoadingButton } from "@/components/loading-button";
 
 type Props = {
   menuItems: (typeof menuItem.$inferSelect)[];
@@ -30,6 +30,10 @@ export const SortableContainer = ({ menuItems, pages }: Props) => {
     }),
   });
   const [items, setItems] = useState(menuItems);
+
+  useEffect(() => {
+    setItems(menuItems);
+  }, [menuItems]);
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
@@ -68,7 +72,7 @@ export const SortableContainer = ({ menuItems, pages }: Props) => {
 
   return (
     <FormProvider {...form}>
-      <form className="max-w-xl mx-auto" onSubmit={onSubmit}>
+      <form className="max-w-xl mx-auto overflow-hidden" onSubmit={onSubmit}>
         <DndContainer onDragEnd={handleDragEnd} items={items}>
           {items.map((item) => (
             <SortableItem key={item.id} item={item} pages={pages}>
@@ -76,9 +80,13 @@ export const SortableContainer = ({ menuItems, pages }: Props) => {
             </SortableItem>
           ))}
         </DndContainer>
-        <Button type="submit" className="my-4 mx-auto block">
+        <LoadingButton
+          type="submit"
+          disabled={isPending}
+          className="my-4 mx-auto block"
+        >
           Save order
-        </Button>
+        </LoadingButton>
       </form>
     </FormProvider>
   );

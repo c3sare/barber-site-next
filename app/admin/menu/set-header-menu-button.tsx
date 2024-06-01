@@ -1,6 +1,7 @@
 "use client";
 
-import { deleteMenu } from "@/actions/admin/menu/deleteMenu";
+import { SquareCheckBigIcon } from "lucide-react";
+import { MenuOptionButton } from "./menu-option-button";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,64 +13,53 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
-import { Loader2, TrashIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { MenuOptionButton } from "./menu-option-button";
+import { setHeaderMenu } from "@/actions/admin/menu/setHeaderMenu";
+import { useToast } from "@/components/ui/use-toast";
 
-type Props = { id: number; title: string };
+type Props = {
+  menuId: number;
+};
 
-export const DeleteMenuDialog = ({ id, title }: Props) => {
-  const router = useRouter();
+export const SetHeaderMenuButton = ({ menuId }: Props) => {
   const { toast } = useToast();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
-  const handleDelete = () =>
+  const handleSetHeaderMenu = () =>
     startTransition(async () => {
-      const response = await deleteMenu(id);
+      const response = await setHeaderMenu(menuId);
 
-      if (response.data?.success) {
-        toast({
-          title: "Success",
-          description: "Menu was deleted",
-        });
-      } else {
+      if (!response.data?.success)
         toast({
           title: "Error",
           variant: "destructive",
           description: "Something went wrong",
         });
-      }
 
-      setIsOpen(false);
       router.refresh();
     });
 
   return (
     <AlertDialog open={isOpen || isPending} onOpenChange={setIsOpen}>
       <AlertDialogTrigger asChild>
-        <MenuOptionButton tooltip="Delete">
-          <TrashIcon />
+        <MenuOptionButton tooltip="Set as Header Menu">
+          <SquareCheckBigIcon />
         </MenuOptionButton>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This will permanently delete menu - {title}.
+            This action will set selected menu as header menu.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
-          <AlertDialogAction
-            className="bg-red-500 hover:bg-red-400"
-            disabled={isPending}
-            onClick={handleDelete}
-          >
-            {isPending ? <Loader2 className="animate-spin size-6" /> : "Delete"}
+          <AlertDialogAction disabled={isPending} onClick={handleSetHeaderMenu}>
+            Set Header Menu
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

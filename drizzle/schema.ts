@@ -1,7 +1,6 @@
 import {
   pgTable,
   uniqueIndex,
-  foreignKey,
   pgEnum,
   text,
   integer,
@@ -14,7 +13,6 @@ import {
 import { relations, sql } from "drizzle-orm";
 import { createId } from "@paralleldrive/cuid2";
 import type { AdapterAccount } from "next-auth/adapters";
-import { url } from "inspector";
 
 export const userRole = pgEnum("user_role", ["USER", "ADMIN"]);
 export const fileType = pgEnum("file_type", ["VIDEO", "AUDIO", "IMAGE"]);
@@ -23,6 +21,8 @@ export const footerComponentEnum = pgEnum("footer_component_enum", [
   "LINK_BOX",
   "PHOTO_GALLERY",
 ]);
+
+export const menuVariant = pgEnum("menu_variant", ["HEADER"]);
 
 export const twoFactorConfirmation = pgTable(
   "two_factor_confirmation",
@@ -194,6 +194,8 @@ export const userRelations = relations(user, ({ many }) => ({
   accounts: many(account),
 }));
 
+export const pageVariants = pgEnum("page_variants", ["HOME"]);
+
 export const page = pgTable(
   "page",
   {
@@ -215,6 +217,7 @@ export const page = pgTable(
       .array()
       .default(sql`ARRAY[]::text[]`)
       .notNull(),
+    pageVariant: pageVariants("page_variant"),
   },
   (table) => {
     return {
@@ -276,6 +279,7 @@ export const menu = pgTable("menu", {
     onDelete: "set null",
     onUpdate: "cascade",
   }),
+  usedBy: menuVariant("used_by"),
 });
 
 export const menuRelations = relations(menu, ({ many }) => ({

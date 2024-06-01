@@ -7,7 +7,7 @@ import { useZodForm } from "@/hooks/useZodForm";
 import Link from "next/link";
 import { z } from "zod";
 import AlternativeLoginOptions from "../(index)/(auth)/_components/AlternativeLoginOptions";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertTriangleIcon } from "lucide-react";
 import { loginUser } from "@/actions/loginUser";
@@ -16,6 +16,7 @@ import { useState, useTransition } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 const SignInPage = () => {
+  const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
   const { executeRecaptcha } = useGoogleReCaptcha();
   const [usedNotExistEmails, setUsedNotExistEmails] = useState<string[]>([]);
@@ -34,7 +35,6 @@ const SignInPage = () => {
 
   const { toast } = useToast();
 
-  const searchParams = useSearchParams();
   const urlError =
     searchParams.get("error") === "OAuthAccountNotLinked"
       ? "Email already in use with different provider!"
@@ -120,6 +120,7 @@ const SignInPage = () => {
       <AlternativeLoginOptions
         startTransition={startTransition}
         disabled={isPending}
+        callbackUrl={callbackUrl}
       />
       <span className="text-xs my-4 px-4">
         You are new here?{" "}

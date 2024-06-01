@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import LayoutHeader from "./(frontend)/_header/LayoutHeader";
 import LayoutFooter from "./(frontend)/_footer/LayoutFooter";
 import { Providers } from "./providers";
+import { Analytics } from "@vercel/analytics/react";
 
 const fontSans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const bebesNeue = Bebas_Neue({
@@ -37,6 +38,7 @@ export default async function RootLayout({
           <LayoutHeader />
           <main className="w-full">{children}</main>
           <LayoutFooter />
+          <Analytics />
         </Providers>
       </body>
     </html>

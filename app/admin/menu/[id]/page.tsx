@@ -3,7 +3,6 @@ import { SortableContainer } from "./sortable-container";
 import { TitleForm } from "./title-form";
 import { notFound } from "next/navigation";
 import { getPages } from "@/actions/admin/menu/getPages";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { MenuItemForm } from "./menu-item-form";
 

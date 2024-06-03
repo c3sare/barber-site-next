@@ -5,7 +5,6 @@ import Link from "next/link";
 import NavLinkHeader from "./_components/NavLinkHeader";
 import Header from "./_components/Header";
 import Navigation from "./_components/Navigation";
-import NavLinkHeaderChild from "./_components/NavLinkHeaderChild";
 import Account from "./_components/Account";
 import db from "@/lib/drizzle";
 
@@ -13,7 +12,11 @@ const LayoutHeader = async () => {
   const menu = await db.query.menu.findFirst({
     where: (menu, { eq }) => eq(menu.usedBy, "HEADER"),
     with: {
-      items: true,
+      items: {
+        with: {
+          page: true,
+        },
+      },
     },
   });
 
@@ -36,7 +39,7 @@ const LayoutHeader = async () => {
             <NavLinkHeader
               key={i}
               title={route.name}
-              href={`/page/${route.url}`}
+              href={route.url ?? `/page/${route.page?.slug}`}
               {...route}
             />
           ))}

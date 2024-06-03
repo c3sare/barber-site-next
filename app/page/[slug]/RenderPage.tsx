@@ -1,5 +1,10 @@
-import { componentsReadOnly as components } from "./components";
 import lz from "lzutf8";
+import { Editor, Frame, Element } from "./editor-lib";
+import { Button } from "@/app/admin/pages/editor/editor-components/button";
+import { Container } from "@/app/admin/pages/editor/editor-components/container";
+import { Text } from "@/app/admin/pages/editor/editor-components/text";
+import { Root } from "@/app/admin/pages/editor/editor-components/root";
+import { ThreeRowContainer } from "@/app/admin/pages/editor/editor-components/three-row-container";
 
 type NodeType = {
   custom: any;
@@ -19,30 +24,19 @@ type Data = {
   ROOT: NodeType;
 } & Record<string, NodeType>;
 
-const Node = ({ node, data }: { node: NodeType; data: Data }) => {
-  let typeName = "";
-  if (typeof node.type === "object") {
-    typeName = node.type.resolvedName;
-  } else {
-    typeName = node.type;
-  }
-
-  const Children = [...Object.values(node.linkedNodes), ...node.nodes].map(
-    (x) => {
-      return <Node key={x} node={data[x]} data={data} />;
-    }
-  );
-
-  const Component = components[typeName as keyof typeof components];
-
-  return <Component {...(node.props as any)}>{Children}</Component>;
-};
-
 export const RenderPage = ({ data }: { data: string }) => {
   const content: Data =
     data === "{}" ? null : JSON.parse(lz.decompress(lz.decodeBase64(data)));
 
   if (!content) return null;
 
-  return <Node node={content.ROOT} data={content} />;
+  return (
+    <div className="px-4">
+      <Editor resolver={{ Button, Container, Root, ThreeRowContainer, Text }}>
+        <Frame data={content}>
+          <Element data-cy="root" is={Root} canvas />
+        </Frame>
+      </Editor>
+    </div>
+  );
 };

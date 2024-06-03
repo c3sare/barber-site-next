@@ -1,3 +1,3 @@
 "use client";
 
-export { Editor, Frame } from "@craftjs/core";
+export { Editor, Frame, Element } from "@craftjs/core";

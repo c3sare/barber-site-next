@@ -1,7 +1,5 @@
 import db from "@/lib/drizzle";
 import { notFound } from "next/navigation";
-import { Editor, Frame } from "./editor-lib";
-import { components } from "./components";
 import { RenderPage } from "./RenderPage";
 
 type Props = {

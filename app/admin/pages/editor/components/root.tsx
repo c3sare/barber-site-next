@@ -9,7 +9,7 @@ type Props = {
 export const Root = forwardRef<HTMLDivElement, Props>(
   ({ children, ...props }, ref) => {
     return (
-      <div ref={ref} className="mx-auto w-full max-w-7xl py-8" {...props}>
+      <div ref={ref} className="mx-auto w-full max-w-7xl px-4 py-8" {...props}>
         {children}
       </div>
     );

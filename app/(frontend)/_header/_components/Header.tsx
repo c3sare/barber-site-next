@@ -2,44 +2,17 @@
 
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
-import {
-  useEffect,
-  useRef,
-  useState,
-  createContext,
-  useContext,
-  useCallback,
-} from "react";
+import { useRef } from "react";
 import { socials } from "../_data/socials";
 import SocialLinkButton from "./SocialLink";
 import { contacts } from "../_data/contacts";
 import TopBarLinkButton from "./TopBarLinkButton";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
-const HeaderHeightContext = createContext(0);
-
-export const useHeaderHeight = () => {
-  const height = useContext(HeaderHeightContext);
-
-  return height;
-};
-
 const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
   const headerRef = useRef<HTMLDivElement>(null);
-  const [headerHeight, setHeaderHeight] = useState<number>(0);
   const pathname = usePathname();
   const isHomePage = pathname === "/";
-
-  const handleResizeScreen = useCallback(() => {
-    setHeaderHeight(headerRef.current!.clientHeight);
-  }, []);
-
-  useEffect(() => {
-    handleResizeScreen();
-    window.addEventListener("resize", handleResizeScreen, true);
-
-    return () => window.removeEventListener("resize", handleResizeScreen, true);
-  }, [handleResizeScreen]);
 
   return (
     <div
@@ -82,9 +55,7 @@ const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
           isHomePage ? "md:bg-header bg-header-full" : "bg-header-sticky"
         )}
       >
-        <HeaderHeightContext.Provider value={headerHeight}>
-          {children}
-        </HeaderHeightContext.Provider>
+        {children}
       </header>
     </div>
   );

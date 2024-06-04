@@ -31,12 +31,13 @@ export const RenderPage = ({ data }: { data: string }) => {
   if (!content) return null;
 
   return (
-    <div className="px-4">
-      <Editor resolver={{ Button, Container, Root, ThreeRowContainer, Text }}>
-        <Frame data={content}>
-          <Element data-cy="root" is={Root} canvas />
-        </Frame>
-      </Editor>
-    </div>
+    <Editor
+      enabled={false}
+      resolver={{ Button, Container, Root, ThreeRowContainer, Text }}
+    >
+      <Frame data={content}>
+        <Element data-cy="root" is={Root} canvas />
+      </Frame>
+    </Editor>
   );
 };

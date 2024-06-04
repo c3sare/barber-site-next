@@ -6,8 +6,8 @@ const LayoutFooter: React.FC<React.PropsWithChildren> = async () => {
 
   return (
     <>
-      <footer className="relative overflow-hidden text-[#AAA] block bg-[#0c0c0c] py-24">
-        <div className="max-w-7xl mx-auto p-4">
+      <footer className="relative overflow-hidden text-[#AAA] block bg-[#0c0c0c] py-16">
+        <div className="max-w-7xl mx-auto py-4">
           {footerComponents.map((component) => (
             <RenderFooterComponent key={component.id} {...component} />
           ))}

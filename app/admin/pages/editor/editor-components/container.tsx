@@ -7,7 +7,7 @@ type Props = {
   children?: React.ReactNode;
 };
 
-export const Container = (props: Props) => {
+export const Container = ({ children, ...props }: Props) => {
   const {
     connectors: { connect },
   } = useNode();
@@ -18,6 +18,8 @@ export const Container = (props: Props) => {
         connect(ref!);
       }}
       {...props}
-    />
+    >
+      {children}
+    </ContainerRO>
   );
 };

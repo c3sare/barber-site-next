@@ -17,12 +17,16 @@ function isValidJson(str: string) {
   }
 }
 
-export const savePageContent = adminAction(
-  z.object({
-    id: z.number().int().nonnegative(),
-    content: z.string().refine(isValidJson, { message: "Content isn't json" }),
-  }),
-  async ({ id, content }) => {
+export const savePageContent = adminAction
+  .schema(
+    z.object({
+      id: z.number().int().nonnegative(),
+      content: z
+        .string()
+        .refine(isValidJson, { message: "Content isn't json" }),
+    })
+  )
+  .action(async ({ parsedInput: { id, content } }) => {
     if (!isValidJson) throw new Error("Content isn't json");
 
     const data = lz.encodeBase64(lz.compress(content));
@@ -37,5 +41,4 @@ export const savePageContent = adminAction(
     return {
       success: true,
     };
-  }
-);
+  });

@@ -17,7 +17,7 @@ const ChangePasswordForm = () => {
   const action = useAction(updateUserPassword, {
     onSettled: (data) => {
       form.reset();
-      if (data.data?.success) {
+      if (data?.result?.data?.success) {
         toast({
           title: "Success",
           description: "Password was updated",
@@ -25,9 +25,7 @@ const ChangePasswordForm = () => {
       } else {
         toast({
           title: "Error",
-          description: data.data?.message
-            ? data.data.message
-            : "Something went wrong",
+          description: data?.result?.data?.message ?? "Something went wrong",
         });
       }
     },

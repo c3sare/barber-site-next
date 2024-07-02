@@ -30,7 +30,7 @@ export const FileTransferForm = ({ closeForm }: FileTransferFormProps) => {
   });
   const action = useAction(uploadImages, {
     onSuccess: (data) => {
-      addFilesToState(data);
+      addFilesToState(data?.data ?? []);
       closeForm();
     },
     onError: () => {

@@ -12,7 +12,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Loader2, TrashIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -31,7 +30,7 @@ export const DeleteMenuDialog = ({ id, title }: Props) => {
     startTransition(async () => {
       const response = await deleteMenu(id);
 
-      if (response.data?.success) {
+      if (response?.data?.success) {
         toast({
           title: "Success",
           description: "Menu was deleted",

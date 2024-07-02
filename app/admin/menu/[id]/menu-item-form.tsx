@@ -46,15 +46,15 @@ export const MenuItemForm = ({
     schema: menuItemAddEditSchema,
     defaultValues: id
       ? {
-          name,
-          type: pageId ? "page" : "link",
-          pageId: pageId ? pageId : undefined,
-          url: url ? url : undefined,
-        }
+        name,
+        type: pageId ? "page" : "link",
+        pageId: pageId ? pageId : undefined,
+        url: url ? url : undefined,
+      }
       : {
-          name: "",
-          type: "page",
-        },
+        name: "",
+        type: "page",
+      },
   });
 
   const currentType = form.watch("type");
@@ -63,7 +63,7 @@ export const MenuItemForm = ({
     startTransition(async () => {
       const result = await addEditMenuItem({ ...data, menuId, id });
 
-      if (result.data?.success) {
+      if (result?.data?.success) {
         toast({
           title: "Success",
           description: "Operation successful...",

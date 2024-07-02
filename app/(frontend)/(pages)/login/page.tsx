@@ -60,27 +60,30 @@ const SignInPage = () => {
 
       const token = await executeRecaptcha("submit");
 
-      const { data: loginData } = await loginUser({
+      const loginData = await loginUser({
         ...data,
         callbackUrl,
         token,
       });
 
-      if (loginData?.type === "error") {
-        if (loginData.field) {
-          if (loginData.field === "email")
+      if (loginData?.data?.type === "error") {
+        const { message } = loginData.data;
+
+        if (loginData.data?.field) {
+          const { field } = loginData.data;
+          if (field === "email")
             setUsedNotExistEmails((prev) => [...prev, form.getValues("email")]);
 
           form.setError(
-            loginData.field,
-            { message: loginData.message },
+            field,
+            { message },
             { shouldFocus: true }
           );
         } else
           toast({
             variant: "destructive",
             title: "Error",
-            description: loginData.message,
+            description: message,
           });
       }
     }

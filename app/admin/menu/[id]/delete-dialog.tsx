@@ -27,7 +27,7 @@ export const DeleteDialog = ({ id }: { id: number }) => {
     startTransition(async () => {
       const response = await deleteMenuItem(id);
 
-      if (response.data?.success) {
+      if (response?.data?.success) {
         toast({
           title: "Success",
           description: "Menu item was deleted",

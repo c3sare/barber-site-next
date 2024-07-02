@@ -25,7 +25,7 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
   const router = useRouter();
   const action = useAction(userChangePassword, {
     onSuccess: (data) => {
-      if (data.success) {
+      if (data) {
         toast({
           title: "Success",
           description: "Your password has been changed",

@@ -12,16 +12,13 @@ import { getPlaiceholder } from "plaiceholder";
 
 type FileType = (typeof fileType.enumValues)[number];
 
-export const uploadImages = actionWithAuth(
-  uploadImagesSchema,
-  async (
-    data,
-    {
-      session: {
-        user: { id: userId },
-      },
-    }
-  ) => {
+export const uploadImages = actionWithAuth.schema(uploadImagesSchema).action(
+  async ({
+    parsedInput: data,
+    ctx: {
+      user: { id: userId },
+    },
+  }) => {
     const files = Object.keys(data).map((item) => data[item] as File);
 
     const items = await Promise.all(

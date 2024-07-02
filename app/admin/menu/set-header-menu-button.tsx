@@ -32,7 +32,7 @@ export const SetHeaderMenuButton = ({ menuId }: Props) => {
     startTransition(async () => {
       const response = await setHeaderMenu(menuId);
 
-      if (!response.data?.success)
+      if (!response?.data?.success)
         toast({
           title: "Error",
           variant: "destructive",

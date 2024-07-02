@@ -37,11 +37,11 @@ export const MenuForm = () => {
 
   const onSubmit = form.handleSubmit((data) =>
     startTransition(async () => {
-      const { data: result } = await addMenu(data.title);
+      const result = await addMenu(data.title);
 
       setDialogOpen(false);
 
-      if (result?.success)
+      if (result?.data?.success)
         toast({
           title: "Success",
           description: "Menu was added",

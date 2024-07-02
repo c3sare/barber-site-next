@@ -7,9 +7,9 @@ import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
-export const deletePage = adminAction(
-  z.number().int().nonnegative(),
-  async (pageId) => {
+export const deletePage = adminAction
+  .schema(z.number().int().nonnegative())
+  .action(async ({ parsedInput: pageId }) => {
     const deletePage = await db
       .delete(page)
       .where(eq(page.id, pageId))
@@ -18,5 +18,4 @@ export const deletePage = adminAction(
     revalidatePath("/admin/pages");
 
     return deletePage;
-  }
-);
+  });

@@ -14,7 +14,7 @@ const AvatarChangeForm = () => {
   const { update, data } = useSession();
   const action = useAction(updateUserAvatar, {
     onSettled: (data) => {
-      if (data.data?.success) {
+      if (data?.result?.data?.success) {
         toast({
           title: "Success",
           description: "Avatar was updated",

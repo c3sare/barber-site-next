@@ -6,19 +6,19 @@ import { action } from "@/lib/safe-action";
 import { verifyCaptcha } from "@/lib/verifyCaptcha";
 import { loginSchema } from "@/validators/loginSchema";
 import bcrypt from "bcryptjs";
-import { AuthError } from "next-auth";
-import { isRedirectError } from "next/dist/client/components/redirect";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
-export const loginUser = action(
-  loginSchema.and(
-    z.object({
-      token: z.string(),
-      callbackUrl: z.string().optional().nullable(),
-    })
-  ),
-  async ({ email, password, callbackUrl, token }) => {
+export const loginUser = action
+  .schema(
+    loginSchema.and(
+      z.object({
+        token: z.string(),
+        callbackUrl: z.string().optional().nullable(),
+      })
+    )
+  )
+  .action(async ({ parsedInput: { email, password, callbackUrl, token } }) => {
     const isValidCaptchaToken = await verifyCaptcha(token);
 
     if (!isValidCaptchaToken) {
@@ -40,7 +40,7 @@ export const loginUser = action(
         type: "error",
         message: "User with this email don't exist",
         field: "email",
-      };
+      } as const;
 
     const hashedPassword = user.password ?? "";
 
@@ -51,7 +51,7 @@ export const loginUser = action(
         type: "error",
         message: "Password isn't correct",
         field: "password",
-      };
+      } as const;
 
     if (!user.emailVerified && user.accounts.length === 0)
       return redirect(`/verify?email=${user.email}`);
@@ -66,5 +66,4 @@ export const loginUser = action(
       console.log(err);
       redirect(callbackUrl ?? "/");
     }
-  }
-);
+  });

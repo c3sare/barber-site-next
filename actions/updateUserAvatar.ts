@@ -11,9 +11,9 @@ import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import sharp from "sharp";
 
-export const updateUserAvatar = actionWithAuth(
-  avatarChangeSchema,
-  async ({ image }, { session }) => {
+export const updateUserAvatar = actionWithAuth
+  .schema(avatarChangeSchema)
+  .action(async ({ parsedInput: { image }, ctx: session }) => {
     const parsedAvatar = image as File;
 
     const trimmedImage = await sharp(await parsedAvatar.arrayBuffer())
@@ -52,5 +52,4 @@ export const updateUserAvatar = actionWithAuth(
     return {
       success: true,
     };
-  }
-);
+  });

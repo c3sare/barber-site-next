@@ -25,7 +25,7 @@ export const PasscodeForm = ({ email }: { email: string }) => {
   });
   const action = useAction(verifyEmail, {
     onSettled: (data) => {
-      if (data.data?.success) {
+      if (data.result.data?.success) {
         toast({
           title: "Success",
           description: "Your email has been verified successfully",
@@ -36,7 +36,7 @@ export const PasscodeForm = ({ email }: { email: string }) => {
         toast({
           variant: "destructive",
           title: "Error",
-          description: data.data?.message ?? "Something went wrong",
+          description: data?.result.data?.message ?? "Something went wrong",
         });
       }
     },

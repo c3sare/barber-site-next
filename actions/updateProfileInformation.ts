@@ -7,9 +7,9 @@ import { profileInformationsSchema } from "@/validators/profileInformationsSchem
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
-export const updateProfileInformation = actionWithAuth(
-  profileInformationsSchema,
-  async ({ email, name, phone }, { session }) => {
+export const updateProfileInformation = actionWithAuth
+  .schema(profileInformationsSchema)
+  .action(async ({ parsedInput: { email, name, phone }, ctx: session }) => {
     const updatedUser = await db
       .update(user)
       .set({
@@ -29,5 +29,4 @@ export const updateProfileInformation = actionWithAuth(
     return {
       success: true,
     };
-  }
-);
+  });

@@ -17,10 +17,11 @@ export const ResendButtonPasscode: React.FC<ResendButtonPasscodeProps> = ({
   const interval = useRef<NodeJS.Timeout | null>(null);
   const [leftSecond, setLeftSecond] = useState<number | null>(null);
   const getPasscodeAction = useAction(getLeftTimeToResendPasscode, {
-    onSuccess: (timeLeft) => {
-      setLeftSecond(timeLeft);
+    onSuccess: (data) => {
+      if (data.data)
+        setLeftSecond(data.data);
 
-      if (timeLeft !== 0) {
+      if (data.data !== 0) {
         if (interval.current) clearInterval(interval.current);
 
         interval.current = setInterval(() => {
@@ -37,7 +38,7 @@ export const ResendButtonPasscode: React.FC<ResendButtonPasscodeProps> = ({
 
   const resendPasscodeAction = useAction(resendVerifyPasscode, {
     onSuccess: (data) => {
-      if (data.success) {
+      if (data?.data?.success) {
         getPasscodeAction.execute(email);
         toast({
           title: "Success",

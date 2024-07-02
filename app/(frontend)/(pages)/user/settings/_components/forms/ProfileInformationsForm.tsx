@@ -23,7 +23,7 @@ const ProfileInformationsForm: React.FC<ProfileInformationsFormProps> = ({
   const { toast } = useToast();
   const action = useAction(updateProfileInformation, {
     onSettled: (data) => {
-      if (data.data?.success)
+      if (data.result?.data?.success)
         toast({
           title: "Success",
           description: "Profile informations updated",

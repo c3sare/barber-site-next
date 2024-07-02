@@ -17,9 +17,13 @@ const schema = z.object({
   ),
 });
 
-export const upsertLinkBoxComponent = adminAction(
-  schema.and(z.object({ id: z.optional(z.number().nonnegative().nullable()) })),
-  async (data) => {
+export const upsertLinkBoxComponent = adminAction
+  .schema(
+    schema.and(
+      z.object({ id: z.optional(z.number().nonnegative().nullable()) })
+    )
+  )
+  .action(async ({ parsedInput: data }) => {
     const { id, ...props } = data;
 
     if (id) {
@@ -45,5 +49,4 @@ export const upsertLinkBoxComponent = adminAction(
     revalidatePath("/admin/footer");
 
     return { success: true };
-  }
-);
+  });

@@ -53,7 +53,7 @@ export const SortableContainer = ({ menuItems, pages }: Props) => {
     startTransition(async () => {
       const result = await changeMenuItemsOrder(items.map((item) => item.id));
 
-      if (result.data?.success) {
+      if (result?.data?.success) {
         toast({
           title: "Success",
           description: "Order was changed",

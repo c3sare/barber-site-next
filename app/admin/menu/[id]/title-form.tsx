@@ -2,7 +2,6 @@
 
 import { updateMenuTitle } from "@/actions/admin/menu/updateMenuTitle";
 import { FormInput } from "@/components/form/FormInput";
-import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { useZodForm } from "@/hooks/useZodForm";
 import { useTransition } from "react";
@@ -37,7 +36,7 @@ export const TitleForm = ({ title, id }: Props) => {
           title: data.title,
         });
 
-        if (result.data?.success) {
+        if (result?.data?.success) {
           toast({
             title: "Success",
             description: "Title was updated",

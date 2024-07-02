@@ -21,3 +21,6 @@ export const createSlug = (str: string) => {
     .replace(/[^a-z0-9 ]/g, "") // remove all chars not letters, numbers and spaces (to be replaced)
     .replace(/\s+/g, "-");
 };
+
+export const removeDuplicates = <T>(arr: T[]) =>
+  arr.filter((v, i) => arr.indexOf(v) === i);

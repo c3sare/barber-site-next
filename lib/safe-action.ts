@@ -1,5 +1,8 @@
 import { auth } from "@/auth.config";
-import { DEFAULT_SERVER_ERROR, createSafeActionClient } from "next-safe-action";
+import {
+  DEFAULT_SERVER_ERROR_MESSAGE,
+  createSafeActionClient,
+} from "next-safe-action";
 import { Ratelimit } from "@upstash/ratelimit";
 import { redis } from "./redis";
 import { headers } from "next/headers";
@@ -21,7 +24,7 @@ function handleReturnedServerError(e: Error) {
     return e.message;
   }
 
-  return DEFAULT_SERVER_ERROR;
+  return DEFAULT_SERVER_ERROR_MESSAGE;
 }
 
 async function rateLimiter() {
@@ -35,39 +38,37 @@ async function rateLimiter() {
 
 export const action = createSafeActionClient({
   handleReturnedServerError,
-  async middleware() {
-    await rateLimiter();
-  },
+}).use(async ({ next }) => {
+  await rateLimiter();
+
+  return next({ ctx: null });
 });
 
 export const actionWithAuth = createSafeActionClient({
   handleReturnedServerError,
-  async middleware() {
-    await rateLimiter();
+}).use(async ({ next }) => {
+  await rateLimiter();
 
-    const session = await auth();
+  const session = await auth();
 
-    if (!session?.user.id)
-      throw new ServerActionErrorClient("User isn't authorized!");
+  if (!session?.user.id)
+    throw new ServerActionErrorClient("User isn't authorized!");
 
-    return { session };
-  },
+  return next({ ctx: session });
 });
 
-export const adminAction = createSafeActionClient({
-  async middleware() {
-    const session = await auth();
+export const adminAction = createSafeActionClient().use(async ({ next }) => {
+  const session = await auth();
 
-    if (!session?.user.id || session?.user.role !== "ADMIN")
-      throw new ServerActionErrorClient("User isn't authorized!");
+  if (!session?.user.id || session?.user.role !== "ADMIN")
+    throw new ServerActionErrorClient("User isn't authorized!");
 
-    const user = await db.query.user.findFirst({
-      where: (user, { eq }) => eq(user.id, session.user.id!),
-    });
+  const user = await db.query.user.findFirst({
+    where: (user, { eq }) => eq(user.id, session.user.id!),
+  });
 
-    if (!user || user.role !== "ADMIN")
-      throw new ServerActionErrorClient("User isn't authorized!");
+  if (!user || user.role !== "ADMIN")
+    throw new ServerActionErrorClient("User isn't authorized!");
 
-    return { user };
-  },
+  return next({ ctx: user });
 });

@@ -41,7 +41,7 @@ export const MultiActionsDropDown = <TData extends unknown>({
         description: "Something went wrong...",
       });
     },
-    onSuccess: (_, fileIds) => {
+    onSuccess: ({ input: fileIds }) => {
       const ids = typeof fileIds === "string" ? [fileIds] : fileIds;
 
       deleteFilesFromState(ids);

@@ -10,9 +10,8 @@ import { render } from "@react-email/components";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 
-export const resendVerifyPasscode = action(
-  z.string().email(),
-  async (email) => {
+export const resendVerifyPasscode = action.schema(z.string().email()).action(
+  async ({ parsedInput: email }) => {
     const currentUser = await db.query.user.findFirst({
       where: (user, { eq }) => eq(user.email, email),
     });

@@ -27,8 +27,10 @@ export const FileEditDialog: React.FC<FileEditDialogProps> = ({
   const { toast } = useToast();
   const { updateFileInState } = useFilesLibraryContext();
   const { status, execute } = useAction(updateImage, {
-    onSuccess: (data) => {
-      updateFileInState(data);
+    onSuccess: ({ data }) => {
+      if (data) {
+        updateFileInState(data);
+      }
       onOpenChange(false);
     },
     onError: () => {

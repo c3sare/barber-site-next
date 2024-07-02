@@ -8,11 +8,13 @@ import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
-export const upsertHeroBoxComponent = adminAction(
-  heroComponentSchema.and(
-    z.object({ id: z.optional(z.number().nonnegative().nullable()) })
-  ),
-  async (data) => {
+export const upsertHeroBoxComponent = adminAction
+  .schema(
+    heroComponentSchema.and(
+      z.object({ id: z.optional(z.number().nonnegative().nullable()) })
+    )
+  )
+  .action(async ({ parsedInput: data }) => {
     const { id, ...props } = data;
 
     let footerComp: (typeof footerComponent.$inferSelect)[];
@@ -53,5 +55,4 @@ export const upsertHeroBoxComponent = adminAction(
     return {
       success: true,
     };
-  }
-);
+  });

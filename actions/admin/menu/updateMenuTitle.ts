@@ -12,16 +12,18 @@ const schema = z.object({
   title: z.string().min(1, "Title is required").max(255, "Title is too long"),
 });
 
-export const updateMenuTitle = adminAction(schema, async ({ id, title }) => {
-  try {
-    await db.update(menuSchema).set({ title }).where(eq(menuSchema.id, id));
+export const updateMenuTitle = adminAction
+  .schema(schema)
+  .action(async ({ parsedInput: { id, title } }) => {
+    try {
+      await db.update(menuSchema).set({ title }).where(eq(menuSchema.id, id));
 
-    revalidatePath(`/admin/menu`);
-    revalidatePath(`/admin/menu/${id}`);
+      revalidatePath(`/admin/menu`);
+      revalidatePath(`/admin/menu/${id}`);
 
-    return { success: true };
-  } catch (err) {
-    console.error(err);
-    return { success: false };
-  }
-});
+      return { success: true };
+    } catch (err) {
+      console.error(err);
+      return { success: false };
+    }
+  });

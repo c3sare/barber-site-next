@@ -6,9 +6,9 @@ import { adminAction } from "@/lib/safe-action";
 import { createPageSchema } from "@/validators/createPageSchema";
 import { revalidatePath } from "next/cache";
 
-export const createPage = adminAction(
-  createPageSchema,
-  async ({ name, slug }) => {
+export const createPage = adminAction
+  .schema(createPageSchema)
+  .action(async ({ parsedInput: { name, slug } }) => {
     const createdPage = await db
       .insert(page)
       .values({
@@ -21,5 +21,4 @@ export const createPage = adminAction(
     revalidatePath("/admin/pages");
 
     return { success: true, page: createdPage };
-  }
-);
+  });

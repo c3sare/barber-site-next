@@ -25,7 +25,7 @@ export const RowActionsDropDown = (file: FileLibraryType) => {
     onSettled: () => {
       setIsOpenDeleteDialog(false);
     },
-    onSuccess: (_, id) => {
+    onSuccess: ({ input: id }) => {
       deleteFilesFromState(typeof id === "string" ? [id] : id);
     },
   });

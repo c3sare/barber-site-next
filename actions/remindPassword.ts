@@ -10,9 +10,9 @@ import { remindPasswordSchema } from "@/validators/remindPasswordSchema";
 import { render } from "@react-email/components";
 import { eq } from "drizzle-orm";
 
-export const remindPassword = action(
-  remindPasswordSchema,
-  async ({ email }) => {
+export const remindPassword = action
+  .schema(remindPasswordSchema)
+  .action(async ({ parsedInput: { email } }) => {
     try {
       const token = generateToken();
 
@@ -51,5 +51,4 @@ export const remindPassword = action(
       console.log(err);
       return { success: true };
     }
-  }
-);
+  });

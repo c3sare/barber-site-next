@@ -49,25 +49,26 @@ export default function Register() {
       }
 
       const captcha = await executeRecaptcha("submit");
-      const { data: registerData } = await registerUser({ ...data, captcha });
+      const registerData = await registerUser({ ...data, captcha });
 
-      if (registerData?.type === "success") {
+      if (registerData?.data?.type === "success") {
+
         startTransition(() => router.push(`/verify?email=${data.email}`));
-        toast({ title: "Success", description: registerData.message });
+        toast({ title: "Success", description: registerData.data.message });
       } else {
         toast({
           variant: "destructive",
           title: "Error",
-          description: registerData?.message ?? "Something went wrong...",
+          description: registerData?.data?.message ?? "Something went wrong...",
         });
-        if (registerData?.field) {
-          if (registerData.field === "email") {
+        if (registerData?.data?.field) {
+          if (registerData.data?.field === "email") {
             setUsedEmails((prev) => [...prev, form.getValues("email")]);
           }
 
           form.setError(
-            registerData.field,
-            { message: registerData.message },
+            registerData.data.field,
+            { message: registerData.data.message },
             { shouldFocus: true }
           );
         }

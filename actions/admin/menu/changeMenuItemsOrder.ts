@@ -6,9 +6,9 @@ import { adminAction } from "@/lib/safe-action";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 
-export const changeMenuItemsOrder = adminAction(
-  z.array(z.number()),
-  async (items) => {
+export const changeMenuItemsOrder = adminAction
+  .schema(z.array(z.number()))
+  .action(async ({ parsedInput: items }) => {
     try {
       await Promise.all(
         items.map((id, index) =>
@@ -25,5 +25,4 @@ export const changeMenuItemsOrder = adminAction(
         success: false,
       };
     }
-  }
-);
+  });

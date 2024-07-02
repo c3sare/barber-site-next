@@ -7,9 +7,9 @@ import { changePasswordSchema } from "@/validators/changePasswordSchema";
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
 
-export const updateUserPassword = actionWithAuth(
-  changePasswordSchema,
-  async ({ newPassword, password }, { session }) => {
+export const updateUserPassword = actionWithAuth
+  .schema(changePasswordSchema)
+  .action(async ({ parsedInput: { newPassword, password }, ctx: session }) => {
     try {
       const currentUser = await db.query.user.findFirst({
         where: (user, { eq }) => eq(user.id, session.user.id!),
@@ -50,5 +50,4 @@ export const updateUserPassword = actionWithAuth(
       console.log(err);
       throw err;
     }
-  }
-);
+  });

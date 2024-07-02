@@ -7,9 +7,9 @@ import { userChangePasswordSchema } from "@/validators/userChangePasswordSchema"
 import bcrypt from "bcryptjs";
 import { and, eq } from "drizzle-orm";
 
-export const userChangePassword = action(
-  userChangePasswordSchema,
-  async ({ userId, token, password }) => {
+export const userChangePassword = action
+  .schema(userChangePasswordSchema)
+  .action(async ({ parsedInput: { userId, token, password } }) => {
     try {
       const newPassword = await bcrypt.hash(password, 10);
 
@@ -26,5 +26,4 @@ export const userChangePassword = action(
       console.log(err);
       return { success: false };
     }
-  }
-);
+  });

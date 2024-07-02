@@ -3,19 +3,22 @@
 import { footerComponent } from "@/drizzle/schema";
 import db from "@/lib/drizzle";
 import { adminAction } from "@/lib/safe-action";
+import { removeDuplicates } from "@/lib/utils";
 import { galleryComponentSchema } from "@/validators/galleryComponentSchema";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
-export const upsertGalleryBoxComponent = adminAction(
-  galleryComponentSchema.and(
-    z.object({ id: z.number().optional().nullable() })
-  ),
-  async ({ images, id, title }) => {
-    const imagesWithoutDuplicates = [
-      ...(new Set(images.map((item) => item.imageId)) as unknown as string[]),
-    ];
+export const upsertGalleryBoxComponent = adminAction
+  .schema(
+    galleryComponentSchema.and(
+      z.object({ id: z.number().optional().nullable() })
+    )
+  )
+  .action(async ({ parsedInput: { images, id, title } }) => {
+    const imagesWithoutDuplicates = removeDuplicates(
+      images.map((item) => item.imageId)
+    );
     const checkImages = await db.query.file.findMany({
       where: (file, { inArray }) => inArray(file.id, imagesWithoutDuplicates),
     });
@@ -53,5 +56,4 @@ export const upsertGalleryBoxComponent = adminAction(
     revalidatePath("/admin/footer");
 
     return { success: true };
-  }
-);
+  });

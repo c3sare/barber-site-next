@@ -7,15 +7,17 @@ import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
-export const deleteMenu = adminAction(z.number(), async (id) => {
-  try {
-    await db.delete(menu).where(eq(menu.id, id));
+export const deleteMenu = adminAction
+  .schema(z.number())
+  .action(async ({ parsedInput: id }) => {
+    try {
+      await db.delete(menu).where(eq(menu.id, id));
 
-    revalidatePath("/admin/menu");
+      revalidatePath("/admin/menu");
 
-    return { success: true };
-  } catch (error) {
-    console.log(error);
-    return { success: false };
-  }
-});
+      return { success: true };
+    } catch (error) {
+      console.log(error);
+      return { success: false };
+    }
+  });

@@ -6,6 +6,7 @@ import { loginSchema } from "@/validators/loginSchema";
 import { getUserByEmail } from "@/data/user";
 
 import type { NextAuthConfig } from "next-auth";
+import { z } from "zod";
 
 export default {
   providers: [
@@ -19,17 +20,23 @@ export default {
     }),
     Credentials({
       async authorize(credentials) {
-        const validatedFields = loginSchema.safeParse(credentials);
+        const validatedFields = loginSchema
+          .and(z.object({ callbackUrl: z.string().optional().nullable() }))
+          .safeParse(credentials);
 
         if (validatedFields.success) {
-          const { email, password } = validatedFields.data;
-
+          const { email, password, callbackUrl } = validatedFields.data;
           const user = await getUserByEmail(email);
-          if (!user || !user.password) return null;
+
+          if (!user || !user.password) {
+            return null;
+          }
 
           const passwordsMatch = await bcrypt.compare(password, user.password);
 
-          if (passwordsMatch) return user;
+          if (passwordsMatch) {
+            return user;
+          }
         }
 
         return null;

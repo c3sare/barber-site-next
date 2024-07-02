@@ -44,7 +44,7 @@ export const loginUser = action
 
     const hashedPassword = user.password ?? "";
 
-    const isValidPassword = bcrypt.compare(password, hashedPassword);
+    const isValidPassword = await bcrypt.compare(password, hashedPassword);
 
     if (!isValidPassword)
       return {
@@ -56,14 +56,9 @@ export const loginUser = action
     if (!user.emailVerified && user.accounts.length === 0)
       return redirect(`/verify?email=${user.email}`);
 
-    try {
-      await signIn("credentials", {
-        email,
-        password,
-        redirectTo: callbackUrl ?? "/",
-      });
-    } catch (err) {
-      console.log(err);
-      redirect(callbackUrl ?? "/");
-    }
+    await signIn("credentials", {
+      email,
+      password,
+      redirectTo: callbackUrl ?? "/",
+    });
   });

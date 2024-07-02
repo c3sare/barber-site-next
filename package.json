@@ -104,8 +104,13 @@
     "typescript": "5.4.5"
   },
   "trustedDependencies": [
+    "@swc/core",
     "@vercel/speed-insights",
+    "bufferutil",
     "core-js",
-    "es5-ext"
+    "es5-ext",
+    "esbuild",
+    "sharp",
+    "utf-8-validate"
   ]
 }

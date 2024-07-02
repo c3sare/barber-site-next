@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useZodForm } from "@/hooks/useZodForm";
 import { remindPasswordSchema } from "@/validators/remindPasswordSchema";
-import { useAction } from "@/hooks/useAction";
+import { useAction } from "next-safe-action/hooks";
 
 export const RemindPasswordForm = () => {
   const action = useAction(remindPassword);

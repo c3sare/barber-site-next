@@ -30,7 +30,17 @@ export const EditorComponentBar = () => {
         </EditorComponentDragElement>
         <EditorComponentDragElement
           title="Text"
-          element={<Text fontSize={24} text={"Text"} />}
+          element={
+            <Text
+              fontSize={24}
+              text={"Text"}
+              bold={false}
+              italic={false}
+              htmlTag="p"
+              align="left"
+              color="#000000"
+            />
+          }
         >
           <TextIcon className="size-6" />
         </EditorComponentDragElement>

@@ -27,10 +27,10 @@ export default function PageEditor({ content = "" }: Props) {
       resolver={{ Button, Container, Root, ThreeRowContainer, Text }}
       onRender={RenderNode}
     >
+      <EditorComponentBar />
       <EditorTopBar />
       <div className="w-full flex">
-        <EditorComponentBar />
-        <div className="bg-gray-100 w-full max-w-7xl mx-auto my-4">
+        <div className="bg-gray-50 w-full max-w-7xl mx-auto">
           <Frame data={data}>
             <Element data-cy="root" is={Root} canvas />
           </Frame>

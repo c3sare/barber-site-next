@@ -1,7 +1,6 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -14,7 +13,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { cn } from "@/lib/utils";
-import { useNode } from "@craftjs/core";
+import { useEditor, useNode } from "@craftjs/core";
 import { AlignCenter, AlignLeft, AlignRight, Bold, Italic } from "lucide-react";
 import Sketch from "@uiw/react-color-sketch";
 import {
@@ -25,9 +24,12 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { Toggle } from "@/components/ui/toggle";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 
 export const ToolbarOptions = () => {
+  const { actions: { delete: deleteNode } } = useEditor();
   const {
+    id,
     actions: { setProp },
     fontSize,
     htmlTag,
@@ -52,8 +54,8 @@ export const ToolbarOptions = () => {
         Text settings
       </h2>
       <Card className="p-2">
-        <Label>
-          <span>Font size</span>
+        <Label className="flex flex-col gap-2">
+          <span>Font size ({fontSize}px)</span>
           <Slider
             value={[fontSize]}
             onValueChange={(val) =>
@@ -101,6 +103,7 @@ export const ToolbarOptions = () => {
           <span>Text</span>
           <Textarea
             value={text}
+            className="resize-none"
             placeholder="Text"
             onChange={(e) =>
               setProp((prop: { text: string }) => (prop.text = e.target.value))
@@ -126,7 +129,7 @@ export const ToolbarOptions = () => {
               setProp((prop: { bold: boolean }) => (prop.bold = val))
             }
           >
-            <Bold className="size-4" />
+            <Bold className="size-3" />
           </Toggle>
           <Toggle
             size="sm"
@@ -136,17 +139,17 @@ export const ToolbarOptions = () => {
               setProp((prop: { italic: boolean }) => (prop.italic = val))
             }
           >
-            <Italic className="size-4" />
+            <Italic className="size-3" />
           </Toggle>
-          <Separator className="h-8 mx-1" orientation="vertical" />
+          <Separator className="h-8 mx-0.5" orientation="vertical" />
           <ToggleGroupItem value="left">
-            <AlignLeft className="size-4" />
+            <AlignLeft className="size-3" />
           </ToggleGroupItem>
           <ToggleGroupItem value="center">
-            <AlignCenter className="size-4" />
+            <AlignCenter className="size-3" />
           </ToggleGroupItem>
           <ToggleGroupItem value="right">
-            <AlignRight className="size-4" />
+            <AlignRight className="size-3" />
           </ToggleGroupItem>
         </ToggleGroup>
       </Card>
@@ -174,6 +177,7 @@ export const ToolbarOptions = () => {
           </Popover>
         </Label>
       </Card>
+      <Button variant="destructive" onClick={() => deleteNode(id)}>Delete node</Button>
     </>
   );
 };
@@ -223,9 +227,8 @@ export const Text = ({
           props.text = e.currentTarget.innerText;
         });
       }}
-    >
-      {text}
-    </Tag>
+      dangerouslySetInnerHTML={{ __html: text.replaceAll("\n", "<br/>") }}
+    />
   );
 };
 

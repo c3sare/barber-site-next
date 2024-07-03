@@ -15,8 +15,6 @@ export const EditorComponentOptionsBar = () => {
     };
   });
 
-  console.log({ selectededNodeId, toolbarSettings });
-
   return (
     <div className="w-[300px] h-screen border-l p-2 flex flex-col gap-2">
       {selectededNodeId && toolbarSettings

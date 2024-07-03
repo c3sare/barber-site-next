@@ -3,8 +3,6 @@ import { Bebas_Neue, Inter } from "next/font/google";
 import "photoswipe/dist/photoswipe.css";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import LayoutHeader from "./(frontend)/_header/LayoutHeader";
-import LayoutFooter from "./(frontend)/_footer/LayoutFooter";
 import { Providers } from "./providers";
 import { Analytics } from "@vercel/analytics/react";
 
@@ -35,9 +33,7 @@ export default async function RootLayout({
         )}
       >
         <Providers>
-          <LayoutHeader />
-          <main className="w-full">{children}</main>
-          <LayoutFooter />
+          {children}
           <Analytics />
         </Providers>
       </body>

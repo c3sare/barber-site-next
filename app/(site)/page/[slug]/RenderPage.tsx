@@ -1,10 +1,10 @@
 import lz from "lzutf8";
 import { Editor, Frame, Element } from "./editor-lib";
-import { Button } from "@/app/admin/pages/editor/editor-components/button";
-import { Container } from "@/app/admin/pages/editor/editor-components/container";
-import { Text } from "@/app/admin/pages/editor/editor-components/text";
-import { Root } from "@/app/admin/pages/editor/editor-components/root";
-import { ThreeRowContainer } from "@/app/admin/pages/editor/editor-components/three-row-container";
+import { Button } from "@/app/(site)/admin/pages/editor/editor-components/button";
+import { Container } from "@/app/(site)/admin/pages/editor/editor-components/container";
+import { Text } from "@/app/(site)/admin/pages/editor/editor-components/text";
+import { Root } from "@/app/(site)/admin/pages/editor/editor-components/root";
+import { ThreeRowContainer } from "@/app/(site)/admin/pages/editor/editor-components/three-row-container";
 
 type NodeType = {
   custom: any;

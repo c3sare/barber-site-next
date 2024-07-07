@@ -14,10 +14,17 @@ const Iframe = ({ children, ref, className, ...props }: Props) => {
 
   useEffect(() => {
     const head = document.querySelector("head");
+    const classes = document.body.classList.toString();
     const content = head?.innerHTML;
 
     if (content && contentRef) {
       contentRef.contentWindow!.document.head.innerHTML = content;
+    }
+
+    if (contentRef?.contentWindow?.document.body) {
+      contentRef?.contentWindow?.document.body.classList.add(
+        ...classes.split(" ")
+      );
     }
   }, [contentRef]);
 
@@ -31,7 +38,7 @@ const Iframe = ({ children, ref, className, ...props }: Props) => {
       }}
       {...props}
     >
-      {mountNode && createPortal(children, mountNode)}
+      {mountNode && createPortal(<>{children}</>, mountNode)}
     </iframe>
   );
 };

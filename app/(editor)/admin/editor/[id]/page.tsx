@@ -3,6 +3,7 @@ import { Root } from "@/app/(site)/admin/pages/editor/editor-components/root";
 import lz from "lzutf8";
 import db from "@/lib/drizzle";
 import { notFound } from "next/navigation";
+import Iframe from "./iframe";
 
 type Props = {
   params: {
@@ -45,8 +46,10 @@ export default async function AdminEditorPreviewPage({
   if (!content) return null;
 
   return (
-    <Frame data={content}>
-      <Element data-cy="root" is={Root} canvas />
-    </Frame>
+    <Iframe className="flex-1 w-full h-full">
+      <Frame data={content}>
+        <Element data-cy="root" is={Root} canvas />
+      </Frame>
+    </Iframe>
   );
 }

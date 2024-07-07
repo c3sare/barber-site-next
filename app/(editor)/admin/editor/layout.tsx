@@ -24,7 +24,7 @@ import { Text } from "@/app/(site)/admin/pages/editor/editor-components/text";
 import { Editor } from "@/app/(site)/page/[slug]/editor-lib";
 import { RenderNode } from "@/app/(site)/admin/pages/editor/render-node";
 import { Root } from "@/app/(site)/admin/pages/editor/editor-components/root";
-import Iframe from "./[id]/iframe";
+import { ComponentBar } from "./component-bar";
 
 type Props = {
   children?: React.ReactNode;
@@ -90,7 +90,8 @@ export default async function AdminEditorLayout({ children }: Props) {
           </div>
         </div>
         <div className="w-full flex flex-1">
-          <Iframe className="w-full">{children}</Iframe>
+          <ComponentBar />
+          {children}
         </div>
       </div>
     </Editor>

@@ -39,7 +39,7 @@ export const RenderNode = ({
   const currentRef = useRef<HTMLDivElement>();
 
   useEffect(() => {
-    if (dom) {
+    if (dom && name.toLowerCase() !== "root") {
       dom.classList.add("border", "border-dashed", "border-transparent");
       if (isActive || isHover) {
         dom.classList.remove("border-transparent");
@@ -49,7 +49,7 @@ export const RenderNode = ({
         dom.classList.add("border-transparent");
       }
     }
-  }, [dom, isActive, isHover]);
+  }, [dom, isActive, isHover, name]);
 
   useEffect(() => {
     const fn = () => {
@@ -57,44 +57,51 @@ export const RenderNode = ({
         x: window.scrollX,
         y: window.scrollY,
         width: window.innerWidth,
-      })
-    }
+      });
+    };
 
     window.addEventListener("scroll", fn, true);
     window.addEventListener("resize", fn, true);
 
     return () => {
       window.removeEventListener("resize", fn, true);
-    }
-  })
-
-  const getPos = useCallback((dom: HTMLElement) => {
-    const { top, left, bottom } = dom
-      ? dom.getBoundingClientRect()
-      : { top: 0, left: 0, bottom: 0 };
-    return {
-      top: `${(top > 0 ? top : bottom) + position.y}px`,
-      left: `${left + position.x}px`,
     };
-  }, [position]);
+  });
+
+  const getPos = useCallback(
+    (dom: HTMLElement) => {
+      const { top, left, bottom } = dom
+        ? dom.getBoundingClientRect()
+        : { top: 0, left: 0, bottom: 0 };
+      return {
+        top: `${(top > 0 ? top : bottom) + position.y + 45}px`,
+        left: `${left + position.x}px`,
+      };
+    },
+    [position]
+  );
+
+  const style = {
+    left: getPos(dom!).left,
+    top: getPos(dom!).top,
+  };
 
   return (
     <>
       {isHover || isActive
         ? ReactDOM.createPortal(
-          <div
-            ref={(ref) => {
-              currentRef.current = ref!;
-            }}
-            className={cn("h-[30px] mt-[-29px] text-xs leading-3 border border-gray-500 border-b-transparent &>svg:fill-[#fff] &>svg:size-[15px] px-2 py-2 text-white bg-gray-400 absolute flex items-center z-[1]", name.toLowerCase() === "root" && "hidden")}
-            style={{
-              left: getPos(dom!).left,
-              top: getPos(dom!).top,
-            }}
-          >
-            <h2 className="flex-1 mr-4">{name}</h2>
-            {
-              moveable ? (
+            <div
+              ref={(ref) => {
+                currentRef.current = ref!;
+              }}
+              className={cn(
+                "h-[30px] mt-[-29px] text-xs leading-3 border border-gray-500 border-b-transparent &>svg:fill-[#fff] &>svg:size-[15px] px-2 py-2 text-white bg-gray-400 absolute flex items-center z-[1]",
+                name.toLowerCase() === "root" && "hidden"
+              )}
+              style={style}
+            >
+              <h2 className="flex-1 mr-4">{name}</h2>
+              {moveable ? (
                 <button
                   className="p-0 opacity-90 flex items-center &>div:relative &>div:-top-1/2 &>div:-left-1/2 mr-2 cursor-move"
                   ref={(ref) => {
@@ -102,10 +109,9 @@ export const RenderNode = ({
                   }}
                 >
                   <MoveIcon className="size-4" />
-                </button >
+                </button>
               ) : null}
-            {
-              id !== ROOT_NODE && (
+              {id !== ROOT_NODE && (
                 <button
                   className="p-0 opacity-90 flex items-center &>div:relative &>div:-top-1/2 &>div:-left-1/2 mr-2 cursor-pointer"
                   onClick={() => {
@@ -114,10 +120,8 @@ export const RenderNode = ({
                 >
                   <ArrowUpIcon className="size-4" />
                 </button>
-              )
-            }
-            {
-              deletable ? (
+              )}
+              {deletable ? (
                 <button
                   className="p-0 opacity-90 flex items-center &>div:relative &>div:-top-1/2 &>div:-left-1/2 cursor-pointer"
                   onMouseDown={(e: React.MouseEvent) => {
@@ -127,11 +131,10 @@ export const RenderNode = ({
                 >
                   <Trash2Icon className="size-4" />
                 </button>
-              ) : null
-            }
-          </div >,
-          document.querySelector("body")!
-        )
+              ) : null}
+            </div>,
+            document.querySelector("body")!
+          )
         : null}
       {render}
     </>

@@ -16,7 +16,7 @@ export const BarButtons = () => {
     const {currentOpenBar, toggleBar, openBar, closeBar} = useEditorContext();
 
   useEffect(() => {
-    if(currentNode.data.name.toLowerCase() === "root" || !selectededNodeId) {
+    if(currentNode?.data.name.toLowerCase() === "root" || !selectededNodeId) {
       closeBar();
     } else {
       openBar("settings");

@@ -15,7 +15,7 @@ export const BuilderElement = ({ element, children }: Props) => {
     <Button
       variant="outline"
       size="icon"
-      className="w-full"
+      className="w-full flex items-center justify-start px-4 gap-3"
       ref={(ref) => {
         connectors.create(ref!, element);
       }}

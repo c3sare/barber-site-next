@@ -14,7 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { cn } from "@/lib/utils";
 import { useEditor, useNode } from "@craftjs/core";
-import { AlignCenter, AlignLeft, AlignRight, Bold, Italic } from "lucide-react";
+import { AlignCenter, AlignLeft, AlignRight, Bold, Italic, PaletteIcon, PencilIcon, SettingsIcon } from "lucide-react";
 import Sketch from "@uiw/react-color-sketch";
 import {
   Popover,
@@ -25,6 +25,7 @@ import { Slider } from "@/components/ui/slider";
 import { Toggle } from "@/components/ui/toggle";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export const ToolbarOptions = () => {
   const { actions: { delete: deleteNode } } = useEditor();
@@ -50,10 +51,14 @@ export const ToolbarOptions = () => {
 
   return (
     <>
-      <h2 className="text-xl w-full text-center border-b my-1">
-        Text settings
-      </h2>
-      <Card className="p-2">
+      <Tabs defaultValue="edit" className="w-full">
+        <TabsList className="w-full [&>button]:w-1/3">
+          <TabsTrigger value="edit"><PencilIcon/></TabsTrigger>
+          <TabsTrigger value="compose"><PaletteIcon/></TabsTrigger>
+          <TabsTrigger value="settings"><SettingsIcon/></TabsTrigger>
+        </TabsList>
+        <TabsContent className="flex flex-col gap-2" value="edit">
+        <Card className="p-2">
         <Label className="flex flex-col gap-2">
           <span>Font size ({fontSize}px)</span>
           <Slider
@@ -178,28 +183,30 @@ export const ToolbarOptions = () => {
         </Label>
       </Card>
       <Button variant="destructive" onClick={() => deleteNode(id)}>Delete node</Button>
+        </TabsContent>
+      </Tabs>
     </>
   );
 };
 
 type Props = {
-  text: string;
-  fontSize: number;
-  htmlTag: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "div" | "span" | "p";
-  align: "left" | "center" | "right";
-  color: string;
-  bold: boolean;
-  italic: boolean;
+  text?: string;
+  fontSize?: number;
+  htmlTag?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "div" | "span" | "p";
+  align?: "left" | "center" | "right";
+  color?: string;
+  bold?: boolean;
+  italic?: boolean;
 };
 
 export const Text = ({
-  text,
-  fontSize,
-  htmlTag: Tag,
-  align,
-  color,
-  bold,
-  italic,
+  text="Text",
+  fontSize=24,
+  htmlTag: Tag="p",
+  align="left",
+  color="#000000",
+  bold=false,
+  italic=false,
 }: Props) => {
   const {
     connectors: { connect },

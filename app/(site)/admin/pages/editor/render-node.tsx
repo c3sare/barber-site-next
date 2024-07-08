@@ -74,7 +74,7 @@ export const RenderNode = ({
         ? dom.getBoundingClientRect()
         : { top: 0, left: 0, bottom: 0 };
       return {
-        top: `${(top > 0 ? top : bottom) + position.y + 45}px`,
+        top: `${(top > 0 ? top : bottom) + position.y}px`,
         left: `${left + position.x}px`,
       };
     },
@@ -133,7 +133,7 @@ export const RenderNode = ({
                 </button>
               ) : null}
             </div>,
-            document.querySelector("body")!
+            document.querySelector("iframe")!.contentWindow!.document.body
           )
         : null}
       {render}

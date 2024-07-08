@@ -25,6 +25,8 @@ import { Editor } from "@/app/(site)/page/[slug]/editor-lib";
 import { RenderNode } from "@/app/(site)/admin/pages/editor/render-node";
 import { Root } from "@/app/(site)/admin/pages/editor/editor-components/root";
 import { ComponentBar } from "./component-bar";
+import { EditorContextProvider } from "./_ctx/editor-context";
+import { BarButtons } from "./bar-buttons";
 
 type Props = {
   children?: React.ReactNode;
@@ -34,6 +36,7 @@ export default async function AdminEditorLayout({ children }: Props) {
   const pages = await getPages();
 
   return (
+    <EditorContextProvider>
     <Editor
       enabled
       resolver={{
@@ -45,14 +48,10 @@ export default async function AdminEditorLayout({ children }: Props) {
       }}
       onRender={RenderNode}
     >
-      <div className="h-dvh w-full flex flex-col">
+      <div className="h-dvh w-full flex overflow-hidden flex-col">
         <div className="w-full flex border-b justify-between">
           <div className="flex gap-1 px-1 border-r [&>button]:my-1">
-            <Button size="sm">Add</Button>
-            <Separator orientation="vertical" />
-            <Button size="sm">
-              <PencilRulerIcon className="size-5" />
-            </Button>
+            <BarButtons/>
           </div>
           <div className="px-1 border-x flex items-center gap-1 [&>*]:my-1">
             <PageSelect pages={pages} />
@@ -89,11 +88,12 @@ export default async function AdminEditorLayout({ children }: Props) {
             <ExitEditorButton />
           </div>
         </div>
-        <div className="w-full flex flex-1">
+        <div className="w-full flex flex-1 bg-neutral-100">
           <ComponentBar />
           {children}
         </div>
       </div>
     </Editor>
+    </EditorContextProvider>
   );
 }

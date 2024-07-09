@@ -27,6 +27,7 @@ import { Root } from "@/app/(site)/admin/pages/editor/editor-components/root";
 import { ComponentBar } from "./component-bar";
 import { EditorContextProvider } from "./_ctx/editor-context";
 import { BarButtons } from "./bar-buttons";
+import { UndoRedoButtons } from "./undo-redo-buttons";
 
 type Props = {
   children?: React.ReactNode;
@@ -37,63 +38,58 @@ export default async function AdminEditorLayout({ children }: Props) {
 
   return (
     <EditorContextProvider>
-    <Editor
-      enabled
-      resolver={{
-        Button: ButtonEditor,
-        Container,
-        Root,
-        ThreeRowContainer,
-        Text,
-      }}
-      onRender={RenderNode}
-    >
-      <div className="h-dvh w-full flex overflow-hidden flex-col">
-        <div className="w-full flex border-b justify-between">
-          <div className="flex gap-1 px-1 border-r [&>button]:my-1">
-            <BarButtons/>
+      <Editor
+        enabled
+        resolver={{
+          Button: ButtonEditor,
+          Container,
+          Root,
+          ThreeRowContainer,
+          Text,
+        }}
+        onRender={RenderNode}
+      >
+        <div className="h-dvh w-full flex overflow-hidden flex-col">
+          <div className="w-full flex border-b justify-between">
+            <div className="flex gap-1 px-1 border-r [&>button]:my-1">
+              <BarButtons />
+            </div>
+            <div className="px-1 border-x flex items-center gap-1 [&>*]:my-1">
+              <PageSelect pages={pages} />
+              <Separator orientation="vertical" />
+              <DeviceSelect />
+            </div>
+            <div className="flex gap-1 px-1 border-l items-center">
+              <UndoRedoButtons />
+              <Separator orientation="vertical" />
+              <Button size="sm" variant="ghost">
+                <Layers3Icon />
+              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button size="sm" variant="ghost">
+                    <EllipsisIcon />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem>Global Settings</DropdownMenuItem>
+                  <DropdownMenuItem>Selectors</DropdownMenuItem>
+                  <DropdownMenuItem>History</DropdownMenuItem>
+                  <DropdownMenuItem>Preferences</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <Separator orientation="vertical" />
+              <Button size="sm">Save</Button>
+              <Separator orientation="vertical" />
+              <ExitEditorButton />
+            </div>
           </div>
-          <div className="px-1 border-x flex items-center gap-1 [&>*]:my-1">
-            <PageSelect pages={pages} />
-            <Separator orientation="vertical" />
-            <DeviceSelect />
-          </div>
-          <div className="flex gap-1 px-1 border-l items-center">
-            <Button size="sm" variant="ghost">
-              <RotateCcwIcon />
-            </Button>
-            <Button size="sm" variant="ghost">
-              <RotateCwIcon />
-            </Button>
-            <Separator orientation="vertical" />
-            <Button size="sm" variant="ghost">
-              <Layers3Icon />
-            </Button>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button size="sm" variant="ghost">
-                  <EllipsisIcon />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem>Global Settings</DropdownMenuItem>
-                <DropdownMenuItem>Selectors</DropdownMenuItem>
-                <DropdownMenuItem>History</DropdownMenuItem>
-                <DropdownMenuItem>Preferences</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <Separator orientation="vertical" />
-            <Button size="sm">Save</Button>
-            <Separator orientation="vertical" />
-            <ExitEditorButton />
+          <div className="w-full flex flex-1 bg-neutral-100">
+            <ComponentBar />
+            {children}
           </div>
         </div>
-        <div className="w-full flex flex-1 bg-neutral-100">
-          <ComponentBar />
-          {children}
-        </div>
-      </div>
-    </Editor>
+      </Editor>
     </EditorContextProvider>
   );
 }

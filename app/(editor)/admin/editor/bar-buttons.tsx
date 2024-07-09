@@ -6,9 +6,10 @@ import { Separator } from "@/components/ui/separator";
 import { PencilRulerIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEditor } from "@craftjs/core";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export const BarButtons = () => {
+  const [firstMount, setFirstMount] = useState(true);
   const {selectededNodeId, currentNode} = useEditor(state => ({
     selectededNodeId: state.events.selected,
     currentNode: state.nodes[state.events.selected.values().next().value],
@@ -16,7 +17,9 @@ export const BarButtons = () => {
     const {currentOpenBar, toggleBar, openBar, closeBar} = useEditorContext();
 
   useEffect(() => {
-    if(currentNode?.data.name.toLowerCase() === "root" || !selectededNodeId) {
+    if(firstMount) {
+      setFirstMount(false);
+    } else if(currentNode?.data.name.toLowerCase() === "root" || !selectededNodeId) {
       closeBar();
     } else {
       openBar("settings");

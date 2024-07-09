@@ -27,6 +27,23 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+const tags = ["h1", "h2", "h3", "h4", "h5", "h6", "div", "span", "p"] as const;
+
+const alignItems = [
+  {
+    value: "left",
+    icon: AlignLeft
+  },
+  {
+    value: "center",
+    icon: AlignCenter
+  },
+  {
+    value: "right",
+    icon: AlignRight
+  }
+] as const;
+
 export const ToolbarOptions = () => {
   const { actions: { delete: deleteNode } } = useEditor();
   const {
@@ -53,9 +70,18 @@ export const ToolbarOptions = () => {
     <>
       <Tabs defaultValue="edit" className="w-full">
         <TabsList className="w-full [&>button]:w-1/3">
-          <TabsTrigger value="edit"><PencilIcon/></TabsTrigger>
-          <TabsTrigger value="compose"><PaletteIcon/></TabsTrigger>
-          <TabsTrigger value="settings"><SettingsIcon/></TabsTrigger>
+          <TabsTrigger value="edit">
+            <PencilIcon/>
+            <span className="sr-only">Basic settings</span>
+          </TabsTrigger>
+          <TabsTrigger value="compose">
+            <PaletteIcon/>
+            <span className="sr-only">Style settings</span>
+          </TabsTrigger>
+          <TabsTrigger value="settings">
+            <SettingsIcon/>
+            <span className="sr-only">Advanced settings</span>
+          </TabsTrigger>
         </TabsList>
         <TabsContent className="flex flex-col gap-2" value="edit">
         <Card className="p-2">
@@ -89,15 +115,11 @@ export const ToolbarOptions = () => {
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="h1">H1</SelectItem>
-                <SelectItem value="h2">H2</SelectItem>
-                <SelectItem value="h3">H3</SelectItem>
-                <SelectItem value="h4">H4</SelectItem>
-                <SelectItem value="h5">H5</SelectItem>
-                <SelectItem value="h6">H6</SelectItem>
-                <SelectItem value="div">div</SelectItem>
-                <SelectItem value="span">span</SelectItem>
-                <SelectItem value="p">p</SelectItem>
+                {tags.map((tag) => (
+                  <SelectItem key={tag} value={tag}>
+                    {tag}
+                  </SelectItem>
+                ))}
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -147,15 +169,11 @@ export const ToolbarOptions = () => {
             <Italic className="size-3" />
           </Toggle>
           <Separator className="h-8 mx-0.5" orientation="vertical" />
-          <ToggleGroupItem value="left">
-            <AlignLeft className="size-3" />
-          </ToggleGroupItem>
-          <ToggleGroupItem value="center">
-            <AlignCenter className="size-3" />
-          </ToggleGroupItem>
-          <ToggleGroupItem value="right">
-            <AlignRight className="size-3" />
-          </ToggleGroupItem>
+          {alignItems.map((item) => (
+            <ToggleGroupItem key={item.value} value={item.value}>
+              <item.icon className="size-3" />
+            </ToggleGroupItem>
+          ))}
         </ToggleGroup>
       </Card>
       <Card className="p-2">
@@ -192,8 +210,8 @@ export const ToolbarOptions = () => {
 type Props = {
   text?: string;
   fontSize?: number;
-  htmlTag?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "div" | "span" | "p";
-  align?: "left" | "center" | "right";
+  htmlTag?: typeof tags[number];
+  align?: (typeof alignItems)[number]["value"];
   color?: string;
   bold?: boolean;
   italic?: boolean;

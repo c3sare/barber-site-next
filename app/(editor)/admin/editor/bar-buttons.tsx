@@ -10,30 +10,45 @@ import { useEffect, useState } from "react";
 
 export const BarButtons = () => {
   const [firstMount, setFirstMount] = useState(true);
-  const {selectededNodeId, currentNode} = useEditor(state => ({
+  const { selectededNodeId, currentNode } = useEditor((state) => ({
     selectededNodeId: state.events.selected,
     currentNode: state.nodes[state.events.selected.values().next().value],
   }));
-    const {currentOpenBar, toggleBar, openBar, closeBar} = useEditorContext();
+  const { currentOpenBar, toggleBar, openBar, closeBar } = useEditorContext();
 
   useEffect(() => {
-    if(firstMount) {
+    if (firstMount) {
       setFirstMount(false);
-    } else if(currentNode?.data.name.toLowerCase() === "root" || !selectededNodeId) {
-      closeBar();
+    } else if (
+      currentNode?.data.name.toLowerCase() === "root" ||
+      !selectededNodeId
+    ) {
     } else {
       openBar("settings");
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectededNodeId]);
 
   return (
     <>
-      <Button size="sm" className={cn("text-base font-bold px-6", currentOpenBar === "components" && "opacity-70")} onClick={() => toggleBar("components")}>Add</Button>
+      <Button
+        size="sm"
+        className={cn(
+          "text-base font-bold px-6",
+          currentOpenBar === "components" && "opacity-70"
+        )}
+        onClick={() => toggleBar("components")}
+      >
+        Add
+      </Button>
       <Separator orientation="vertical" />
-      <Button size="sm" className={cn(currentOpenBar === "settings" && "opacity-70")} onClick={() => toggleBar("settings")}>
+      <Button
+        size="sm"
+        className={cn(currentOpenBar === "settings" && "opacity-70")}
+        onClick={() => toggleBar("settings")}
+      >
         <PencilRulerIcon className="size-5" />
       </Button>
     </>
   );
-}
+};

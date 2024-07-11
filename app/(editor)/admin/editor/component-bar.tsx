@@ -29,7 +29,7 @@ export const ComponentBar = () => {
 
   if (currentOpenBar === "settings")
     return (
-      <div className="w-[300px] p-4 h-full border-r bg-background flex flex-col gap-2">
+      <div className="w-[300px] min-w-[300px] p-4 h-full border-r bg-background flex flex-col gap-2">
         {selectededNodeId && toolbarSettings ? (
           createElement(toolbarSettings)
         ) : (
@@ -48,7 +48,7 @@ export const ComponentBar = () => {
 
   return (
     currentOpenBar === "components" && (
-      <div className="w-[300px] p-4 h-full border-r bg-background">
+      <div className="w-[300px] min-w-[300px] p-4 h-full border-r bg-background">
         <Accordion type="multiple" defaultValue={["basic"]}>
           <AccordionItem value="basic">
             <AccordionTrigger>Basic</AccordionTrigger>

@@ -46,7 +46,7 @@ export default async function AdminEditorPreviewPage({
   if (!content) return null;
 
   return (
-    <Iframe className="flex-1 w-full h-full m-2 bg-background">
+    <Iframe className="flex-1 w-full h-full bg-background">
       <Frame data={content}>
         <Element data-cy="root" is={Root} canvas />
       </Frame>

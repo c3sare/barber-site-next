@@ -84,9 +84,9 @@ export default async function AdminEditorLayout({ children }: Props) {
               <ExitEditorButton />
             </div>
           </div>
-          <div className="w-full flex flex-1 bg-neutral-100">
+          <div className="w-full flex flex-1 bg-neutral-100 relative">
             <ComponentBar />
-            {children}
+            <div className="flex-1 m-2">{children}</div>
           </div>
         </div>
       </Editor>

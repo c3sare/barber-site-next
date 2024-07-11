@@ -2,10 +2,10 @@
 
 import { cn } from "@/lib/utils";
 import { EllipsisVerticalIcon } from "lucide-react";
-import React, { forwardRef, useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { ResizableBox } from "react-resizable";
-import "react-resizable/css/styles.css";
+import { Resizable } from "re-resizable";
+import { useEditorContext } from "../_ctx/editor-context";
 
 type Props = React.DetailedHTMLProps<
   React.IframeHTMLAttributes<HTMLIFrameElement>,
@@ -37,8 +37,30 @@ const Handle = forwardRef<
 Handle.displayName = "Handle";
 
 const Iframe = ({ children, ref, className, ...props }: Props) => {
-  const [width, setWidth] = useState(1000);
+  const { currentOpenBar, frameWidth, setFrameWidth } = useEditorContext();
+  const [maxWidth, setMaxWidth] = useState<number>(0);
+  const containerRef = useRef<Resizable>(null);
   const [contentRef, setContentRef] = useState<HTMLIFrameElement | null>(null);
+
+  useEffect(() => {
+    const fn = () => {
+      const container = containerRef.current;
+      console.log("execute");
+
+      if (container) {
+        const maxWidth = container.parentNode!.clientWidth;
+        console.log({ maxWidth });
+        setMaxWidth(maxWidth - 16);
+      }
+    };
+    fn();
+
+    window.addEventListener("resize", fn, true);
+
+    return () => {
+      window.removeEventListener("resize", fn, true);
+    };
+  }, [currentOpenBar]);
 
   useEffect(() => {
     const head = document.querySelector("head");
@@ -60,19 +82,37 @@ const Iframe = ({ children, ref, className, ...props }: Props) => {
 
   const onResize = (
     event: any,
-    { size }: { size: { width: number; height: number } }
+    dir: any,
+    ref: HTMLElement,
+    size: { width: number; height: number }
   ) => {
-    setWidth(size.width);
+    setFrameWidth(ref.clientWidth);
   };
 
   return (
-    <ResizableBox
-      className="relative mx-auto !h-full max-w-full"
-      width={width}
-      height={0}
-      minConstraints={[0, 250]}
+    <Resizable
+      className="relative mx-auto !h-full max-w-[calc(100%-16px)]"
+      size={{ width: frameWidth, height: 0 }}
+      maxWidth={maxWidth}
       onResize={onResize}
-      handle={(handleAxis, ref) => <Handle handleAxis={handleAxis} ref={ref} />}
+      resizeRatio={2}
+      minWidth={250}
+      enable={{ right: true }}
+      handleStyles={{
+        right: {
+          cursor: "move",
+          position: "absolute",
+          top: "50%",
+          translate: "translateY(-50%)",
+          right: "0px",
+          height: "24px",
+          width: "24px",
+        },
+      }}
+      handleComponent={{
+        right: <EllipsisVerticalIcon />,
+      }}
+      ref={containerRef}
     >
       <iframe
         className={cn("relative w-full h-full", className)}
@@ -83,7 +123,7 @@ const Iframe = ({ children, ref, className, ...props }: Props) => {
       >
         {mountNode && createPortal(<>{children}</>, mountNode)}
       </iframe>
-    </ResizableBox>
+    </Resizable>
   );
 };
 

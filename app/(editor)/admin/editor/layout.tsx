@@ -86,7 +86,7 @@ export default async function AdminEditorLayout({ children }: Props) {
           </div>
           <div className="w-full flex flex-1 bg-neutral-100 relative">
             <ComponentBar />
-            <div className="flex-1 m-2">{children}</div>
+            {children}
           </div>
         </div>
       </Editor>

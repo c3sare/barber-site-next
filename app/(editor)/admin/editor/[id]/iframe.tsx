@@ -48,9 +48,15 @@ const Iframe = ({ children, ref, className, ...props }: Props) => {
       console.log("execute");
 
       if (container) {
-        const maxWidth = container.parentNode!.clientWidth;
+        const maxWidth = container.parentNode!.clientWidth - 16;
         console.log({ maxWidth });
-        setMaxWidth(maxWidth - 16);
+
+        if (frameWidth > maxWidth)
+          container.setState((prev) => ({
+            ...prev,
+            size: { height: 0, width: maxWidth },
+          }));
+        setMaxWidth(maxWidth);
       }
     };
     fn();
@@ -73,7 +79,7 @@ const Iframe = ({ children, ref, className, ...props }: Props) => {
 
     if (contentRef?.contentWindow?.document.body) {
       contentRef?.contentWindow?.document.body.classList.add(
-        ...classes.split(" ")
+        ...classes.split(" ").filter((item) => item !== "min-h-screen")
       );
     }
   }, [contentRef]);
@@ -90,40 +96,42 @@ const Iframe = ({ children, ref, className, ...props }: Props) => {
   };
 
   return (
-    <Resizable
-      className="relative mx-auto !h-full max-w-[calc(100%-16px)]"
-      size={{ width: frameWidth, height: 0 }}
-      maxWidth={maxWidth}
-      onResize={onResize}
-      resizeRatio={2}
-      minWidth={250}
-      enable={{ right: true }}
-      handleStyles={{
-        right: {
-          cursor: "move",
-          position: "absolute",
-          top: "50%",
-          translate: "translateY(-50%)",
-          right: "0px",
-          height: "24px",
-          width: "24px",
-        },
-      }}
-      handleComponent={{
-        right: <EllipsisVerticalIcon />,
-      }}
-      ref={containerRef}
-    >
-      <iframe
-        className={cn("relative w-full h-full", className)}
-        ref={(refx) => {
-          setContentRef(refx);
+    <div className="flex-1 m-2" onResizeCapture={() => console.log("resize")}>
+      <Resizable
+        className="relative mx-auto !h-full max-w-[calc(100%-16px)]"
+        size={{ width: frameWidth, height: 0 }}
+        maxWidth={maxWidth}
+        onResize={onResize}
+        resizeRatio={2}
+        minWidth={250}
+        enable={{ right: true }}
+        handleStyles={{
+          right: {
+            cursor: "move",
+            position: "absolute",
+            top: "50%",
+            translate: "translateY(-50%)",
+            right: "0px",
+            height: "24px",
+            width: "24px",
+          },
         }}
-        {...props}
+        handleComponent={{
+          right: <EllipsisVerticalIcon />,
+        }}
+        ref={containerRef}
       >
-        {mountNode && createPortal(<>{children}</>, mountNode)}
-      </iframe>
-    </Resizable>
+        <iframe
+          className={cn("relative w-full h-full", className)}
+          ref={(refx) => {
+            setContentRef(refx);
+          }}
+          {...props}
+        >
+          {mountNode && createPortal(<>{children}</>, mountNode)}
+        </iframe>
+      </Resizable>
+    </div>
   );
 };
 

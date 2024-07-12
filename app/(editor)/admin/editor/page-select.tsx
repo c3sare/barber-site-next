@@ -16,6 +16,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { useEditor } from "@craftjs/core";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -26,6 +27,9 @@ type Props = {
 
 export const PageSelect = ({ pages }: Props) => {
   const router = useRouter();
+  const {
+    actions: { selectNode },
+  } = useEditor();
   const { id } = useParams<{ id: string }>();
   const [open, setOpen] = useState(false);
 
@@ -57,6 +61,7 @@ export const PageSelect = ({ pages }: Props) => {
                   key={page.id}
                   value={page.name}
                   onSelect={() => {
+                    selectNode();
                     router.push(`/admin/editor/${page.id}`);
                     setOpen(false);
                   }}

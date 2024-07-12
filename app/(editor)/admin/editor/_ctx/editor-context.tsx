@@ -11,6 +11,10 @@ type EditorContextType = {
   openBar: (bar: Bar) => void;
   frameWidth: number;
   setFrameWidth: React.Dispatch<React.SetStateAction<number>>;
+  isOpenLayersBar: boolean;
+  toggleLayersBar: () => void;
+  isResizing: boolean;
+  setIsResizing: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const EditorContext = createContext<EditorContextType | null>(null);
@@ -18,7 +22,9 @@ const EditorContext = createContext<EditorContextType | null>(null);
 export const EditorContextProvider = ({
   children,
 }: React.PropsWithChildren) => {
+  const [isResizing, setIsResizing] = useState(false);
   const [currentOpenBar, setCurrentOpenBar] = useState<Bar>(null);
+  const [isOpenLayersBar, setIsOpenLayersBar] = useState(false);
   const [frameWidth, setFrameWidth] = useState(1920);
 
   const value = useMemo(
@@ -32,8 +38,12 @@ export const EditorContextProvider = ({
       openBar: (bar: Bar) => setCurrentOpenBar(bar),
       frameWidth,
       setFrameWidth,
+      isOpenLayersBar,
+      toggleLayersBar: () => setIsOpenLayersBar((state) => !state),
+      isResizing,
+      setIsResizing,
     }),
-    [currentOpenBar, frameWidth]
+    [currentOpenBar, frameWidth, isOpenLayersBar, isResizing]
   );
 
   return (

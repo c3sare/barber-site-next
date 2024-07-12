@@ -2,62 +2,37 @@
 
 import { cn } from "@/lib/utils";
 import { EllipsisVerticalIcon } from "lucide-react";
-import React, { forwardRef, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Resizable } from "re-resizable";
 import { useEditorContext } from "../_ctx/editor-context";
+import { Frame, Element, SerializedNodes } from "@craftjs/core";
+import { Root } from "@/app/(editor)/admin/editor/editor-components/root";
 
 type Props = React.DetailedHTMLProps<
   React.IframeHTMLAttributes<HTMLIFrameElement>,
   HTMLIFrameElement
->;
+> & {
+  data: SerializedNodes | undefined;
+};
 
-const Handle = forwardRef<
-  HTMLDivElement,
-  React.DetailedHTMLProps<
-    React.HTMLAttributes<HTMLDivElement>,
-    HTMLDivElement
-  > & { handleAxis: string }
->((props, ref) => {
-  const { handleAxis, className, ...restProps } = props;
-  return (
-    <div
-      ref={ref}
-      className={cn(
-        `handle-${handleAxis} absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 cursor-move`,
-        className
-      )}
-      {...restProps}
-    >
-      <EllipsisVerticalIcon />
-    </div>
-  );
-});
-
-Handle.displayName = "Handle";
-
-const Iframe = ({ children, ref, className, ...props }: Props) => {
-  const { currentOpenBar, frameWidth, setFrameWidth } = useEditorContext();
+const Iframe = ({ children, ref, className, data, ...props }: Props) => {
+  const {
+    currentOpenBar,
+    frameWidth,
+    setFrameWidth,
+    isOpenLayersBar,
+    isResizing,
+    setIsResizing,
+  } = useEditorContext();
   const [maxWidth, setMaxWidth] = useState<number>(0);
-  const containerRef = useRef<Resizable>(null);
   const [contentRef, setContentRef] = useState<HTMLIFrameElement | null>(null);
 
   useEffect(() => {
     const fn = () => {
-      const container = containerRef.current;
-      console.log("execute");
+      const maxWidth = window.innerWidth - 16;
 
-      if (container) {
-        const maxWidth = container.parentNode!.clientWidth - 16;
-        console.log({ maxWidth });
-
-        if (frameWidth > maxWidth)
-          container.setState((prev) => ({
-            ...prev,
-            size: { height: 0, width: maxWidth },
-          }));
-        setMaxWidth(maxWidth);
-      }
+      setMaxWidth(maxWidth);
     };
     fn();
 
@@ -66,7 +41,7 @@ const Iframe = ({ children, ref, className, ...props }: Props) => {
     return () => {
       window.removeEventListener("resize", fn, true);
     };
-  }, [currentOpenBar]);
+  }, []);
 
   useEffect(() => {
     const head = document.querySelector("head");
@@ -95,13 +70,18 @@ const Iframe = ({ children, ref, className, ...props }: Props) => {
     setFrameWidth(ref.clientWidth);
   };
 
+  const calculatedMaxWidth =
+    maxWidth - (isOpenLayersBar ? 300 : 0) - (currentOpenBar ? 300 : 0);
+
   return (
     <div className="flex-1 m-2" onResizeCapture={() => console.log("resize")}>
       <Resizable
-        className="relative mx-auto !h-full max-w-[calc(100%-16px)]"
+        className="relative mx-auto !h-full"
         size={{ width: frameWidth, height: 0 }}
-        maxWidth={maxWidth}
+        maxWidth={calculatedMaxWidth}
         onResize={onResize}
+        onResizeStart={() => setIsResizing(true)}
+        onResizeStop={() => setIsResizing(false)}
         resizeRatio={2}
         minWidth={250}
         enable={{ right: true }}
@@ -110,16 +90,23 @@ const Iframe = ({ children, ref, className, ...props }: Props) => {
             cursor: "move",
             position: "absolute",
             top: "50%",
-            translate: "translateY(-50%)",
-            right: "0px",
+            left: "100%",
             height: "24px",
-            width: "24px",
+            width: "12px",
           },
         }}
         handleComponent={{
-          right: <EllipsisVerticalIcon />,
+          right: (
+            <>
+              <EllipsisVerticalIcon className="relative right-2 size-6" />
+              {isResizing && (
+                <span className="absolute text-xs bg-primary/30 rounded-lg px-1 right-full top-1/2 -translate-x-0.5 -translate-y-1/2">
+                  {frameWidth}px
+                </span>
+              )}
+            </>
+          ),
         }}
-        ref={containerRef}
       >
         <iframe
           className={cn("relative w-full h-full", className)}
@@ -128,7 +115,13 @@ const Iframe = ({ children, ref, className, ...props }: Props) => {
           }}
           {...props}
         >
-          {mountNode && createPortal(<>{children}</>, mountNode)}
+          {mountNode &&
+            createPortal(
+              <Frame data={data}>
+                <Element data-cy="root" is={Root} canvas />
+              </Frame>,
+              mountNode
+            )}
         </iframe>
       </Resizable>
     </div>

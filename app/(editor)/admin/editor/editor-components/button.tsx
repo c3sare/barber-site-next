@@ -1,13 +1,13 @@
 "use client";
 
-import { Button as ButtonRO } from "../components/button";
+import { Button as ButtonRO } from "@/components/ui/button";
 import { useNode } from "@craftjs/core";
 
 type Props = {
   text: string;
 };
 
-export const Button = (props: Props) => {
+export const Button = ({ text }: Props) => {
   const {
     connectors: { connect },
   } = useNode<HTMLButtonElement>();
@@ -17,7 +17,8 @@ export const Button = (props: Props) => {
       ref={(ref) => {
         connect(ref!);
       }}
-      {...props}
-    />
+    >
+      {text}
+    </ButtonRO>
   );
 };

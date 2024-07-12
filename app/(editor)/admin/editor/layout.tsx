@@ -6,28 +6,27 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
-import {
-  EllipsisIcon,
-  Layers3Icon,
-  PencilRulerIcon,
-  RotateCcwIcon,
-  RotateCwIcon,
-} from "lucide-react";
+import { EllipsisIcon } from "lucide-react";
 import { DeviceSelect } from "./device-select";
 import { getPages } from "@/actions/admin/menu/getPages";
 import { PageSelect } from "./page-select";
 import { ExitEditorButton } from "./exit-editor-button";
-import { Button as ButtonEditor } from "@/app/(site)/admin/pages/editor/editor-components/button";
-import { Container } from "@/app/(site)/admin/pages/editor/editor-components/container";
-import { ThreeRowContainer } from "@/app/(site)/admin/pages/editor/editor-components/three-row-container";
-import { Text } from "@/app/(site)/admin/pages/editor/editor-components/text";
+import { Button as ButtonEditor } from "@/app/(editor)/admin/editor/editor-components/button";
+import { Container } from "@/app/(editor)/admin/editor/editor-components/container";
+import { ThreeRowContainer } from "@/app/(editor)/admin/editor/editor-components/three-row-container";
+import { Text } from "@/app/(editor)/admin/editor/editor-components/text";
 import { Editor } from "@/app/(site)/page/[slug]/editor-lib";
-import { RenderNode } from "@/app/(site)/admin/pages/editor/render-node";
-import { Root } from "@/app/(site)/admin/pages/editor/editor-components/root";
+import { RenderNode } from "@/app/(editor)/admin/editor/render-node";
+import { Root } from "@/app/(editor)/admin/editor/editor-components/root";
 import { ComponentBar } from "./component-bar";
 import { EditorContextProvider } from "./_ctx/editor-context";
 import { BarButtons } from "./bar-buttons";
 import { UndoRedoButtons } from "./undo-redo-buttons";
+import { LayersBar } from "./layers-bar";
+import { LayersButton } from "./layers-button";
+import { SavePageButton } from "./save-page-button";
+import { Column } from "./editor-components/new/column";
+import { Section } from "./editor-components/new/section";
 
 type Props = {
   children?: React.ReactNode;
@@ -41,6 +40,8 @@ export default async function AdminEditorLayout({ children }: Props) {
       <Editor
         enabled
         resolver={{
+          Section,
+          Column,
           Button: ButtonEditor,
           Container,
           Root,
@@ -62,9 +63,7 @@ export default async function AdminEditorLayout({ children }: Props) {
             <div className="flex gap-1 px-1 border-l items-center">
               <UndoRedoButtons />
               <Separator orientation="vertical" />
-              <Button size="sm" variant="ghost">
-                <Layers3Icon />
-              </Button>
+              <LayersButton />
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button size="sm" variant="ghost">
@@ -79,7 +78,7 @@ export default async function AdminEditorLayout({ children }: Props) {
                 </DropdownMenuContent>
               </DropdownMenu>
               <Separator orientation="vertical" />
-              <Button size="sm">Save</Button>
+              <SavePageButton />
               <Separator orientation="vertical" />
               <ExitEditorButton />
             </div>
@@ -87,6 +86,7 @@ export default async function AdminEditorLayout({ children }: Props) {
           <div className="w-full flex flex-1 bg-neutral-100 relative">
             <ComponentBar />
             {children}
+            <LayersBar />
           </div>
         </div>
       </Editor>

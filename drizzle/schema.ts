@@ -202,7 +202,7 @@ export const page = pgTable(
     id: serial("id").primaryKey(),
     name: text("name").notNull(),
     slug: text("slug").notNull(),
-    data: text("data").notNull(),
+    data: text("data"),
     creatorId: text("creator_id").references(() => user.id, {
       onDelete: "set null",
       onUpdate: "cascade",

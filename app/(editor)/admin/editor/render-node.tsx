@@ -1,10 +1,17 @@
 "use client";
 
+import { useEditorContext } from "@/app/(editor)/admin/editor/_ctx/editor-context";
 import { cn } from "@/lib/utils";
-import { useNode, useEditor } from "@craftjs/core";
-import { ROOT_NODE } from "@craftjs/utils";
-import { ArrowUpIcon, MoveIcon, Trash2Icon } from "lucide-react";
-import React, { useEffect, useRef, useCallback, useState } from "react";
+import { useNode, useEditor, Node } from "@craftjs/core";
+import { getRandomId, ROOT_NODE } from "@craftjs/utils";
+import { ArrowUpIcon, CopyIcon, MoveIcon, Trash2Icon } from "lucide-react";
+import React, {
+  useEffect,
+  useRef,
+  useCallback,
+  useState,
+  useDeferredValue,
+} from "react";
 import ReactDOM from "react-dom";
 
 export const RenderNode = ({
@@ -12,6 +19,7 @@ export const RenderNode = ({
 }: {
   render: React.ReactElement<any, string | React.JSXElementConstructor<any>>;
 }) => {
+  const { frameWidth, openBar } = useEditorContext();
   const [position, setPosition] = useState({ x: 0, y: 0, width: 0 });
   const { id } = useNode();
   const { actions, query, isActive } = useEditor((_, query) => ({
@@ -26,6 +34,7 @@ export const RenderNode = ({
     deletable,
     connectors: { drag },
     parent,
+    node,
   } = useNode((node) => ({
     isHover: node.events.hovered,
     dom: node.dom,
@@ -33,8 +42,11 @@ export const RenderNode = ({
     moveable: query.node(node.id).isDraggable(),
     deletable: query.node(node.id).isDeletable(),
     parent: node.data.parent,
+    node: node,
     props: node.data.props,
   }));
+
+  const defferedFrameWidth = useDeferredValue(frameWidth);
 
   const currentRef = useRef<HTMLDivElement>();
 
@@ -59,14 +71,16 @@ export const RenderNode = ({
         width: window.innerWidth,
       });
     };
+    fn();
 
     window.addEventListener("scroll", fn, true);
     window.addEventListener("resize", fn, true);
 
     return () => {
+      window.removeEventListener("scroll", fn, true);
       window.removeEventListener("resize", fn, true);
     };
-  });
+  }, [defferedFrameWidth]);
 
   const getPos = useCallback(
     (dom: HTMLElement) => {
@@ -80,6 +94,36 @@ export const RenderNode = ({
     },
     [position]
   );
+
+  const copyNode = (node: Node, newId: string) => {
+    const newNode: Node = {
+      ...node,
+      id: newId,
+      events: {
+        dragged: false,
+        hovered: false,
+        selected: false,
+      },
+    };
+    return query.parseFreshNode(newNode).toNode();
+  };
+
+  const duplicateNode = async (
+    node: Node,
+    parentId: string,
+    index?: number
+  ) => {
+    if (!node || !parentId) return;
+    const newId = getRandomId();
+    const newNode = copyNode(node, newId);
+    newNode.data.nodes = [];
+    actions.history.throttle().add(newNode, parentId, index);
+    node.data.nodes.forEach((childNodeId) => {
+      const childNode = query.node(childNodeId).get();
+      const newChildNode = copyNode(childNode, getRandomId());
+      duplicateNode(newChildNode, newId);
+    });
+  };
 
   const style = {
     left: getPos(dom!).left,
@@ -116,21 +160,34 @@ export const RenderNode = ({
                   className="p-0 opacity-90 flex items-center &>div:relative &>div:-top-1/2 &>div:-left-1/2 mr-2 cursor-pointer"
                   onClick={() => {
                     actions.selectNode(parent!);
+                    openBar("settings");
                   }}
                 >
                   <ArrowUpIcon className="size-4" />
                 </button>
               )}
               {deletable ? (
-                <button
-                  className="p-0 opacity-90 flex items-center &>div:relative &>div:-top-1/2 &>div:-left-1/2 cursor-pointer"
-                  onMouseDown={(e: React.MouseEvent) => {
-                    e.stopPropagation();
-                    actions.delete(id);
-                  }}
-                >
-                  <Trash2Icon className="size-4" />
-                </button>
+                <>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+
+                      duplicateNode(node, parent!);
+                    }}
+                    className="p-0 opacity-90 flex items-center &>div:relative &>div:-top-1/2 &>div:-left-1/2 mr-2 cursor-pointer"
+                  >
+                    <CopyIcon className="size-4" />
+                  </button>
+                  <button
+                    className="p-0 opacity-90 flex items-center &>div:relative &>div:-top-1/2 &>div:-left-1/2 cursor-pointer"
+                    onMouseDown={(e: React.MouseEvent) => {
+                      e.stopPropagation();
+                      actions.delete(id);
+                    }}
+                  >
+                    <Trash2Icon className="size-4" />
+                  </button>
+                </>
               ) : null}
             </div>,
             document.querySelector("iframe")!.contentWindow!.document.body

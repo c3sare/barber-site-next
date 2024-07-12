@@ -1,8 +1,8 @@
 "use client";
 
-import { TextIcon } from "lucide-react";
+import { Columns3Icon, RectangleHorizontalIcon, TextIcon } from "lucide-react";
 import { BuilderElement } from "./builder-element";
-import { Text } from "@/app/(site)/admin/pages/editor/editor-components/text";
+import { Text } from "@/app/(editor)/admin/editor/editor-components/text";
 import {
   Accordion,
   AccordionContent,
@@ -11,8 +11,10 @@ import {
 } from "@/components/ui/accordion";
 import { useEditorContext } from "./_ctx/editor-context";
 import { createElement } from "react";
-import { useEditor } from "@craftjs/core";
+import { useEditor, Element } from "@craftjs/core";
 import { Button } from "@/components/ui/button";
+import { Section } from "./editor-components/new/section";
+import { Column } from "./editor-components/new/column";
 
 export const ComponentBar = () => {
   const { currentOpenBar, openBar } = useEditorContext();
@@ -53,6 +55,14 @@ export const ComponentBar = () => {
           <AccordionItem value="basic">
             <AccordionTrigger>Basic</AccordionTrigger>
             <AccordionContent>
+              <BuilderElement element={<Element canvas is={Section} />}>
+                <RectangleHorizontalIcon className="size-5" />
+                Section
+              </BuilderElement>
+              <BuilderElement element={<Element canvas is={Column} />}>
+                <Columns3Icon className="size-5" />
+                Column
+              </BuilderElement>
               <BuilderElement element={<Text />}>
                 <TextIcon className="size-5" />
                 Text

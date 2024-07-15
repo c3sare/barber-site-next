@@ -20,9 +20,9 @@ export default async function PagesPage() {
             <div>{page.name}</div>
             <div className="space-x-1 flex-nowrap flex">
               <Button asChild variant="ghost" size="icon">
-                <Link href={`/admin/pages/editor/${page.id}`}>
+                <a href={`/admin/editor/${page.id}`}>
                   <Settings2Icon className="size-6" />
-                </Link>
+                </a>
               </Button>
               <Button asChild variant="ghost" size="icon">
                 <Link href={`/page/${page.slug}`}>

@@ -44,19 +44,31 @@ const Iframe = ({ children, ref, className, data, ...props }: Props) => {
   }, []);
 
   useEffect(() => {
-    const head = document.querySelector("head");
-    const classes = document.body.classList.toString();
-    const content = head?.innerHTML;
-
-    if (content && contentRef) {
-      contentRef.contentWindow!.document.head.innerHTML = content;
+    if (contentRef?.contentWindow?.document) {
+      contentRef.contentWindow.document.body.className = document.body.className
+        .split(" ")
+        .filter((item) => !["bg-background", "min-h-screen"].includes(item))
+        .join(" ");
     }
+  }, [contentRef]);
 
-    if (contentRef?.contentWindow?.document.body) {
-      contentRef?.contentWindow?.document.body.classList.add(
-        ...classes.split(" ").filter((item) => item !== "min-h-screen")
-      );
-    }
+  useEffect(() => {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === "childList") {
+          if (contentRef?.contentWindow?.document)
+            contentRef.contentWindow.document.head.innerHTML =
+              document.head.innerHTML;
+        }
+      });
+    });
+
+    observer.observe(document.head, {
+      childList: true,
+      subtree: true,
+    });
+
+    return () => observer.disconnect();
   }, [contentRef]);
 
   const mountNode = contentRef?.contentWindow?.document?.body;
@@ -74,7 +86,7 @@ const Iframe = ({ children, ref, className, data, ...props }: Props) => {
     maxWidth - (isOpenLayersBar ? 300 : 0) - (currentOpenBar ? 300 : 0);
 
   return (
-    <div className="flex-1 m-2" onResizeCapture={() => console.log("resize")}>
+    <div className="flex-1 m-2">
       <Resizable
         className="relative mx-auto !h-full"
         size={{ width: frameWidth, height: 0 }}

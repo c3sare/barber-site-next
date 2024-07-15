@@ -8,7 +8,7 @@ type Props = {
 };
 
 const Div = styled.div<{ $columns: number }>`
-  width: calc(100% / ${(props) => props.$columns});
+  width: ${({ $columns }) => ($columns ? `calc(100% / ${$columns})` : "100%")};
 
   @media (max-width: 768px) {
     width: 100%;
@@ -22,13 +22,14 @@ export const Column = ({ children, ...props }: Props) => {
   } = useNode((node) => ({
     columns: node.dom?.parentNode?.children.length || 0,
   }));
+
   return (
     <Div
       ref={(ref) => {
         connect(ref!);
       }}
-      className="min-h-[200px] p-4"
       $columns={columns}
+      className="min-h-[200px] p-4 w-full"
       {...props}
     >
       {children}
@@ -39,6 +40,9 @@ export const Column = ({ children, ...props }: Props) => {
 Column.craft = {
   displayName: "Column",
   rules: {
-    canDrop: () => true,
+    canDrop: (props: any) => {
+      if (props.data.name === "Section") return true;
+      return false;
+    },
   },
 };

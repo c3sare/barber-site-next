@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.4.1",
-    "@compositor/kit": "^1.0.47",
     "@craftjs/core": "^0.2.8",
     "@craftjs/layers": "^0.2.3",
     "@craftjs/utils": "^0.2.2",

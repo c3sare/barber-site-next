@@ -3,6 +3,7 @@ import db from "@/lib/drizzle";
 import { notFound } from "next/navigation";
 import Iframe from "./iframe";
 import { SerializedNodes } from "@craftjs/core";
+import { Content } from "./content";
 
 type Props = {
   params: {
@@ -27,6 +28,8 @@ export default async function AdminEditorPreviewPage({
       : JSON.parse(lz.decompress(lz.decodeBase64(data)));
 
   return (
-    <Iframe className="flex-1 w-full h-full bg-background" data={content} />
+    <Iframe className="flex-1 w-full h-full bg-background">
+      <Content data={content} />
+    </Iframe>
   );
 }

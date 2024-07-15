@@ -2,21 +2,17 @@
 
 import { cn } from "@/lib/utils";
 import { EllipsisVerticalIcon } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { Resizable } from "re-resizable";
 import { useEditorContext } from "../_ctx/editor-context";
-import { Frame, Element, SerializedNodes } from "@craftjs/core";
-import { Root } from "@/app/(editor)/admin/editor/editor-components/root";
 
 type Props = React.DetailedHTMLProps<
   React.IframeHTMLAttributes<HTMLIFrameElement>,
   HTMLIFrameElement
-> & {
-  data: SerializedNodes | undefined;
-};
+>;
 
-const Iframe = ({ children, ref, className, data, ...props }: Props) => {
+const Iframe = ({ children, ref, className, ...props }: Props) => {
   const {
     currentOpenBar,
     frameWidth,
@@ -56,9 +52,15 @@ const Iframe = ({ children, ref, className, data, ...props }: Props) => {
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.type === "childList") {
-          if (contentRef?.contentWindow?.document)
-            contentRef.contentWindow.document.head.innerHTML =
-              document.head.innerHTML;
+          if (contentRef?.contentWindow?.document) {
+            if (
+              (
+                mutation.target as unknown as HTMLStyleElement
+              )?.attributes.getNamedItem("data-styled")
+            )
+              contentRef.contentWindow.document.head.innerHTML =
+                document.head.innerHTML;
+          }
         }
       });
     });
@@ -71,16 +73,37 @@ const Iframe = ({ children, ref, className, data, ...props }: Props) => {
     return () => observer.disconnect();
   }, [contentRef]);
 
-  const mountNode = contentRef?.contentWindow?.document?.body;
+  const mountNode = useMemo(
+    () => contentRef?.contentWindow?.document?.body,
+    [contentRef]
+  );
 
-  const onResize = (
-    event: any,
-    dir: any,
-    ref: HTMLElement,
-    size: { width: number; height: number }
-  ) => {
-    setFrameWidth(ref.clientWidth);
-  };
+  const onResize = useCallback(
+    (
+      event: any,
+      dir: any,
+      ref: HTMLElement,
+      size: { width: number; height: number }
+    ) => {
+      setFrameWidth(ref.clientWidth);
+    },
+    [setFrameWidth]
+  );
+
+  const iframeMemo = useMemo(
+    () => (
+      <iframe
+        className={cn("relative w-full h-full", className)}
+        ref={(refx) => {
+          setContentRef(refx);
+        }}
+        {...props}
+      >
+        {mountNode && createPortal(<>{children}</>, mountNode)}
+      </iframe>
+    ),
+    [className, children, mountNode, props]
+  );
 
   const calculatedMaxWidth =
     maxWidth - (isOpenLayersBar ? 300 : 0) - (currentOpenBar ? 300 : 0);
@@ -120,21 +143,7 @@ const Iframe = ({ children, ref, className, data, ...props }: Props) => {
           ),
         }}
       >
-        <iframe
-          className={cn("relative w-full h-full", className)}
-          ref={(refx) => {
-            setContentRef(refx);
-          }}
-          {...props}
-        >
-          {mountNode &&
-            createPortal(
-              <Frame data={data}>
-                <Element data-cy="root" is={Root} canvas />
-              </Frame>,
-              mountNode
-            )}
-        </iframe>
+        {iframeMemo}
       </Resizable>
     </div>
   );

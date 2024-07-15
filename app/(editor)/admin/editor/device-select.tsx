@@ -11,7 +11,7 @@ import {
 import { cn } from "@/lib/utils";
 import { DesktopIcon } from "@radix-ui/react-icons";
 import { SmartphoneIcon, TabletIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useEditorContext } from "./_ctx/editor-context";
 
 const icons = {
@@ -53,8 +53,8 @@ const icons = {
 };
 
 export const DeviceSelect = () => {
-  const { frameWidth, setFrameWidth } = useEditorContext();
   const [device, setDevice] = useState<string>("2xl");
+  const { frameWidth, setFrameWidth } = useEditorContext();
 
   useEffect(() => {
     if (frameWidth > 1119) {
@@ -70,9 +70,39 @@ export const DeviceSelect = () => {
     }
   }, [frameWidth]);
 
-  const currentIcon = icons[device as keyof typeof icons];
+  const currentIcon = useMemo(
+    () => icons[device as keyof typeof icons],
+    [device]
+  );
 
-  const Icon = currentIcon.icon;
+  const Icon = useMemo(() => currentIcon.icon, [currentIcon]);
+
+  const list = useMemo(
+    () =>
+      Object.keys(icons).map((key) => {
+        const obj = icons[key as keyof typeof icons];
+
+        const Icon = obj.icon;
+
+        const active = device === key;
+
+        return (
+          <DropdownMenuRadioItem
+            key={key}
+            value={key}
+            className={cn("flex gap-4 items-center", active && "bg-primary/10")}
+            onClick={() => setFrameWidth(obj.width)}
+          >
+            <Icon className={cn("size-6", obj.rotate && "rotate-90")} />
+            <div className="text-xs">
+              <div>{obj.name}</div>
+              <div className="text-gray-500">{obj.desc}</div>
+            </div>
+          </DropdownMenuRadioItem>
+        );
+      }),
+    [device, setFrameWidth]
+  );
 
   return (
     <DropdownMenu>
@@ -90,31 +120,7 @@ export const DeviceSelect = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-60">
         <DropdownMenuRadioGroup value={device} onValueChange={setDevice}>
-          {Object.keys(icons).map((key) => {
-            const obj = icons[key as keyof typeof icons];
-
-            const Icon = obj.icon;
-
-            const active = device === key;
-
-            return (
-              <DropdownMenuRadioItem
-                key={key}
-                value={key}
-                className={cn(
-                  "flex gap-4 items-center",
-                  active && "bg-primary/10"
-                )}
-                onClick={() => setFrameWidth(obj.width)}
-              >
-                <Icon className={cn("size-6", obj.rotate && "rotate-90")} />
-                <div className="text-xs">
-                  <div>{obj.name}</div>
-                  <div className="text-gray-500">{obj.desc}</div>
-                </div>
-              </DropdownMenuRadioItem>
-            );
-          })}
+          {list}
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>

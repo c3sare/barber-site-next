@@ -11,6 +11,7 @@ import React, {
   useCallback,
   useState,
   useDeferredValue,
+  useMemo,
 } from "react";
 import ReactDOM from "react-dom";
 
@@ -95,40 +96,45 @@ export const RenderNode = ({
     [position]
   );
 
-  const copyNode = (node: Node, newId: string) => {
-    const newNode: Node = {
-      ...node,
-      id: newId,
-      events: {
-        dragged: false,
-        hovered: false,
-        selected: false,
-      },
-    };
-    return query.parseFreshNode(newNode).toNode();
-  };
+  const copyNode = useCallback(
+    (node: Node, newId: string) => {
+      const newNode: Node = {
+        ...node,
+        id: newId,
+        events: {
+          dragged: false,
+          hovered: false,
+          selected: false,
+        },
+      };
+      return query.parseFreshNode(newNode).toNode();
+    },
+    [query]
+  );
 
-  const duplicateNode = async (
-    node: Node,
-    parentId: string,
-    index?: number
-  ) => {
-    if (!node || !parentId) return;
-    const newId = getRandomId();
-    const newNode = copyNode(node, newId);
-    newNode.data.nodes = [];
-    actions.history.throttle().add(newNode, parentId, index);
-    node.data.nodes.forEach((childNodeId) => {
-      const childNode = query.node(childNodeId).get();
-      const newChildNode = copyNode(childNode, getRandomId());
-      duplicateNode(newChildNode, newId);
-    });
-  };
+  const duplicateNode = useCallback(
+    (node: Node, parentId: string, index?: number) => {
+      if (!node || !parentId) return;
+      const newId = getRandomId();
+      const newNode = copyNode(node, newId);
+      newNode.data.nodes = [];
+      actions.history.throttle().add(newNode, parentId, index);
+      node.data.nodes.forEach((childNodeId) => {
+        const childNode = query.node(childNodeId).get();
+        const newChildNode = copyNode(childNode, getRandomId());
+        duplicateNode(newChildNode, newId);
+      });
+    },
+    [actions.history, copyNode, query]
+  );
 
-  const style = {
-    left: getPos(dom!).left,
-    top: getPos(dom!).top,
-  };
+  const style = useMemo(
+    () => ({
+      left: getPos(dom!).left,
+      top: getPos(dom!).top,
+    }),
+    [dom, getPos]
+  );
 
   return (
     <>

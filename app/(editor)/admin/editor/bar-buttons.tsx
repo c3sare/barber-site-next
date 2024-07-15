@@ -14,7 +14,7 @@ export const BarButtons = () => {
     selectededNodeId: state.events.selected,
     currentNode: state.nodes[state.events.selected.values().next().value],
   }));
-  const { currentOpenBar, toggleBar, openBar, closeBar } = useEditorContext();
+  const { currentOpenBar, toggleBar, openBar } = useEditorContext();
 
   useEffect(() => {
     if (firstMount) {

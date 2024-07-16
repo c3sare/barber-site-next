@@ -41,6 +41,8 @@ const Iframe = ({ children, ref, className, ...props }: Props) => {
 
   useEffect(() => {
     if (contentRef?.contentWindow?.document) {
+      contentRef.contentWindow.document.head.innerHTML =
+        document.head.innerHTML;
       contentRef.contentWindow.document.body.className = document.body.className
         .split(" ")
         .filter((item) => !["bg-background", "min-h-screen"].includes(item))

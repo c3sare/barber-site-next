@@ -128,13 +128,12 @@ export const RenderNode = ({
     [actions.history, copyNode, query]
   );
 
-  const style = useMemo(
-    () => ({
-      left: getPos(dom!).left,
-      top: getPos(dom!).top,
-    }),
-    [dom, getPos]
-  );
+  const pos = getPos(dom!);
+
+  const style = {
+    left: pos.left,
+    top: pos.top,
+  };
 
   return (
     <>

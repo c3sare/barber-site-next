@@ -5,7 +5,7 @@ export type SingleWidthType = {
 
 export type TextType = {
   text?: string;
-  width: Record<"sm" | "md" | "lg" | "xl" | "2xl", SingleWidthType>;
+  width?: Record<"sm" | "md" | "lg" | "xl" | "2xl", SingleWidthType>;
 };
 
 export type WidthType = TextType["width"];

@@ -20,7 +20,7 @@ const Iframe = ({ children, ref, className, ...props }: Props) => {
       frameRef.current.contentWindow.document.body.className =
         document.body.className
           .split(" ")
-          .filter((item) => !["bg-background", "min-h-screen"].includes(item))
+          .filter((item) => !["bg-background"].includes(item))
           .join(" ");
     }
   }, []);
@@ -35,7 +35,7 @@ const Iframe = ({ children, ref, className, ...props }: Props) => {
     <Frame
       ref={frameRef}
       initialContent={initalContent}
-      className={cn("relative w-full h-full", className)}
+      className={cn("relative w-full", className)}
     >
       <FrameContextConsumer>
         {(frameContext) => (

@@ -1,11 +1,15 @@
 "use client";
 
 import { Resizable } from "re-resizable";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useEditorContext } from "../_ctx/editor-context";
 import { EllipsisVerticalIcon } from "lucide-react";
+import { useEditor } from "@craftjs/core";
 
 export const ResizeBox = ({ children }: React.PropsWithChildren) => {
+  const {
+    actions: { selectNode },
+  } = useEditor();
   const {
     currentOpenBar,
     frameWidth,
@@ -31,17 +35,15 @@ export const ResizeBox = ({ children }: React.PropsWithChildren) => {
     };
   }, []);
 
-  const onResize = useCallback(
-    (
-      event: any,
-      dir: any,
-      ref: HTMLElement,
-      size: { width: number; height: number }
-    ) => {
-      setFrameWidth(ref.clientWidth);
-    },
-    [setFrameWidth]
-  );
+  const onResize = (
+    event: any,
+    dir: any,
+    ref: HTMLElement,
+    size: { width: number; height: number }
+  ) => {
+    setFrameWidth(ref.clientWidth);
+    setIsResizing(false);
+  };
 
   const calculatedMaxWidth =
     maxWidth - (isOpenLayersBar ? 300 : 0) - (currentOpenBar ? 300 : 0);
@@ -52,9 +54,11 @@ export const ResizeBox = ({ children }: React.PropsWithChildren) => {
         className="relative mx-auto !h-full"
         size={{ width: frameWidth, height: 0 }}
         maxWidth={calculatedMaxWidth}
-        onResize={onResize}
-        onResizeStart={() => setIsResizing(true)}
-        onResizeStop={() => setIsResizing(false)}
+        onResizeStart={() => {
+          selectNode();
+          setIsResizing(true);
+        }}
+        onResizeStop={onResize}
         resizeRatio={2}
         minWidth={250}
         enable={{ right: true }}

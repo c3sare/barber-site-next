@@ -2,8 +2,8 @@
 
 import { useEditorContext } from "@/app/(editor)/admin/editor/_ctx/editor-context";
 import { cn } from "@/lib/utils";
-import { useNode, useEditor, Node } from "@craftjs/core";
-import { getRandomId, ROOT_NODE } from "@craftjs/utils";
+import { useNode, useEditor } from "@craftjs/core";
+import { ROOT_NODE } from "@craftjs/utils";
 import { ArrowUpIcon, CopyIcon, MoveIcon, Trash2Icon } from "lucide-react";
 import React, {
   useEffect,
@@ -13,6 +13,7 @@ import React, {
   useDeferredValue,
 } from "react";
 import ReactDOM from "react-dom";
+import { duplicateNode } from "./utils";
 
 export const RenderNode = ({
   render,
@@ -96,38 +97,6 @@ export const RenderNode = ({
     [position]
   );
 
-  const copyNode = useCallback(
-    (node: Node, newId: string) => {
-      const newNode: Node = {
-        ...node,
-        id: newId,
-        events: {
-          dragged: false,
-          hovered: false,
-          selected: false,
-        },
-      };
-      return query.parseFreshNode(newNode).toNode();
-    },
-    [query]
-  );
-
-  const duplicateNode = useCallback(
-    (node: Node, parentId: string, index?: number) => {
-      if (!node || !parentId) return;
-      const newId = getRandomId();
-      const newNode = copyNode(node, newId);
-      newNode.data.nodes = [];
-      actions.history.throttle().add(newNode, parentId, index);
-      node.data.nodes.forEach((childNodeId) => {
-        const childNode = query.node(childNodeId).get();
-        const newChildNode = copyNode(childNode, getRandomId());
-        duplicateNode(newChildNode, newId);
-      });
-    },
-    [actions.history, copyNode, query]
-  );
-
   const pos = getPos(dom!);
 
   const style = {
@@ -176,8 +145,12 @@ export const RenderNode = ({
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-
-                      duplicateNode(node, parent!);
+                      duplicateNode(
+                        actions.history.throttle().add,
+                        query,
+                        node,
+                        parent!
+                      );
                     }}
                     className="p-0 opacity-90 flex items-center &>div:relative &>div:-top-1/2 &>div:-left-1/2 mr-2 cursor-pointer"
                   >

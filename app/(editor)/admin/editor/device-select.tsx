@@ -11,10 +11,10 @@ import {
 import { cn } from "@/lib/utils";
 import { DesktopIcon } from "@radix-ui/react-icons";
 import { SmartphoneIcon, TabletIcon } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useEditorContext } from "./_ctx/editor-context";
 
-const icons = {
+export const icons = {
   "2xl": {
     icon: DesktopIcon,
     rotate: false,
@@ -53,22 +53,7 @@ const icons = {
 };
 
 export const DeviceSelect = () => {
-  const [device, setDevice] = useState<string>("2xl");
-  const { frameWidth, setFrameWidth } = useEditorContext();
-
-  useEffect(() => {
-    if (frameWidth > 1119) {
-      setDevice("2xl");
-    } else if (frameWidth < 1119 && frameWidth > 1023) {
-      setDevice("xl");
-    } else if (frameWidth < 1023 && frameWidth > 767) {
-      setDevice("lg");
-    } else if (frameWidth < 767 && frameWidth > 479) {
-      setDevice("md");
-    } else {
-      setDevice("sm");
-    }
-  }, [frameWidth]);
+  const { setFrameWidth, device, setDevice } = useEditorContext();
 
   const currentIcon = useMemo(
     () => icons[device as keyof typeof icons],

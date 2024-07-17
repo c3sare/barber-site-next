@@ -48,10 +48,7 @@ export const TextToolbar = () => {
           <AccordionItem value="size">
             <AccordionTrigger>Size</AccordionTrigger>
             <AccordionContent>
-              <Card className="p-2 flex items-center justify-between">
-                <span className="w-1/2">Width</span>
-                <WidthInput {...width} />
-              </Card>
+              <WidthInput width={width} />
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="typography">

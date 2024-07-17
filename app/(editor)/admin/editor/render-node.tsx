@@ -11,7 +11,6 @@ import React, {
   useCallback,
   useState,
   useDeferredValue,
-  useMemo,
 } from "react";
 import ReactDOM from "react-dom";
 
@@ -39,6 +38,7 @@ export const RenderNode = ({
   } = useNode((node) => ({
     isHover: node.events.hovered,
     dom: node.dom,
+    isMoving: node.events.dragged,
     name: node.data.custom.displayName || node.data.displayName,
     moveable: query.node(node.id).isDraggable(),
     deletable: query.node(node.id).isDeletable(),

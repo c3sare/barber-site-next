@@ -1,3 +1,4 @@
+import { Typography } from "@/components/typography";
 import Image from "next/image";
 
 type TestimonialItemProps = {
@@ -21,9 +22,12 @@ const TestimonialItem: React.FC<TestimonialItemProps> = ({
         height={100}
         className="rounded-full mx-auto"
       />
-      <h4 className="text-center text-2xl after:content-none before:content-none text-white my-6">
+      <Typography
+        tag="h4"
+        className="text-center text-2xl after:content-none before:content-none text-white my-6"
+      >
         {name}
-      </h4>
+      </Typography>
       <p className="text-center text-base">{content}</p>
     </div>
   );

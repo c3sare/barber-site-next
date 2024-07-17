@@ -81,21 +81,6 @@
   body {
     @apply bg-background text-foreground;
   }
-
-  h2 {
-    @apply font-bebes;
-  }
-
-  h1,
-  h3,
-  h4,
-  h5 {
-    @apply mb-7 font-bebes tracking-wider uppercase my-2 font-bold text-foreground relative before:bg-gray-100 before:h-[1px] before:w-full before:absolute before:top-full before:m-[10px_0_-2px] before:left-0 after:bg-foreground after:block after:h-[2px] after:m-[10px_0_-2px] after:absolute after:left-0 after:top-full after:w-[40px];
-  }
-
-  h4 {
-    @apply text-xl leading-5 font-bebes tracking-wider;
-  }
 }
 
 @layer utilities {

@@ -19,8 +19,6 @@ import { CommentCarousel } from "./_components/CommentCarousel";
 import { Pros } from "./_components/pros";
 import { ProItem } from "./_components/pros/ProItem";
 import { WorksContainer } from "./_components/works";
-import { WorkItem } from "./_components/works/WorkItem";
-import { AboutImage } from "./_components/AboutImage";
 import { ExperienceBar } from "./_components/ExperienceBar";
 import ServiceBox from "./_components/services/ServiceBox";
 import OpenHourItem from "./_components/OpenHoursItem";
@@ -32,6 +30,7 @@ import ProductItem from "./_components/products/ProductItem";
 import Heading from "./_components/Heading";
 import LightboxImageItem from "@/components/LightboxImageItem";
 import { Gallery } from "@/components/lightbox";
+import { Typography } from "@/components/typography";
 
 export default function Home() {
   return (
@@ -55,7 +54,7 @@ export default function Home() {
         bgPriority
       >
         <div className="p-5 my-8 w-full flex-1 flex flex-col gap-3 md:flex-auto md:w-2/3 float-left bg-white shadow-[0_3px_0_#f0f1f3]">
-          <h2>Welcome to the Barberia</h2>
+          <Typography tag="h2">Welcome to the Barberia</Typography>
           <p className="italic pb-1 leading-8 relative w-auto text-base mb-5">
             The Barberia opened in the fall of 1989. We specialize in cutting
             mens hair and shaving their faces. Let{"'"}s see all our awesome
@@ -85,7 +84,7 @@ export default function Home() {
           </Gallery>
         </WorksContainer>
         <div className="w-full pt-4 sm:pt-0 sm:w-full md:w-1/2 float-left sm:pl-4">
-          <h4>Company Experience</h4>
+          <Typography tag="h4">Company Experience</Typography>
           <div>
             {expData.map((props, i) => (
               <ExperienceBar key={i} {...props} />
@@ -201,9 +200,12 @@ export default function Home() {
             </div>
           </div>
           <div className="float-left w-full text-center lg:text-left lg:w-2/3">
-            <h2 className="text-[#242424] text-3xl font-bold upperacase pb-2">
+            <Typography
+              tag="h2"
+              className="text-[#242424] text-3xl font-bold upperacase pb-2"
+            >
               DO YOU LIKE OUR HAIRDRESSER?
-            </h2>
+            </Typography>
             <p className="mb-4 leading-10">
               Integer orci enim varius vel accumsan vel porttitor tellus.
               Vivamus odio. Donec metus libero semper quis suscipit ut aliquam

@@ -6,6 +6,7 @@ import { ZoomIcon } from "@/components/icons/ZoomIcon";
 import { Gallery } from "@/components/lightbox";
 import { PhotoGalleryDataType } from "./types/PhotoGalleryDataType";
 import { file } from "@/drizzle/schema";
+import { Typography } from "../typography";
 
 type PhotoGalleryProps = {
   data: PhotoGalleryDataType;
@@ -15,9 +16,12 @@ type PhotoGalleryProps = {
 export const PhotoGallery: React.FC<PhotoGalleryProps> = ({ data, images }) => {
   return (
     <div className="w-full md:w-1/2 lg:w-1/3 float-left px-4 mb-6">
-      <h5 className="text-white before:content-none after:bg-white text-2xl">
+      <Typography
+        tag="h5"
+        className="text-white before:content-none after:bg-white text-2xl"
+      >
         {data.title}
-      </h5>
+      </Typography>
       <Gallery withCaption>
         {data.images.map(({ imageId }, i) => {
           const img = images.find((img) => img.id === imageId);

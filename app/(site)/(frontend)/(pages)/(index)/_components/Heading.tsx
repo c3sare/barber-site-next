@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { Typography } from "@/components/typography";
 
 type HeadingProps = {
   children?: React.ReactNode;
@@ -9,14 +10,15 @@ type HeadingProps = {
 
 const Heading: React.FC<HeadingProps> = ({ children, className, image }) => {
   const heading = (
-    <h4
+    <Typography
+      tag="h4"
       className={cn(
         "text-4xl text-center text-white after:content-none before:content-none drop-shadow-xs opacity-90",
         className
       )}
     >
       {children}
-    </h4>
+    </Typography>
   );
 
   if (image) {

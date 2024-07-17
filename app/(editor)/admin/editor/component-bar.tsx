@@ -31,7 +31,7 @@ export const ComponentBar = () => {
 
   if (currentOpenBar === "settings")
     return (
-      <div className="w-[300px] min-w-[300px] p-4 h-full border-r bg-background flex flex-col gap-2">
+      <div className="w-[300px] min-w-[300px] h-full border-r bg-background flex flex-col gap-2">
         {selectededNodeId && toolbarSettings ? (
           createElement(toolbarSettings)
         ) : (

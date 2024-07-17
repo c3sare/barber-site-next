@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Typography } from "@/components/typography";
 
 type BarberBoxProps = {
   id: number;
@@ -17,9 +18,12 @@ const BarberBox: React.FC<BarberBoxProps> = ({ name, image, availability }) => {
   return (
     <div className="w-full md:w-1/2 xl:w-1/4 float-left">
       <div className="flex flex-col items-center justify-center mx-4 bg-white shadow-sm gap-4 pt-6">
-        <h4 className="w-full text-center after:left-1/2 after:-translate-x-1/2">
+        <Typography
+          tag="h4"
+          className="w-full text-center after:left-1/2 after:-translate-x-1/2"
+        >
           {name}
-        </h4>
+        </Typography>
         <Image src={image} alt={name} width={222} height={222} />
         <span className="text-2xl">AVAILABILITY</span>
         <div className="flex flex-col gap-2 items-center justify-center">

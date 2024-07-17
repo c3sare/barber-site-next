@@ -1,3 +1,4 @@
+import { Typography } from "@/components/typography";
 import { Button } from "@/components/ui/button";
 import { MessageCircleIcon, PenLineIcon } from "lucide-react";
 import Image from "next/image";
@@ -21,9 +22,12 @@ const BlogPost: React.FC<BlogPostProps> = ({
   return (
     <div className="float-left w-full sm:w-1/2 md:w-1/2 lg:w-1/4 mb-8 self-stretch">
       <div className="mx-2 p-1 bg-[#f7f8fa] flex flex-col items-center text-center shadow-sm self-stretch">
-        <h4 className="before:content-none after:left-1/2 after:-translate-x-1/2 text-lg">
+        <Typography
+          tag="h4"
+          className="before:content-none after:left-1/2 after:-translate-x-1/2 text-lg"
+        >
           {title}
-        </h4>
+        </Typography>
         <Image src={image} alt={title} width={250} height={149} />
         <div className="flex items-center justify-center gap-4 w-full my-2 text-xs">
           <div className="flex items-center gap-1">

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Typography } from "@/components/typography";
 
 type ServiceBoxProps = {
   href: string;
@@ -18,9 +19,12 @@ const ServiceBox: React.FC<ServiceBoxProps> = ({
   return (
     <div className="w-full md:w-1/3 float-left pb-6">
       <div className="bg-white p-6 border-b-2 border-b-gray-300 flex flex-col items-center mx-6 shadow-sm pb-8 relative">
-        <h4 className="text-center w-full after:left-1/2 after:-translate-x-1/2">
+        <Typography
+          tag="h4"
+          className="text-center w-full after:left-1/2 after:-translate-x-1/2"
+        >
           {title}
-        </h4>
+        </Typography>
         <Image
           className="max-w-full h-auto"
           src={image}

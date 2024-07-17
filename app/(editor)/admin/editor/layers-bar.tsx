@@ -2,8 +2,14 @@
 
 import { Button } from "@/components/ui/button";
 import { useEditorContext } from "./_ctx/editor-context";
-import { Layers } from "@craftjs/layers";
 import { XIcon } from "lucide-react";
+
+import dynamic from "next/dynamic";
+
+const Layers = dynamic(
+  () => import("@craftjs/layers").then((mod) => mod.Layers),
+  { ssr: false }
+);
 
 export const LayersBar = () => {
   const { isOpenLayersBar, toggleLayersBar } = useEditorContext();

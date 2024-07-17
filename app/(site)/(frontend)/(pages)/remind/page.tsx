@@ -2,6 +2,7 @@ import db from "@/lib/drizzle";
 import { ChangePasswordForm } from "./_components/ChangePasswordForm";
 import { RemindPasswordForm } from "./_components/RemindPasswordForm";
 import { notFound } from "next/navigation";
+import { Typography } from "@/components/typography";
 
 type RemindPasswordPageProps = {
   searchParams: {
@@ -23,9 +24,12 @@ export default async function RemindPasswordPage({
 
     return (
       <div className="max-w-7xl mx-auto flex items-center justify-center my-16 flex-col">
-        <h1 className="text-4xl after:left-1/2 after:-translate-x-1/2">
+        <Typography
+          tag="h1"
+          className="text-4xl after:left-1/2 after:-translate-x-1/2"
+        >
           Change Password
-        </h1>
+        </Typography>
         <ChangePasswordForm userId={id} token={token} />
       </div>
     );
@@ -33,9 +37,12 @@ export default async function RemindPasswordPage({
 
   return (
     <div className="max-w-7xl mx-auto flex items-center justify-center my-16 flex-col">
-      <h1 className="text-4xl after:left-1/2 after:-translate-x-1/2">
+      <Typography
+        tag="h1"
+        className="text-4xl after:left-1/2 after:-translate-x-1/2"
+      >
         Remind Password
-      </h1>
+      </Typography>
       <RemindPasswordForm />
     </div>
   );

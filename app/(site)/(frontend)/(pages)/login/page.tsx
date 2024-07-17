@@ -14,6 +14,7 @@ import { loginUser } from "@/actions/loginUser";
 import { useToast } from "@/components/ui/use-toast";
 import { useState, useTransition } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { Typography } from "@/components/typography";
 
 const SignInPage = () => {
   const searchParams = useSearchParams();
@@ -74,11 +75,7 @@ const SignInPage = () => {
           if (field === "email")
             setUsedNotExistEmails((prev) => [...prev, form.getValues("email")]);
 
-          form.setError(
-            field,
-            { message },
-            { shouldFocus: true }
-          );
+          form.setError(field, { message }, { shouldFocus: true });
         } else
           toast({
             variant: "destructive",
@@ -97,9 +94,12 @@ const SignInPage = () => {
           onSubmit={onSubmit}
           className="flex gap-2 flex-col items-center w-full px-4"
         >
-          <h1 className="text-4xl after:left-1/2 after:-translate-x-1/2">
+          <Typography
+            tag="h1"
+            className="text-4xl after:left-1/2 after:-translate-x-1/2"
+          >
             Log In Panel
-          </h1>
+          </Typography>
           <FormInput
             control={form.control}
             name="email"

@@ -13,6 +13,7 @@ import { Card } from "@/components/ui/card";
 import { XIcon } from "lucide-react";
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { Typography } from "@/components/typography";
 
 type LinkBoxFormProps = {
   id?: number;
@@ -63,7 +64,9 @@ export const LinkBoxForm: React.FC<LinkBoxFormProps> = ({
           disabled={isLoading}
         />
         <div className="p-2 my-2 flex flex-wrap items-center gap-2">
-          <h2 className="w-full text-3xl">Links</h2>
+          <Typography tag="h2" className="w-full text-3xl">
+            Links
+          </Typography>
           {links.map((link, i) => (
             <Card key={link.id} className="p-2 relative">
               <FormInput

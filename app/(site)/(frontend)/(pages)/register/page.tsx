@@ -13,6 +13,7 @@ import { registerUser } from "@/actions/registerUser";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { Typography } from "@/components/typography";
 
 export default function Register() {
   const [isPending, startTransition] = useTransition();
@@ -81,9 +82,9 @@ export default function Register() {
     <div className="max-w-7xl mx-auto flex items-center justify-center my-16 flex-col">
       <Form {...form}>
         <form onSubmit={onSubmit} className="flex gap-2 flex-col items-center">
-          <h1 className="text-4xl after:left-1/2 after:-translate-x-1/2">
+          <Typography tag="h1" className="text-4xl after:left-1/2 after:-translate-x-1/2">
             Register
-          </h1>
+          </Typography>
           <FormInput
             control={form.control}
             name="email"

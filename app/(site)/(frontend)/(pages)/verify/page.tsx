@@ -8,6 +8,7 @@ import { PasscodeForm } from "./_components/PasscodeForm";
 
 import { user as userSchema } from "@/drizzle/schema";
 import { and, eq, isNull } from "drizzle-orm";
+import { Typography } from "@/components/typography";
 
 type VerifyPageProps = {
   searchParams: {
@@ -66,7 +67,7 @@ export default async function VerifyPage({
 
       return (
         <div className="w-full h-screen flex flex-col items-center justify-center">
-          <h1>Your account has been activated</h1>
+          <Typography tag="h1">Your account has been activated</Typography>
           <Button asChild className="mx-auto">
             <Link href="/login">Click here to login</Link>
           </Button>

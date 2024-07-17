@@ -13,8 +13,8 @@ import { useEditorContext } from "./_ctx/editor-context";
 import { createElement } from "react";
 import { useEditor, Element } from "@craftjs/core";
 import { Button } from "@/components/ui/button";
-import { Section } from "./editor-components/new/section";
-import { Column } from "./editor-components/new/column";
+import { Section } from "./editor-components/section";
+import { Column } from "./editor-components/columns";
 
 export const ComponentBar = () => {
   const { currentOpenBar, openBar } = useEditorContext();
@@ -54,7 +54,7 @@ export const ComponentBar = () => {
         <Accordion type="multiple" defaultValue={["basic"]}>
           <AccordionItem value="basic">
             <AccordionTrigger>Basic</AccordionTrigger>
-            <AccordionContent>
+            <AccordionContent className="flex flex-col gap-2">
               <BuilderElement element={<Element canvas is={Section} />}>
                 <RectangleHorizontalIcon className="size-5" />
                 Section

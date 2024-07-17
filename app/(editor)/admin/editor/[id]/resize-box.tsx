@@ -60,7 +60,7 @@ export const ResizeBox = ({ children }: React.PropsWithChildren) => {
         enable={{ right: true }}
         handleStyles={{
           right: {
-            cursor: "move",
+            cursor: "col-resize",
             position: "absolute",
             top: "50%",
             left: "100%",

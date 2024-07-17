@@ -1,12 +1,9 @@
 import lz from "lzutf8";
 import { Editor, Frame, Element } from "./editor-lib";
-import { Button } from "@/app/(editor)/admin/editor/editor-components/button";
-import { Container } from "@/app/(editor)/admin/editor/editor-components/container";
 import { Text } from "@/app/(editor)/admin/editor/editor-components/text";
 import { Root } from "@/app/(editor)/admin/editor/editor-components/root";
-import { ThreeRowContainer } from "@/app/(editor)/admin/editor/editor-components/three-row-container";
-import { Section } from "@/app/(editor)/admin/editor/editor-components/new/section";
-import { Column } from "@/app/(editor)/admin/editor/editor-components/new/column";
+import { Section } from "@/app/(editor)/admin/editor/editor-components/section";
+import { Column } from "@/app/(editor)/admin/editor/editor-components/columns";
 
 type NodeType = {
   custom: any;
@@ -39,10 +36,7 @@ export const RenderPage = ({ data }: { data?: string | null }) => {
       resolver={{
         Section,
         Column,
-        Button,
-        Container,
         Root,
-        ThreeRowContainer,
         Text,
       }}
     >

@@ -15,7 +15,7 @@ export const Section = ({ children, ...props }: Props) => {
   return (
     <section className={cn("w-full")}>
       <div
-        className="mx-auto w-full min-h-[400px] max-w-7xl p-6 flex justify-between gap-4 flex-col md:flex-row"
+        className="container min-h-[400px] flex justify-between gap-4 flex-col md:flex-row"
         ref={(ref) => {
           connect(ref!);
         }}

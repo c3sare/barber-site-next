@@ -16,7 +16,7 @@ export const Root = ({ children }: Props) => {
       ref={(ref) => {
         connect(ref!);
       }}
-      className="mx-auto w-full max-w-7xl px-4 py-8 h-full"
+      className="w-full"
     >
       {children}
     </div>

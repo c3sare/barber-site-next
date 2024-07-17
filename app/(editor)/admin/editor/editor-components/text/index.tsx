@@ -3,39 +3,10 @@
 import { useEditor, useNode } from "@craftjs/core";
 import { TextToolbar } from "./toolbar";
 import { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
+import { StyledTextDiv } from "./styled-text-div";
+import { defaultTextProps } from "./types/text-type";
 
-type Props = {
-  text?: string;
-  width?: {
-    value?: string;
-    metric?: "px" | "em" | "rem" | "vw" | "vh" | "auto" | "custom";
-  };
-};
-
-const defaultProps: Props = {
-  text: "This is a basic text element.",
-  width: {
-    metric: "px",
-  },
-};
-
-type WidthType = Props["width"];
-
-const getWidth = (width: WidthType) => {
-  if (width?.metric === "auto") return "auto";
-  if (width?.metric === "custom") return width.value ?? "100%";
-
-  if (!width?.value || !width?.metric) return "100%";
-
-  return `${width.value}${width.metric}`;
-};
-
-const Div = styled("div")<{ $width: WidthType }>`
-  width: ${(props) => getWidth(props.$width)};
-`;
-
-export const Text = ({ text, width } = defaultProps) => {
+export const Text = ({ text, width } = defaultTextProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
   const { enabled } = useEditor((state) => ({
@@ -54,7 +25,7 @@ export const Text = ({ text, width } = defaultProps) => {
   }, [text, isFocused]);
 
   return (
-    <Div
+    <StyledTextDiv
       $width={width}
       ref={(refx) => {
         ref.current = refx!;
@@ -76,7 +47,7 @@ export const Text = ({ text, width } = defaultProps) => {
 };
 
 Text.craft = {
-  props: defaultProps,
+  props: defaultTextProps,
   related: {
     toolbar: TextToolbar,
   },

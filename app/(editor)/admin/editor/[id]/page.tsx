@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import Iframe from "./iframe";
 import { SerializedNodes } from "@craftjs/core";
 import { Content } from "./content";
+import { ResizeBox } from "./resize-box";
 
 type Props = {
   params: {
@@ -28,8 +29,10 @@ export default async function AdminEditorPreviewPage({
       : JSON.parse(lz.decompress(lz.decodeBase64(data)));
 
   return (
-    <Iframe className="flex-1 w-full h-full bg-background">
-      <Content data={content} />
-    </Iframe>
+    <ResizeBox>
+      <Iframe className="flex-1 w-full h-full bg-background">
+        <Content data={content} />
+      </Iframe>
+    </ResizeBox>
   );
 }

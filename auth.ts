@@ -9,6 +9,7 @@ import type { NextAuthConfig } from "next-auth";
 import { z } from "zod";
 
 export default {
+  trustHost: true,
   providers: [
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID,

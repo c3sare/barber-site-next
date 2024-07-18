@@ -16,7 +16,7 @@ export const Root = ({ children }: Props) => {
       ref={(ref) => {
         connect(ref!);
       }}
-      className="w-full h-full min-h-screen"
+      className="w-full min-h-screen"
     >
       {children}
     </div>

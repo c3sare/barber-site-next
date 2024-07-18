@@ -42,23 +42,23 @@ export const ResizeBox = ({ children }: React.PropsWithChildren) => {
     size: { width: number; height: number }
   ) => {
     setFrameWidth(ref.clientWidth);
-    setIsResizing(false);
   };
 
   const calculatedMaxWidth =
     maxWidth - (isOpenLayersBar ? 300 : 0) - (currentOpenBar ? 300 : 0);
 
   return (
-    <div className="flex-1 m-2">
+    <div className="flex-1 m-2 z-10">
       <Resizable
-        className="relative mx-auto !h-full"
+        className="relative mx-auto !h-full -z-[1]"
         size={{ width: frameWidth, height: 0 }}
         maxWidth={calculatedMaxWidth}
         onResizeStart={() => {
           selectNode();
           setIsResizing(true);
         }}
-        onResizeStop={onResize}
+        onResize={onResize}
+        onResizeStop={() => setIsResizing(false)}
         resizeRatio={2}
         minWidth={250}
         enable={{ right: true }}
@@ -70,22 +70,23 @@ export const ResizeBox = ({ children }: React.PropsWithChildren) => {
             left: "100%",
             height: "24px",
             width: "12px",
+            zIndex: "-1",
           },
         }}
         handleComponent={{
           right: (
             <>
-              <EllipsisVerticalIcon className="relative right-2 size-6" />
-              {isResizing && (
-                <span className="absolute text-xs bg-primary/30 rounded-lg px-1 right-full top-1/2 -translate-x-0.5 -translate-y-1/2">
-                  {frameWidth}px
-                </span>
-              )}
+              <EllipsisVerticalIcon className="relative right-2 -translate-y-1/2 size-6 -z-[1]" />
             </>
           ),
         }}
       >
         {children}
+        {isResizing && (
+          <span className="absolute block font-bold text-xs bg-primary/50 rounded-2xl p-1 right-1 top-1/2 -translate-y-1/2 z-10">
+            {frameWidth}px
+          </span>
+        )}
       </Resizable>
     </div>
   );

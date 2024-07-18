@@ -20,7 +20,7 @@ const Iframe = ({ children, ref, className, ...props }: Props) => {
       frameRef.current.contentWindow.document.body.className =
         document.body.className
           .split(" ")
-          .filter((item) => !["bg-background"].includes(item))
+          .filter((item) => !["bg-background", "min-h-screen"].includes(item))
           .join(" ");
     }
   }, []);

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEditorContext } from "@/app/(editor)/admin/editor/_ctx/editor-context";
-import { cn } from "@/lib/utils";
 import { useNode, useEditor } from "@craftjs/core";
 import { ROOT_NODE } from "@craftjs/utils";
 import { ArrowUpIcon, CopyIcon, MoveIcon, Trash2Icon } from "lucide-react";
@@ -14,6 +13,7 @@ import React, {
 } from "react";
 import ReactDOM from "react-dom";
 import { duplicateNode } from "./utils";
+import { cn } from "@/lib/utils";
 
 export const RenderNode = ({
   render,
@@ -53,7 +53,7 @@ export const RenderNode = ({
   const currentRef = useRef<HTMLDivElement>();
 
   useEffect(() => {
-    if (dom && name.toLowerCase() !== "root") {
+    if (dom) {
       dom.classList.add("border", "border-dashed", "border-transparent");
       if (isActive || isHover) {
         dom.classList.remove("border-transparent");
@@ -66,21 +66,23 @@ export const RenderNode = ({
   }, [dom, isActive, isHover, name]);
 
   useEffect(() => {
+    const iframe = document.querySelector("iframe")!.contentWindow;
     const fn = () => {
+      console.log("scroll");
       setPosition({
-        x: window.scrollX,
-        y: window.scrollY,
-        width: window.innerWidth,
+        x: iframe?.scrollX || 0,
+        y: iframe?.scrollY || 0,
+        width: iframe?.innerWidth || 0,
       });
     };
     fn();
 
-    window.addEventListener("scroll", fn, true);
-    window.addEventListener("resize", fn, true);
+    iframe?.addEventListener("scroll", fn, true);
+    iframe?.addEventListener("resize", fn, true);
 
     return () => {
-      window.removeEventListener("scroll", fn, true);
-      window.removeEventListener("resize", fn, true);
+      iframe?.removeEventListener("scroll", fn, true);
+      iframe?.removeEventListener("resize", fn, true);
     };
   }, [defferedFrameWidth]);
 
@@ -89,9 +91,12 @@ export const RenderNode = ({
       const { top, left, bottom } = dom
         ? dom.getBoundingClientRect()
         : { top: 0, left: 0, bottom: 0 };
+
+      const calculatedTop = (top > 30 ? top : bottom) + position.y;
+      const calculatedLeft = left + position.x;
       return {
-        top: `${(top > 0 ? top : bottom) + position.y}px`,
-        left: `${left + position.x}px`,
+        top: `${calculatedTop}px`,
+        left: `${calculatedLeft}px`,
       };
     },
     [position]
@@ -106,15 +111,15 @@ export const RenderNode = ({
 
   return (
     <>
-      {isHover || isActive
+      {isActive
         ? ReactDOM.createPortal(
             <div
               ref={(ref) => {
                 currentRef.current = ref!;
               }}
               className={cn(
-                "h-[30px] mt-[-29px] text-xs leading-3 border border-gray-500 border-b-transparent &>svg:fill-[#fff] &>svg:size-[15px] px-2 py-2 text-white bg-gray-400 absolute flex items-center z-[1]",
-                name.toLowerCase() === "root" && "hidden"
+                "h-[30px] mt-[-30px] text-xs leading-3 border border-gray-500 &>svg:fill-[#fff] &>svg:size-[15px] px-2 py-2 text-white bg-gray-400 absolute flex items-center z-[1]",
+                name === "Root" && "hidden"
               )}
               style={style}
             >

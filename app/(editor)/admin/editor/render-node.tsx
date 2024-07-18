@@ -68,7 +68,6 @@ export const RenderNode = ({
   useEffect(() => {
     const iframe = document.querySelector("iframe")!.contentWindow;
     const fn = () => {
-      console.log("scroll");
       setPosition({
         x: iframe?.scrollX || 0,
         y: iframe?.scrollY || 0,

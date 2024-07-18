@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { StyledTextDiv } from "./styled-text-div";
 import { defaultTextProps } from "./types/text-type";
 
-export const Text = ({ text, width } = defaultTextProps) => {
+export const Text = ({ text, width, fontSize, marginBottom, marginTop } = defaultTextProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
   const { enabled } = useEditor((state) => ({
@@ -27,13 +27,16 @@ export const Text = ({ text, width } = defaultTextProps) => {
   return (
     <StyledTextDiv
       $width={width}
+      $fontSize={fontSize}
+      $marginBottom={marginBottom}
+      $marginTop={marginTop}
       ref={(refx) => {
         ref.current = refx!;
         connect(refx!);
       }}
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
-      className="block whitespace-pre-line max-w-full"
+      className="block whitespace-pre-line max-w-full outline-none"
       contentEditable={enabled ? "true" : "false"}
       onInput={(e) => {
         setProp((props: { text: string }) => {

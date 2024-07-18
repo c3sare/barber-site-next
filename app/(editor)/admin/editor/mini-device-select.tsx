@@ -59,8 +59,9 @@ export const MiniDeviceSelect = () => {
           size="sm"
           variant="ghost"
           className={cn(
-            "transition-colors duration-500 bg-primary/0 p-0 w-8",
-            device !== "2xl" && "bg-primary/10"
+            "transition-opacity duration-500 bg-primary/0 p-0 w-8 opacity-0 group-hover:opacity-100",
+            device !== "2xl" && "bg-primary/10",
+            open && "opacity-100"
           )}
         >
           <Icon className={cn("size-4", currentIcon.rotate && "rotate-90")} />

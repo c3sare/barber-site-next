@@ -83,7 +83,7 @@ export const ResizeBox = ({ children }: React.PropsWithChildren) => {
       >
         {children}
         {isResizing && (
-          <span className="absolute block font-bold text-xs bg-primary/50 rounded-2xl p-1 right-1 top-1/2 -translate-y-1/2 z-10">
+          <span className="absolute block text-white text-xs bg-black/50 rounded-sm p-1 right-1 top-1/2 -translate-y-1/2 z-10">
             {frameWidth}px
           </span>
         )}

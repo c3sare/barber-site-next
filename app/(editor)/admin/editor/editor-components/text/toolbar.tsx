@@ -8,7 +8,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { WidthInput } from "./width-input";
+import { SizeInput } from "./size-input";
 import { ToolbarWrapper } from "../toolbar-wrapper";
 
 export const TextToolbar = () => {
@@ -16,9 +16,15 @@ export const TextToolbar = () => {
     actions: { setProp },
     text,
     width,
+    fontSize,
+    marginBottom,
+    marginTop,
   } = useNode((node) => ({
     text: node.data.props.text,
     width: node.data.props.width,
+    fontSize: node.data.props.fontSize,
+    marginBottom: node.data.props.marginBottom,
+    marginTop: node.data.props.marginTop,
   }));
 
   return (
@@ -48,16 +54,41 @@ export const TextToolbar = () => {
           <AccordionItem value="size">
             <AccordionTrigger>Size</AccordionTrigger>
             <AccordionContent>
-              <WidthInput width={width} />
+              <SizeInput
+                sizes={width}
+                title="Width"
+                range={[0, 1200]}
+                object_key="width"
+              />
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="typography">
             <AccordionTrigger>Typography</AccordionTrigger>
-            <AccordionContent></AccordionContent>
+            <AccordionContent>
+              <SizeInput
+                title="Font Size"
+                range={[10, 128]}
+                sizes={fontSize}
+                object_key="fontSize"
+              />
+            </AccordionContent>
           </AccordionItem>
           <AccordionItem value="spacing">
             <AccordionTrigger>Spacing</AccordionTrigger>
-            <AccordionContent></AccordionContent>
+            <AccordionContent>
+              <SizeInput
+                title="Margin Top"
+                range={[0, 0]}
+                sizes={marginTop}
+                object_key="marginTop"
+              />
+              <SizeInput
+                title="Margin Bottom"
+                range={[0, 0]}
+                sizes={marginBottom}
+                object_key="marginBottom"
+              />
+            </AccordionContent>
           </AccordionItem>
         </Accordion>
       }

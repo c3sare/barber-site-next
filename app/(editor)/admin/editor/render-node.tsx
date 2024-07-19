@@ -4,13 +4,7 @@ import { useEditorContext } from "@/app/(editor)/admin/editor/_ctx/editor-contex
 import { useNode, useEditor } from "@craftjs/core";
 import { ROOT_NODE } from "@craftjs/utils";
 import { ArrowUpIcon, CopyIcon, MoveIcon, Trash2Icon } from "lucide-react";
-import React, {
-  useEffect,
-  useRef,
-  useCallback,
-  useState,
-  useDeferredValue,
-} from "react";
+import React, { useEffect, useRef, useCallback, useState } from "react";
 import ReactDOM from "react-dom";
 import { duplicateNode } from "./utils";
 import { cn } from "@/lib/utils";
@@ -48,8 +42,6 @@ export const RenderNode = ({
     props: node.data.props,
   }));
 
-  const defferedFrameWidth = useDeferredValue(frameWidth);
-
   const currentRef = useRef<HTMLDivElement>();
 
   useEffect(() => {
@@ -83,7 +75,7 @@ export const RenderNode = ({
       iframe?.removeEventListener("scroll", fn, true);
       iframe?.removeEventListener("resize", fn, true);
     };
-  }, [defferedFrameWidth]);
+  }, []);
 
   const getPos = useCallback(
     (dom: HTMLElement) => {

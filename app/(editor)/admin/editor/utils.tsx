@@ -40,3 +40,14 @@ export const duplicateNode = (
     duplicateNode(addToHistory, query, newChildNode, newId);
   });
 };
+
+export const getMaxAvailableWidth = (
+  minWidth: number,
+  leftBar: boolean,
+  rightBar: boolean
+) => {
+  const width =
+    window.innerWidth - 16 - (leftBar ? 300 : 0) - (rightBar ? 300 : 0);
+
+  return width < minWidth ? minWidth : width;
+};

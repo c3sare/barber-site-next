@@ -10,10 +10,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { getMaxAvailableWidth } from "./utils";
 
 export const MiniDeviceSelect = () => {
   const [open, setOpen] = useState(false);
-  const { setFrameWidth, device } = useEditorContext();
+  const { setFrameWidth, device, isOpenLayersBar, currentOpenBar } =
+    useEditorContext();
 
   const currentIcon = useMemo(
     () => icons[device as keyof typeof icons],
@@ -41,7 +43,15 @@ export const MiniDeviceSelect = () => {
               active && "bg-primary/10"
             )}
             onClick={() => {
-              setFrameWidth(obj.width);
+              setFrameWidth(
+                key === "2xl"
+                  ? getMaxAvailableWidth(
+                      obj.width,
+                      isOpenLayersBar,
+                      !!currentOpenBar
+                    )
+                  : obj.width
+              );
               setOpen(false);
             }}
           >
@@ -49,7 +59,7 @@ export const MiniDeviceSelect = () => {
           </Button>
         );
       }),
-    [device, setFrameWidth]
+    [device, setFrameWidth, isOpenLayersBar, currentOpenBar]
   );
 
   return (

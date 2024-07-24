@@ -35,7 +35,7 @@ const Iframe = ({ children, ref, className, ...props }: Props) => {
     <Frame
       ref={frameRef}
       initialContent={initalContent}
-      className={cn("relative w-full", className)}
+      className={cn("relative w-full h-full", className)}
     >
       <FrameContextConsumer>
         {(frameContext) => (

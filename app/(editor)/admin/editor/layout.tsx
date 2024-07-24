@@ -33,7 +33,7 @@ export default async function AdminEditorLayout({ children }: Props) {
     <EditorContextProvider>
       <EditorWrapper>
         <div className="h-dvh w-full flex overflow-hidden flex-col">
-          <div className="w-full flex border-b justify-between">
+          <div className="w-full flex border-b justify-between h-[45px]">
             <div className="flex gap-1 px-1 border-r [&>button]:my-1">
               <BarButtons />
             </div>
@@ -65,7 +65,7 @@ export default async function AdminEditorLayout({ children }: Props) {
               <ExitEditorButton />
             </div>
           </div>
-          <div className="w-full flex flex-1 bg-neutral-100 relative">
+          <div className="w-full flex flex-1 bg-neutral-100 relative h-[calc(100%_-_45px)]">
             <ComponentBar />
             {children}
             <LayersBar />

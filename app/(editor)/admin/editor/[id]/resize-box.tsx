@@ -5,7 +5,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useEditorContext } from "../_ctx/editor-context";
 import { EllipsisVerticalIcon } from "lucide-react";
 import { useEditor } from "@craftjs/core";
-import { ScaleBox } from "./scale-box";
 
 export const ResizeBox = ({ children }: React.PropsWithChildren) => {
   const {
@@ -56,9 +55,9 @@ export const ResizeBox = ({ children }: React.PropsWithChildren) => {
   );
 
   return (
-    <div className="flex-1 m-2 z-10">
+    <div className="flex-1 m-2 z-10 flex flex-col max-h-full">
       <Resizable
-        className="relative mx-auto !h-full -z-[1] bg-background"
+        className="relative mx-auto !h-full flex-1 -z-[1] bg-background flex flex-col"
         size={{ width: frameWidth, height: 0 }}
         maxWidth={calculatedMaxWidth}
         onResizeStart={() => {
@@ -70,6 +69,7 @@ export const ResizeBox = ({ children }: React.PropsWithChildren) => {
         resizeRatio={2}
         minWidth={250}
         enable={{ right: true }}
+        handleWrapperStyle={{ zIndex: "9999" }}
         handleStyles={{
           right: {
             cursor: "col-resize",
@@ -89,7 +89,7 @@ export const ResizeBox = ({ children }: React.PropsWithChildren) => {
           ),
         }}
       >
-        <ScaleBox maxWidth={calculatedMaxWidth}>{children}</ScaleBox>
+        {children}
         {isResizing && (
           <span className="absolute block text-white text-xs bg-black/50 rounded-sm p-1 right-1 top-1/2 -translate-y-1/2 z-10">
             {frameWidth}px

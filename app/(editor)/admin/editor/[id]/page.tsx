@@ -30,7 +30,7 @@ export default async function AdminEditorPreviewPage({
 
   return (
     <ResizeBox>
-      <Iframe className="flex-1 w-full h-full bg-background">
+      <Iframe className="w-full bg-background">
         <Content data={content} />
       </Iframe>
     </ResizeBox>

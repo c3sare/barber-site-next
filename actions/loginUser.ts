@@ -5,7 +5,7 @@ import db from "@/lib/drizzle";
 import { action } from "@/lib/safe-action";
 import { verifyCaptcha } from "@/lib/verifyCaptcha";
 import { loginSchema } from "@/validators/loginSchema";
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt-edge";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
@@ -44,7 +44,7 @@ export const loginUser = action
 
     const hashedPassword = user.password ?? "";
 
-    const isValidPassword = await bcrypt.compare(password, hashedPassword);
+    const isValidPassword = bcrypt.compareSync(password, hashedPassword);
 
     if (!isValidPassword)
       return {

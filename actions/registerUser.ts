@@ -9,7 +9,7 @@ import { verifyCaptcha } from "@/lib/verifyCaptcha";
 import { generatePasscode } from "@/utils/generatePasscode";
 import { registerSchema } from "@/validators/registerSchema";
 import { render } from "@react-email/components";
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt-edge";
 import { z } from "zod";
 
 export const registerUser = action
@@ -36,7 +36,7 @@ export const registerUser = action
         } as const;
       }
 
-      const hashedPassword = await bcrypt.hash(password, 10);
+      const hashedPassword = bcrypt.hashSync(password, 10);
 
       const passcode = generatePasscode();
 

@@ -10,7 +10,7 @@ type Props = {
 
 export const ScaleBox = ({ children, maxWidth }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
-  const { frameWidth, isOpenLayersBar, currentOpenBar } = useEditorContext();
+  const { frameWidth } = useEditorContext();
 
   useEffect(() => {
     const width = ref.current?.parentElement?.clientWidth ?? 0;
@@ -20,13 +20,15 @@ export const ScaleBox = ({ children, maxWidth }: Props) => {
     ref.current!.style.transform = `scale(${
       calculatedScale > 1 ? 1 : calculatedScale
     })`;
-  }, [frameWidth, currentOpenBar, isOpenLayersBar, maxWidth]);
+
+    ref.current!.style.width = frameWidth + "px";
+  }, [frameWidth, maxWidth]);
 
   return (
     <div
       ref={ref}
       className="h-full overflow-hidden"
-      style={{ width: frameWidth + "px", transformOrigin: "top left" }}
+      style={{ transformOrigin: "top left" }}
     >
       {children}
     </div>

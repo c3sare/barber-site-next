@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 
 import db from "@/lib/drizzle";
-import { getUserById } from "@/data/user";
+import { getUserByEmail, getUserById } from "@/data/user";
 // import { getTwoFactorConfirmationByUserId } from "@/data/two-factor-confirmation";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { getAccountByUserId } from "./data/account";
@@ -9,7 +9,12 @@ import * as schema from "./drizzle/schema";
 
 import { user } from "./drizzle/schema";
 import { eq } from "drizzle-orm";
-import authConfig from "./auth";
+import Google from "next-auth/providers/google";
+import Github from "next-auth/providers/github";
+import Credentials from "next-auth/providers/credentials";
+import { loginSchema } from "./validators/loginSchema";
+import bcrypt from "bcrypt-edge";
+import { z } from "zod";
 
 type UserRole = (typeof user.$inferSelect)["role"];
 
@@ -105,5 +110,39 @@ export const {
       return token;
     },
   },
-  ...authConfig,
+  trustHost: true,
+  providers: [
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+    Github({
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    }),
+    Credentials({
+      async authorize(credentials) {
+        const validatedFields = loginSchema
+          .and(z.object({ callbackUrl: z.string().optional().nullable() }))
+          .safeParse(credentials);
+
+        if (validatedFields.success) {
+          const { email, password, callbackUrl } = validatedFields.data;
+          const user = await getUserByEmail(email);
+
+          if (!user || !user.password) {
+            return null;
+          }
+
+          const passwordsMatch = bcrypt.compareSync(password, user.password);
+
+          if (passwordsMatch) {
+            return user;
+          }
+        }
+
+        return null;
+      },
+    }),
+  ],
 });

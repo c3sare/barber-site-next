@@ -5,12 +5,9 @@ import {
   protectedRoutes,
 } from "@/routes";
 import includesStartsWith from "./utils/includesStartsWith";
-import authConfig from "./auth";
-import NextAuth from "next-auth";
+import { auth } from "./auth.config";
 
-const { auth: middleware } = NextAuth(authConfig);
-
-export default middleware((req) => {
+export default auth((req) => {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
 

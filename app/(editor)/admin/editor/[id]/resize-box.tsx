@@ -1,7 +1,7 @@
 "use client";
 
 import { Resizable } from "re-resizable";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useEditorContext } from "../_ctx/editor-context";
 import { EllipsisVerticalIcon } from "lucide-react";
 import { useEditor } from "@craftjs/core";
@@ -38,17 +38,22 @@ export const ResizeBox = ({ children }: React.PropsWithChildren) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onResize = (
-    event: any,
-    dir: any,
-    ref: HTMLElement,
-    size: { width: number; height: number }
-  ) => {
-    setFrameWidth(ref.clientWidth);
-  };
+  const onResize = useCallback(
+    (
+      event: any,
+      dir: any,
+      ref: HTMLElement,
+      size: { width: number; height: number }
+    ) => {
+      setFrameWidth(ref.clientWidth);
+    },
+    [setFrameWidth]
+  );
 
-  const calculatedMaxWidth =
-    maxWidth - (isOpenLayersBar ? 300 : 0) - (currentOpenBar ? 300 : 0);
+  const calculatedMaxWidth = useMemo(
+    () => maxWidth - (isOpenLayersBar ? 300 : 0) - (currentOpenBar ? 300 : 0),
+    [currentOpenBar, isOpenLayersBar, maxWidth]
+  );
 
   return (
     <div className="flex-1 m-2 z-10">
@@ -84,7 +89,7 @@ export const ResizeBox = ({ children }: React.PropsWithChildren) => {
           ),
         }}
       >
-        <ScaleBox maxWidth={maxWidth}>{children}</ScaleBox>
+        <ScaleBox maxWidth={calculatedMaxWidth}>{children}</ScaleBox>
         {isResizing && (
           <span className="absolute block text-white text-xs bg-black/50 rounded-sm p-1 right-1 top-1/2 -translate-y-1/2 z-10">
             {frameWidth}px

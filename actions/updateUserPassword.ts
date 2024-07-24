@@ -4,7 +4,7 @@ import { user } from "@/drizzle/schema";
 import db from "@/lib/drizzle";
 import { actionWithAuth } from "@/lib/safe-action";
 import { changePasswordSchema } from "@/validators/changePasswordSchema";
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt-edge";
 import { eq } from "drizzle-orm";
 
 export const updateUserPassword = actionWithAuth
@@ -18,7 +18,7 @@ export const updateUserPassword = actionWithAuth
       if (!currentUser?.password)
         throw new Error("Used account is created by oauth provider");
 
-      const isValidCurrentPassword = await bcrypt.compare(
+      const isValidCurrentPassword = bcrypt.compareSync(
         password,
         currentUser.password
       );
@@ -29,7 +29,7 @@ export const updateUserPassword = actionWithAuth
           message: "Current password is invalid",
         };
 
-      const newPasswordHash = await bcrypt.hash(newPassword, 10);
+      const newPasswordHash = bcrypt.hashSync(newPassword, 10);
 
       const updatedUser = await db
         .update(user)

@@ -13,9 +13,7 @@ export const ScaleBox = ({ children, maxWidth }: Props) => {
   const { frameWidth } = useEditorContext();
 
   useEffect(() => {
-    const width = ref.current?.parentElement?.clientWidth ?? 0;
-
-    const calculatedScale = width / frameWidth;
+    const calculatedScale = maxWidth / frameWidth;
 
     ref.current!.style.transform = `scale(${
       calculatedScale > 1 ? 1 : calculatedScale
@@ -25,8 +23,8 @@ export const ScaleBox = ({ children, maxWidth }: Props) => {
   return (
     <div
       ref={ref}
-      className="h-full max-w-full w-full"
-      style={{ transformOrigin: "top left" }}
+      className="h-full"
+      style={{ width: "inherit", transformOrigin: "top left" }}
     >
       {children}
     </div>

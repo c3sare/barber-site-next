@@ -20,14 +20,12 @@ export const ScaleBox = ({ children, maxWidth }: Props) => {
     ref.current!.style.transform = `scale(${
       calculatedScale > 1 ? 1 : calculatedScale
     })`;
-
-    ref.current!.style.width = frameWidth + "px";
   }, [frameWidth, maxWidth]);
 
   return (
     <div
       ref={ref}
-      className="h-full overflow-hidden"
+      className="h-full max-w-full w-full"
       style={{ transformOrigin: "top left" }}
     >
       {children}

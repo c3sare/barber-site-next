@@ -6,7 +6,14 @@ import { useEffect, useRef, useState } from "react";
 import { StyledTextDiv } from "./styled-text-div";
 import { defaultTextProps } from "./types/text-type";
 
-export const Text = ({ text, width, fontSize, marginBottom, marginTop } = defaultTextProps) => {
+export const Text = ({
+  text,
+  width,
+  fontSize,
+  marginBottom,
+  marginTop,
+  weight,
+} = defaultTextProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
   const { enabled } = useEditor((state) => ({
@@ -30,6 +37,7 @@ export const Text = ({ text, width, fontSize, marginBottom, marginTop } = defaul
       $fontSize={fontSize}
       $marginBottom={marginBottom}
       $marginTop={marginTop}
+      $weight={weight}
       ref={(refx) => {
         ref.current = refx!;
         connect(refx!);

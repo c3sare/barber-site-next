@@ -55,7 +55,7 @@ export const ResizeBox = ({ children }: React.PropsWithChildren) => {
   );
 
   return (
-    <div className="flex-1 m-2 z-10 flex flex-col max-h-full">
+    <div className="flex-1 m-2 z-10 flex flex-col">
       <Resizable
         className="relative mx-auto !h-full flex-1 -z-[1] bg-background flex flex-col"
         size={{ width: frameWidth, height: 0 }}
@@ -69,7 +69,6 @@ export const ResizeBox = ({ children }: React.PropsWithChildren) => {
         resizeRatio={2}
         minWidth={250}
         enable={{ right: true }}
-        handleWrapperStyle={{ zIndex: "9999" }}
         handleStyles={{
           right: {
             cursor: "col-resize",

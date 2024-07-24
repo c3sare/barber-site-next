@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/accordion";
 import { SizeInput } from "./size-input";
 import { ToolbarWrapper } from "../toolbar-wrapper";
+import { SelectInput } from "./select-input";
 
 export const TextToolbar = () => {
   const {
@@ -19,12 +20,14 @@ export const TextToolbar = () => {
     fontSize,
     marginBottom,
     marginTop,
+    weight,
   } = useNode((node) => ({
     text: node.data.props.text,
     width: node.data.props.width,
     fontSize: node.data.props.fontSize,
     marginBottom: node.data.props.marginBottom,
     marginTop: node.data.props.marginTop,
+    weight: node.data.props.weight,
   }));
 
   return (
@@ -70,6 +73,23 @@ export const TextToolbar = () => {
                 range={[10, 128]}
                 sizes={fontSize}
                 object_key="fontSize"
+              />
+              <SelectInput
+                title="Weight"
+                sizes={weight}
+                object_key="weight"
+                defaultValue="400"
+                options={[
+                  "100",
+                  "200",
+                  "300",
+                  "400",
+                  "500",
+                  "600",
+                  "700",
+                  "800",
+                  "900",
+                ]}
               />
             </AccordionContent>
           </AccordionItem>

@@ -14,14 +14,14 @@ import { duplicateNode } from "../utils";
 
 type Props = {
   editContent?: React.ReactNode;
-  composeContent?: React.ReactNode;
-  settingsContent?: React.ReactNode;
+  editDesign?: React.ReactNode;
+  editSettings?: React.ReactNode;
 };
 
 export const ToolbarWrapper = ({
   editContent,
-  composeContent,
-  settingsContent,
+  editDesign,
+  editSettings,
 }: Props) => {
   const { id, name, node, parent } = useNode((node) => ({
     text: node.data.props.text,
@@ -39,11 +39,11 @@ export const ToolbarWrapper = ({
     let count = 0;
 
     if (editContent) count++;
-    if (composeContent) count++;
-    if (settingsContent) count++;
+    if (editDesign) count++;
+    if (editSettings) count++;
 
     return count;
-  }, [editContent, composeContent, settingsContent]);
+  }, [editContent, editDesign, editSettings]);
 
   const tabClasses = useMemo(() => {
     const classes = [null, "hidden", "[&>button]:w-1/2", "[&>button]:w-1/3"];
@@ -52,10 +52,10 @@ export const ToolbarWrapper = ({
   }, [tabCount]);
 
   const defaultTab = useMemo(() => {
-    if (editContent) return "edit";
-    if (composeContent) return "compose";
-    if (settingsContent) return "settings";
-  }, [composeContent, editContent, settingsContent]);
+    if (editContent) return "content";
+    if (editDesign) return "design";
+    if (editSettings) return "settings";
+  }, [editDesign, editContent, editSettings]);
 
   return (
     <>
@@ -79,18 +79,18 @@ export const ToolbarWrapper = ({
       <Tabs defaultValue={defaultTab} className="w-full px-2">
         <TabsList className={cn("w-full", tabClasses)}>
           {!!editContent && (
-            <TabsTrigger value="edit">
+            <TabsTrigger value="content">
               <PencilIcon />
               <span className="sr-only">Basic settings</span>
             </TabsTrigger>
           )}
-          {!!composeContent && (
-            <TabsTrigger value="compose">
+          {!!editDesign && (
+            <TabsTrigger value="design">
               <PaletteIcon />
               <span className="sr-only">Style settings</span>
             </TabsTrigger>
           )}
-          {!!settingsContent && (
+          {!!editSettings && (
             <TabsTrigger value="settings">
               <SettingsIcon />
               <span className="sr-only">Advanced settings</span>
@@ -98,15 +98,13 @@ export const ToolbarWrapper = ({
           )}
         </TabsList>
         {!!editContent && (
-          <TabsContent className="flex flex-col gap-2" value="edit">
+          <TabsContent className="flex flex-col gap-2" value="content">
             {editContent}
           </TabsContent>
         )}
-        {!!composeContent && (
-          <TabsContent value="compose">{composeContent}</TabsContent>
-        )}
-        {!!settingsContent && (
-          <TabsContent value="settings">{settingsContent}</TabsContent>
+        {!!editDesign && <TabsContent value="design">{editDesign}</TabsContent>}
+        {!!editSettings && (
+          <TabsContent value="settings">{editSettings}</TabsContent>
         )}
       </Tabs>
     </>

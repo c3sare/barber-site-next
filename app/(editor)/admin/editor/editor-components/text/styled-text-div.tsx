@@ -10,6 +10,7 @@ export const StyledTextDiv = styled("div")<{
   $marginBottom?: MultiDeviceWidthType;
   $weight?: DeviceRecord<string>;
   $align?: DeviceRecord<string>;
+  $color?: DeviceRecord<string>;
 }>(
   ({
     $width: w,
@@ -18,6 +19,7 @@ export const StyledTextDiv = styled("div")<{
     $marginBottom: mb,
     $weight: wg,
     $align: al,
+    $color: c,
   }) => `
   width: ${getWidth(w?.["2xl"])};
   ${fs?.["2xl"]?.value ? `font-size: ${getWidth(fs["2xl"])};` : ""}
@@ -25,6 +27,7 @@ export const StyledTextDiv = styled("div")<{
   ${mb?.["2xl"]?.value ? `margin-bottom: ${getWidth(mb["2xl"])};` : ""}
   ${wg?.["2xl"] ? `font-weight: ${wg["2xl"]};` : ""}
   ${al?.["2xl"] ? `text-align: ${al["2xl"]};` : ""}
+  ${c?.["2xl"] ? `color: ${c["2xl"]};` : ""}
 
   @media (max-width: 1119px) {
     ${w?.["xl"]?.value ? `width: ${getWidth(w["xl"])};` : ""}
@@ -33,6 +36,7 @@ export const StyledTextDiv = styled("div")<{
     ${mb?.["xl"]?.value ? `margin-bottom: ${getWidth(mb["xl"])};` : ""}
     ${wg?.["xl"] ? `font-weight: ${wg["xl"]};` : ""}
     ${al?.["xl"] ? `text-align: ${al["xl"]};` : ""}
+    ${c?.["xl"] ? `color: ${c["xl"]};` : ""}
   }
 
   @media (max-width: 1023px) {
@@ -42,6 +46,7 @@ export const StyledTextDiv = styled("div")<{
     ${mb?.["lg"]?.value ? `margin-bottom: ${getWidth(mb["lg"])};` : ""}
     ${wg?.["lg"] ? `font-weight: ${wg["lg"]};` : ""}
     ${al?.["lg"] ? `text-align: ${al["lg"]};` : ""}
+    ${c?.["lg"] ? `color: ${c["lg"]};` : ""}
   }
 
   @media (max-width: 767px) {
@@ -51,6 +56,7 @@ export const StyledTextDiv = styled("div")<{
     ${mb?.["md"]?.value ? `margin-bottom: ${getWidth(mb["md"])};` : ""}
     ${wg?.["md"] ? `font-weight: ${wg["md"]};` : ""}
     ${al?.["md"] ? `text-align: ${al["md"]};` : ""}
+    ${c?.["md"] ? `color: ${c["md"]};` : ""}
   }
 
   @media (max-width: 479px) {
@@ -60,6 +66,7 @@ export const StyledTextDiv = styled("div")<{
     ${mb?.["sm"]?.value ? `margin-bottom: ${getWidth(mb["sm"])};` : ""}
     ${wg?.["sm"] ? `font-weight: ${wg["sm"]};` : ""}
     ${al?.["sm"] ? `text-align: ${al["sm"]};` : ""}
+    ${c?.["sm"] ? `color: ${c["sm"]};` : ""}
   }
 `
 );

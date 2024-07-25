@@ -18,6 +18,7 @@ import {
   AlignLeftIcon,
   AlignRightIcon,
 } from "lucide-react";
+import { ColorInput } from "../toolbar-elements/color-input";
 
 export const TextToolbar = () => {
   const {
@@ -29,6 +30,7 @@ export const TextToolbar = () => {
     marginTop,
     weight,
     align,
+    color,
   } = useNode((node) => ({
     text: node.data.props.text,
     width: node.data.props.width,
@@ -37,6 +39,7 @@ export const TextToolbar = () => {
     marginTop: node.data.props.marginTop,
     weight: node.data.props.weight,
     align: node.data.props.align,
+    color: node.data.props.color,
   }));
 
   return (
@@ -58,7 +61,7 @@ export const TextToolbar = () => {
           </Label>
         </Card>
       }
-      composeContent={
+      editDesign={
         <Accordion
           type="multiple"
           defaultValue={["size", "typography", "spacing"]}
@@ -77,6 +80,7 @@ export const TextToolbar = () => {
           <AccordionItem value="typography">
             <AccordionTrigger>Typography</AccordionTrigger>
             <AccordionContent>
+              <ColorInput title="Color" sizes={color} object_key="color" />
               <SelectToggle
                 title="Alignment"
                 sizes={align}
@@ -98,7 +102,7 @@ export const TextToolbar = () => {
                     icon: <AlignRightIcon />,
                   },
                   {
-                    value: "justyify",
+                    value: "justify",
                     title: "Justify",
                     icon: <AlignJustifyIcon />,
                   },

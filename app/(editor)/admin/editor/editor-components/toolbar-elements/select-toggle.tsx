@@ -38,8 +38,6 @@ export const SelectToggle = ({ options, object_key, sizes, title }: Props) => {
 
   const isVisibleResetButton = useMemo(() => !!value, [value]);
 
-  console.log(sizes);
-
   return (
     <ToolbarElement
       isVisibleResetButton={isVisibleResetButton}
@@ -50,6 +48,7 @@ export const SelectToggle = ({ options, object_key, sizes, title }: Props) => {
         size="sm"
         variant="outline"
         type="single"
+        value={value}
         onValueChange={setValue}
       >
         {options.map((option) => (

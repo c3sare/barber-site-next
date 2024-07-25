@@ -14,6 +14,7 @@ export const Text = ({
   marginTop,
   weight,
   align,
+  color,
 } = defaultTextProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
@@ -40,6 +41,7 @@ export const Text = ({
       $marginTop={marginTop}
       $weight={weight}
       $align={align}
+      $color={color}
       ref={(refx) => {
         ref.current = refx!;
         connect(refx!);

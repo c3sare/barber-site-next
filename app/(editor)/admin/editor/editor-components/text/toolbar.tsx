@@ -8,9 +8,16 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { SizeInput } from "./size-input";
+import { SizeInput } from "../toolbar-elements/size-input";
 import { ToolbarWrapper } from "../toolbar-wrapper";
-import { SelectInput } from "./select-input";
+import { SelectInput } from "../toolbar-elements/select-input";
+import { SelectToggle } from "../toolbar-elements/select-toggle";
+import {
+  AlignCenterIcon,
+  AlignJustifyIcon,
+  AlignLeftIcon,
+  AlignRightIcon,
+} from "lucide-react";
 
 export const TextToolbar = () => {
   const {
@@ -21,6 +28,7 @@ export const TextToolbar = () => {
     marginBottom,
     marginTop,
     weight,
+    align,
   } = useNode((node) => ({
     text: node.data.props.text,
     width: node.data.props.width,
@@ -28,6 +36,7 @@ export const TextToolbar = () => {
     marginBottom: node.data.props.marginBottom,
     marginTop: node.data.props.marginTop,
     weight: node.data.props.weight,
+    align: node.data.props.align,
   }));
 
   return (
@@ -68,6 +77,33 @@ export const TextToolbar = () => {
           <AccordionItem value="typography">
             <AccordionTrigger>Typography</AccordionTrigger>
             <AccordionContent>
+              <SelectToggle
+                title="Alignment"
+                sizes={align}
+                object_key="align"
+                options={[
+                  {
+                    value: "left",
+                    title: "Left",
+                    icon: <AlignLeftIcon />,
+                  },
+                  {
+                    value: "center",
+                    title: "Center",
+                    icon: <AlignCenterIcon />,
+                  },
+                  {
+                    value: "right",
+                    title: "Right",
+                    icon: <AlignRightIcon />,
+                  },
+                  {
+                    value: "justyify",
+                    title: "Justify",
+                    icon: <AlignJustifyIcon />,
+                  },
+                ]}
+              />
               <SizeInput
                 title="Font Size"
                 range={[10, 128]}

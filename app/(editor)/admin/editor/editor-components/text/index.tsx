@@ -4,7 +4,7 @@ import { useEditor, useNode } from "@craftjs/core";
 import { TextToolbar } from "./toolbar";
 import { useEffect, useRef, useState } from "react";
 import { StyledTextDiv } from "./styled-text-div";
-import { defaultTextProps } from "./types/text-type";
+import { defaultTextProps } from "./default-props";
 
 export const Text = ({
   text,
@@ -13,6 +13,7 @@ export const Text = ({
   marginBottom,
   marginTop,
   weight,
+  align,
 } = defaultTextProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
@@ -38,6 +39,7 @@ export const Text = ({
       $marginBottom={marginBottom}
       $marginTop={marginTop}
       $weight={weight}
+      $align={align}
       ref={(refx) => {
         ref.current = refx!;
         connect(refx!);

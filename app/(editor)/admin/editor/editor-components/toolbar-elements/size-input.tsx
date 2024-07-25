@@ -2,7 +2,6 @@ import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 import { useNode } from "@craftjs/core";
 import { useEditorContext } from "../../_ctx/editor-context";
-import { TextType } from "./types/text-type";
 import { useCallback, useMemo, useState } from "react";
 import {
   Popover,
@@ -10,11 +9,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ToolbarElement } from "../toolbar-element";
+import { MultiDeviceWidthType } from "../text/default-props";
 
 const metrics = ["px", "em", "rem", "vw", "vh", "auto", "custom"] as const;
 
 type Props = {
-  sizes: TextType["width"];
+  sizes: MultiDeviceWidthType;
   title: string;
   range: [number, number];
   object_key: string;
@@ -38,7 +38,7 @@ export const SizeInput = ({ sizes, title, range, object_key }: Props) => {
 
   const { metric, value } = useMemo(
     () =>
-      sizes?.[device as keyof TextType["width"]] || {
+      sizes?.[device as keyof typeof sizes] || {
         metric: "px",
         value: "",
       },
@@ -52,7 +52,7 @@ export const SizeInput = ({ sizes, title, range, object_key }: Props) => {
 
   return (
     <ToolbarElement
-      isVisibleResetButton={!isVisibleResetButton}
+      isVisibleResetButton={!!isVisibleResetButton}
       onClickReset={() =>
         setProp((props: any) => {
           props[object_key][device].metric = "px";

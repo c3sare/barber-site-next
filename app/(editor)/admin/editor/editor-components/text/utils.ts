@@ -1,4 +1,4 @@
-import { SingleWidthType } from "./types/text-type";
+import { SingleWidthType } from "./default-props";
 
 export const getWidth = (width: SingleWidthType | undefined) => {
   if (width?.metric === "auto") return "auto";

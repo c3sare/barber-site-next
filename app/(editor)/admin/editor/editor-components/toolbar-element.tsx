@@ -18,7 +18,7 @@ export const ToolbarElement = ({
   hideDeviceSelect,
 }: Props) => {
   return (
-    <Card className="p-2 pl-1 flex items-center justify-between group">
+    <Card className="p-2 pl-1 flex items-center justify-between group mb-1">
       <div className="flex items-center gap-1 w-1/2 relative">
         <span className="pl-3 text-xs">{title}</span>
         <button

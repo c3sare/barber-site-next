@@ -9,7 +9,7 @@ import { ToolbarElement } from "../toolbar-element";
 import { useEditorContext } from "../../_ctx/editor-context";
 import { useNode } from "@craftjs/core";
 import { useCallback, useMemo } from "react";
-import { DeviceRecord } from "./types/text-type";
+import { DeviceRecord } from "./types";
 
 type Props = {
   sizes: DeviceRecord<string>;

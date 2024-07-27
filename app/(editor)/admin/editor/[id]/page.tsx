@@ -5,6 +5,8 @@ import Iframe from "./iframe";
 import { SerializedNodes } from "@craftjs/core";
 import { Content } from "./content";
 import { ResizeBox } from "./resize-box";
+import dynamic from "next/dynamic";
+const Fonts = dynamic(() => import("./fonts"), { ssr: false });
 
 type Props = {
   params: {
@@ -29,10 +31,13 @@ export default async function AdminEditorPreviewPage({
       : JSON.parse(lz.decompress(lz.decodeBase64(data)));
 
   return (
-    <ResizeBox>
-      <Iframe className="w-full bg-background">
-        <Content data={content} />
-      </Iframe>
-    </ResizeBox>
+    <>
+      <ResizeBox>
+        <Iframe className="w-full bg-background">
+          <Content data={content} />
+        </Iframe>
+      </ResizeBox>
+      <Fonts data={content} />
+    </>
   );
 }

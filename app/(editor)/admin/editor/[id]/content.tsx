@@ -4,7 +4,7 @@ import { Frame, Element, SerializedNodes } from "@craftjs/core";
 import { Root } from "../editor-components/root";
 
 type Props = {
-  data?: string | SerializedNodes;
+  data?: SerializedNodes;
 };
 
 export const Content = ({ data }: Props) => {

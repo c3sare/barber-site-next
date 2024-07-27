@@ -19,6 +19,8 @@ import { LayersBar } from "./layers-bar";
 import { LayersButton } from "./layers-button";
 import { SavePageButton } from "./save-page-button";
 import dynamic from "next/dynamic";
+import { getFonts } from "@/actions/getFonts";
+import { FontsContextProvider } from "./_ctx/fonts-context";
 
 const EditorWrapper = dynamic(() => import("./editor-wrapper"), { ssr: false });
 
@@ -28,50 +30,53 @@ type Props = {
 
 export default async function AdminEditorLayout({ children }: Props) {
   const pages = await getPages();
+  const fonts = await getFonts();
 
   return (
-    <EditorContextProvider>
-      <EditorWrapper>
-        <div className="h-dvh w-full flex overflow-hidden flex-col">
-          <div className="w-full flex border-b justify-between h-[45px]">
-            <div className="flex gap-1 px-1 border-r [&>button]:my-1">
-              <BarButtons />
+    <FontsContextProvider fonts={fonts}>
+      <EditorContextProvider>
+        <EditorWrapper>
+          <div className="h-dvh w-full flex overflow-hidden flex-col">
+            <div className="w-full flex border-b justify-between h-[45px]">
+              <div className="flex gap-1 px-1 border-r [&>button]:my-1">
+                <BarButtons />
+              </div>
+              <div className="px-1 border-x flex items-center gap-1 [&>*]:my-1">
+                <PageSelect pages={pages} />
+                <Separator orientation="vertical" />
+                <DeviceSelect />
+              </div>
+              <div className="flex gap-1 px-1 border-l items-center">
+                <UndoRedoButtons />
+                <Separator orientation="vertical" />
+                <LayersButton />
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button size="sm" variant="ghost">
+                      <EllipsisIcon />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem>Global Settings</DropdownMenuItem>
+                    <DropdownMenuItem>Selectors</DropdownMenuItem>
+                    <DropdownMenuItem>History</DropdownMenuItem>
+                    <DropdownMenuItem>Preferences</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <Separator orientation="vertical" />
+                <SavePageButton />
+                <Separator orientation="vertical" />
+                <ExitEditorButton />
+              </div>
             </div>
-            <div className="px-1 border-x flex items-center gap-1 [&>*]:my-1">
-              <PageSelect pages={pages} />
-              <Separator orientation="vertical" />
-              <DeviceSelect />
-            </div>
-            <div className="flex gap-1 px-1 border-l items-center">
-              <UndoRedoButtons />
-              <Separator orientation="vertical" />
-              <LayersButton />
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button size="sm" variant="ghost">
-                    <EllipsisIcon />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem>Global Settings</DropdownMenuItem>
-                  <DropdownMenuItem>Selectors</DropdownMenuItem>
-                  <DropdownMenuItem>History</DropdownMenuItem>
-                  <DropdownMenuItem>Preferences</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-              <Separator orientation="vertical" />
-              <SavePageButton />
-              <Separator orientation="vertical" />
-              <ExitEditorButton />
+            <div className="w-full flex flex-1 bg-neutral-100 relative h-[calc(100%_-_45px)]">
+              <ComponentBar />
+              {children}
+              <LayersBar />
             </div>
           </div>
-          <div className="w-full flex flex-1 bg-neutral-100 relative h-[calc(100%_-_45px)]">
-            <ComponentBar />
-            {children}
-            <LayersBar />
-          </div>
-        </div>
-      </EditorWrapper>
-    </EditorContextProvider>
+        </EditorWrapper>
+      </EditorContextProvider>
+    </FontsContextProvider>
   );
 }

@@ -17,6 +17,7 @@ export type TextType = {
   marginBottom?: MultiDeviceWidthType;
   align?: DeviceRecord<string>;
   color?: DeviceRecord<string>;
+  font?: DeviceRecord<string>;
 };
 
 const sizes = getDefaultDeviceObject({
@@ -32,4 +33,5 @@ export const defaultTextProps: TextType = {
   marginBottom: sizes,
   align: getDefaultDeviceObject(undefined as unknown as string),
   color: getDefaultDeviceObject(undefined as unknown as string),
+  font: getDefaultDeviceObject(undefined as unknown as string),
 };

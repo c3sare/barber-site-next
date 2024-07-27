@@ -4,31 +4,18 @@ import { Text } from "@/app/(editor)/admin/editor/editor-components/text";
 import { Root } from "@/app/(editor)/admin/editor/editor-components/root";
 import { Section } from "@/app/(editor)/admin/editor/editor-components/section";
 import { Column } from "@/app/(editor)/admin/editor/editor-components/columns";
-
-type NodeType = {
-  custom: any;
-  displayName: string;
-  hidden: boolean;
-  isCanvas: boolean;
-  linkedNodes: Record<string, string>;
-  nodes: string[];
-  parent: string;
-  props: Record<string, any>;
-  type: {
-    resolvedName: string;
-  };
-};
-
-type Data = {
-  ROOT: NodeType;
-} & Record<string, NodeType>;
+import { SerializedNodes } from "@craftjs/core";
+import { getFonts } from "./utils/getFonts";
+import { HeadPortal } from "./head-portal";
 
 export const RenderPage = ({ data }: { data?: string | null }) => {
-  const content: Data = data
+  const content: SerializedNodes = data
     ? JSON.parse(lz.decompress(lz.decodeBase64(data)))
     : undefined;
 
   if (!content) return null;
+
+  const fonts = getFonts(content);
 
   return (
     <Editor
@@ -43,6 +30,14 @@ export const RenderPage = ({ data }: { data?: string | null }) => {
       <Frame data={content}>
         <Element data-cy="root" is={Root} canvas />
       </Frame>
+      <HeadPortal>
+        <link
+          rel="stylesheet"
+          href={`https://fonts.googleapis.com/css?family=${fonts
+            .map((item) => item.replaceAll(" ", "+"))
+            .join("|")}`}
+        />
+      </HeadPortal>
     </Editor>
   );
 };

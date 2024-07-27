@@ -19,6 +19,7 @@ import {
   AlignRightIcon,
 } from "lucide-react";
 import { ColorInput } from "../toolbar-elements/color-input";
+import { FontSelect } from "../toolbar-elements/font-select";
 
 export const TextToolbar = () => {
   const {
@@ -31,6 +32,7 @@ export const TextToolbar = () => {
     weight,
     align,
     color,
+    font,
   } = useNode((node) => ({
     text: node.data.props.text,
     width: node.data.props.width,
@@ -40,6 +42,7 @@ export const TextToolbar = () => {
     weight: node.data.props.weight,
     align: node.data.props.align,
     color: node.data.props.color,
+    font: node.data.props.font,
   }));
 
   return (
@@ -108,6 +111,7 @@ export const TextToolbar = () => {
                   },
                 ]}
               />
+              <FontSelect title="Font" object_key="font" sizes={font} />
               <SizeInput
                 title="Font Size"
                 range={[10, 128]}

@@ -11,6 +11,7 @@ export const StyledTextDiv = styled("div")<{
   $weight?: DeviceRecord<string>;
   $align?: DeviceRecord<string>;
   $color?: DeviceRecord<string>;
+  $font?: DeviceRecord<string>;
 }>(
   ({
     $width: w,
@@ -20,6 +21,7 @@ export const StyledTextDiv = styled("div")<{
     $weight: wg,
     $align: al,
     $color: c,
+    $font: f,
   }) => `
   width: ${getWidth(w?.["2xl"])};
   ${fs?.["2xl"]?.value ? `font-size: ${getWidth(fs["2xl"])};` : ""}
@@ -28,6 +30,7 @@ export const StyledTextDiv = styled("div")<{
   ${wg?.["2xl"] ? `font-weight: ${wg["2xl"]};` : ""}
   ${al?.["2xl"] ? `text-align: ${al["2xl"]};` : ""}
   ${c?.["2xl"] ? `color: ${c["2xl"]};` : ""}
+  ${f?.["2xl"] ? `font-family: "${f["2xl"]}", sans-serif;` : ""}
 
   @media (max-width: 1119px) {
     ${w?.["xl"]?.value ? `width: ${getWidth(w["xl"])};` : ""}
@@ -37,6 +40,7 @@ export const StyledTextDiv = styled("div")<{
     ${wg?.["xl"] ? `font-weight: ${wg["xl"]};` : ""}
     ${al?.["xl"] ? `text-align: ${al["xl"]};` : ""}
     ${c?.["xl"] ? `color: ${c["xl"]};` : ""}
+    ${f?.["xl"] ? `font-family: "${f["xl"]}", sans-serif;` : ""}
   }
 
   @media (max-width: 1023px) {
@@ -47,6 +51,7 @@ export const StyledTextDiv = styled("div")<{
     ${wg?.["lg"] ? `font-weight: ${wg["lg"]};` : ""}
     ${al?.["lg"] ? `text-align: ${al["lg"]};` : ""}
     ${c?.["lg"] ? `color: ${c["lg"]};` : ""}
+    ${f?.["lg"] ? `font-family: "${f["lg"]}", sans-serif;` : ""}
   }
 
   @media (max-width: 767px) {
@@ -57,6 +62,7 @@ export const StyledTextDiv = styled("div")<{
     ${wg?.["md"] ? `font-weight: ${wg["md"]};` : ""}
     ${al?.["md"] ? `text-align: ${al["md"]};` : ""}
     ${c?.["md"] ? `color: ${c["md"]};` : ""}
+    ${f?.["md"] ? `font-family: "${f["md"]}", sans-serif;` : ""}
   }
 
   @media (max-width: 479px) {
@@ -67,6 +73,7 @@ export const StyledTextDiv = styled("div")<{
     ${wg?.["sm"] ? `font-weight: ${wg["sm"]};` : ""}
     ${al?.["sm"] ? `text-align: ${al["sm"]};` : ""}
     ${c?.["sm"] ? `color: ${c["sm"]};` : ""}
+    ${f?.["sm"] ? `font-family: "${f["sm"]}", sans-serif;` : ""}
   }
 `
 );

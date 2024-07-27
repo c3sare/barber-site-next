@@ -1,9 +1,17 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
-const HeadPortal = ({ children }: { children?: React.ReactNode }) => {
-  return createPortal(<>{children}</>, document.head);
-};
+export default function HeadPortal({ children }: React.PropsWithChildren) {
+  const [mounted, setMounted] = useState(false);
 
-export default HeadPortal;
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
+  return mounted && typeof window !== "undefined"
+    ? createPortal(<>{children}</>, document.head)
+    : null;
+}

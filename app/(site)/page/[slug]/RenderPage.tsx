@@ -6,9 +6,7 @@ import { Section } from "@/app/(editor)/admin/editor/editor-components/section";
 import { Column } from "@/app/(editor)/admin/editor/editor-components/columns";
 import { SerializedNodes } from "@craftjs/core";
 import { getFonts } from "./utils/getFonts";
-import dynamic from "next/dynamic";
-
-const HeadPortal = dynamic(() => import("./head-portal"), { ssr: false });
+import HeadPortal from "./head-portal";
 
 export const RenderPage = ({ data }: { data?: string | null }) => {
   const content: SerializedNodes = data

@@ -8,7 +8,6 @@ export const getFonts = (data: SerializedNodes) => {
     const node = data[key];
 
     if (node.props?.font) {
-      console.log({ font: node.props.font });
       const sizes = Object.keys(node.props.font);
       for (const size of sizes) {
         const font = node.props.font[size];

@@ -12,26 +12,25 @@ import { useCallback, useMemo } from "react";
 import { DeviceRecord } from "./types";
 
 type Props = {
-  sizes: DeviceRecord<string>;
   options: Array<string | { value: string; label: string }>;
   placeholder?: string;
   object_key: string;
   title: string;
-  defaultValue?: string;
 };
 
 export const SelectInput = ({
   options,
   placeholder,
   object_key,
-  sizes,
   title,
-  defaultValue,
 }: Props) => {
   const { device } = useEditorContext();
   const {
     actions: { setProp },
-  } = useNode();
+    sizes,
+  } = useNode((node) => ({
+    sizes: node.data.props[object_key],
+  }));
 
   const setValue = useCallback(
     (value: string | undefined) => {
@@ -55,7 +54,7 @@ export const SelectInput = ({
       onClickReset={() => setValue(undefined)}
       {...{ isVisibleResetButton }}
     >
-      <Select onValueChange={setValue} value={value ?? defaultValue}>
+      <Select onValueChange={setValue} value={value ?? ""}>
         <SelectTrigger>
           <SelectValue placeholder={placeholder ?? ""} />
         </SelectTrigger>

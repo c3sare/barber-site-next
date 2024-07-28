@@ -1,14 +1,11 @@
 "use client";
 
-import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
-  CommandInput,
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
@@ -21,25 +18,26 @@ import { useFonts } from "../../_ctx/fonts-context";
 import { ToolbarElement } from "../toolbar-element";
 import { Virtuoso } from "react-virtuoso";
 import { Input } from "@/components/ui/input";
-import { DeviceRecord } from "./types";
 import { useNode } from "@craftjs/core";
 import { useEditorContext } from "../../_ctx/editor-context";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 type Props = {
   title: string;
   object_key: string;
-  sizes: DeviceRecord<string>;
 };
 
-export function FontSelect({ title, object_key, sizes }: Props) {
+export const FontSelect = ({ title, object_key }: Props) => {
   const { device } = useEditorContext();
   const {
     actions: { setProp },
-  } = useNode();
+    sizes,
+  } = useNode((node) => ({
+    sizes: node.data.props[object_key],
+  }));
   const { fonts, usedFonts, setUsedFonts } = useFonts();
-  const [search, setSearch] = React.useState("");
-  const [open, setOpen] = React.useState(false);
+  const [search, setSearch] = useState("");
+  const [open, setOpen] = useState(false);
 
   const setValue = useCallback(
     (value?: string) => {
@@ -60,8 +58,12 @@ export function FontSelect({ title, object_key, sizes }: Props) {
 
   const isVisibleResetButton = useMemo(() => !!value, [value]);
 
-  const filteredFonts = fonts.filter((item) =>
-    item.family.toLowerCase().includes(search.toLowerCase())
+  const filteredFonts = useMemo(
+    () =>
+      fonts.filter((item) =>
+        item.family.toLowerCase().includes(search.toLowerCase())
+      ),
+    [fonts, search]
   );
 
   return (
@@ -70,7 +72,7 @@ export function FontSelect({ title, object_key, sizes }: Props) {
       isVisibleResetButton={isVisibleResetButton}
       onClickReset={() => setValue()}
     >
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
@@ -128,4 +130,4 @@ export function FontSelect({ title, object_key, sizes }: Props) {
       </Popover>
     </ToolbarElement>
   );
-}
+};

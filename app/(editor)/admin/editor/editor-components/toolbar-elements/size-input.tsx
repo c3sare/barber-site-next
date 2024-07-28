@@ -9,23 +9,24 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ToolbarElement } from "../toolbar-element";
-import { MultiDeviceWidthType } from "../text/default-props";
 
 const metrics = ["px", "em", "rem", "vw", "vh", "auto", "custom"] as const;
 
 type Props = {
-  sizes: MultiDeviceWidthType;
   title: string;
   range: [number, number];
   object_key: string;
 };
 
-export const SizeInput = ({ sizes, title, range, object_key }: Props) => {
+export const SizeInput = ({ title, range, object_key }: Props) => {
   const [open, setOpen] = useState(false);
   const { device } = useEditorContext();
   const {
     actions: { setProp },
-  } = useNode();
+    sizes,
+  } = useNode((node) => ({
+    sizes: node.data.props[object_key],
+  }));
 
   const setValue = useCallback(
     (value: string) => {

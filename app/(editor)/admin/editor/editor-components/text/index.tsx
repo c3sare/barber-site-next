@@ -51,7 +51,7 @@ export const Text = ({
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
       className="block whitespace-pre-line max-w-full outline-none"
-      contentEditable={enabled ? "true" : "false"}
+      contentEditable={enabled ? "plaintext-only" : "false"}
       onInput={(e) => {
         setProp((props: { text: string }) => {
           const text = e.currentTarget.innerText;

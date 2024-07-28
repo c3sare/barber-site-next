@@ -40,8 +40,6 @@ const Fonts = ({ data }: Props) => {
 
   const iframe = document.querySelector("iframe")?.contentWindow?.document.head;
 
-  console.log({ iframe });
-
   return (
     !!iframe &&
     usedFonts.length > 0 &&

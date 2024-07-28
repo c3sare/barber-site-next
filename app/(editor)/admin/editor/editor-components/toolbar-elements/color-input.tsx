@@ -17,14 +17,16 @@ import Image from "next/image";
 type Props = {
   title: string;
   object_key: string;
-  sizes: DeviceRecord<string>;
 };
 
-export const ColorInput = ({ sizes, object_key, title }: Props) => {
+export const ColorInput = ({ object_key, title }: Props) => {
   const { device } = useEditorContext();
   const {
     actions: { setProp },
-  } = useNode();
+    sizes,
+  } = useNode((node) => ({
+    sizes: node.data.props[object_key],
+  }));
 
   const setValue = useCallback(
     (value?: string) => {

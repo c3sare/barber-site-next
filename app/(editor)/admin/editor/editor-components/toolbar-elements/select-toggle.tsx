@@ -12,15 +12,17 @@ type Props = {
     title: string;
   }[];
   object_key: string;
-  sizes: DeviceRecord<string>;
   title: string;
 };
 
-export const SelectToggle = ({ options, object_key, sizes, title }: Props) => {
+export const SelectToggle = ({ options, object_key, title }: Props) => {
   const { device } = useEditorContext();
   const {
     actions: { setProp },
-  } = useNode();
+    sizes,
+  } = useNode((node) => ({
+    sizes: node.data.props[object_key],
+  }));
 
   const setValue = useCallback(
     (value?: string) => {

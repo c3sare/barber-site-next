@@ -20,49 +20,13 @@ import {
 } from "lucide-react";
 import { ColorInput } from "../toolbar-elements/color-input";
 import { FontSelect } from "../toolbar-elements/font-select";
+import { TextareaInput } from "../toolbar-elements/textarea-input";
 
 export const TextToolbar = () => {
-  const {
-    actions: { setProp },
-    text,
-    width,
-    fontSize,
-    marginBottom,
-    marginTop,
-    weight,
-    align,
-    color,
-    font,
-  } = useNode((node) => ({
-    text: node.data.props.text,
-    width: node.data.props.width,
-    fontSize: node.data.props.fontSize,
-    marginBottom: node.data.props.marginBottom,
-    marginTop: node.data.props.marginTop,
-    weight: node.data.props.weight,
-    align: node.data.props.align,
-    color: node.data.props.color,
-    font: node.data.props.font,
-  }));
-
   return (
     <ToolbarWrapper
       editContent={
-        <Card className="p-2">
-          <Label>
-            Text
-            <Textarea
-              value={text}
-              className="resize-y"
-              placeholder="Text"
-              onChange={(e) =>
-                setProp(
-                  (prop: { text: string }) => (prop.text = e.target.value)
-                )
-              }
-            />
-          </Label>
-        </Card>
+        <TextareaInput title="Text" object_key="text" placeholder="Text..." />
       }
       editDesign={
         <Accordion
@@ -72,21 +36,15 @@ export const TextToolbar = () => {
           <AccordionItem value="size">
             <AccordionTrigger>Size</AccordionTrigger>
             <AccordionContent>
-              <SizeInput
-                sizes={width}
-                title="Width"
-                range={[0, 1200]}
-                object_key="width"
-              />
+              <SizeInput title="Width" range={[0, 1200]} object_key="width" />
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="typography">
             <AccordionTrigger>Typography</AccordionTrigger>
             <AccordionContent>
-              <ColorInput title="Color" sizes={color} object_key="color" />
+              <ColorInput title="Color" object_key="color" />
               <SelectToggle
                 title="Alignment"
-                sizes={align}
                 object_key="align"
                 options={[
                   {
@@ -111,18 +69,15 @@ export const TextToolbar = () => {
                   },
                 ]}
               />
-              <FontSelect title="Font" object_key="font" sizes={font} />
+              <FontSelect title="Font" object_key="font" />
               <SizeInput
                 title="Font Size"
                 range={[10, 128]}
-                sizes={fontSize}
                 object_key="fontSize"
               />
               <SelectInput
                 title="Weight"
-                sizes={weight}
                 object_key="weight"
-                defaultValue="400"
                 options={[
                   "100",
                   "200",
@@ -143,13 +98,11 @@ export const TextToolbar = () => {
               <SizeInput
                 title="Margin Top"
                 range={[0, 0]}
-                sizes={marginTop}
                 object_key="marginTop"
               />
               <SizeInput
                 title="Margin Bottom"
                 range={[0, 0]}
-                sizes={marginBottom}
                 object_key="marginBottom"
               />
             </AccordionContent>

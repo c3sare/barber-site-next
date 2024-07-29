@@ -13,6 +13,7 @@ import { PopoverClose } from "@radix-ui/react-popover";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import bgTransparentImage from "@/public/images/bg-transaprent.png";
 import Image from "next/image";
+import { useFrameDeviceSize } from "../../_ctx/frame-device-size-context";
 
 type Props = {
   title: string;
@@ -20,7 +21,7 @@ type Props = {
 };
 
 export const ColorInput = ({ object_key, title }: Props) => {
-  const { device } = useEditorContext();
+  const { device } = useFrameDeviceSize();
   const {
     actions: { setProp },
     sizes,

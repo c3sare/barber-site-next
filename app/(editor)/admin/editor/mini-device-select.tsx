@@ -11,11 +11,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { getMaxAvailableWidth } from "./utils";
+import { useFrameDeviceSize } from "./_ctx/frame-device-size-context";
 
 export const MiniDeviceSelect = () => {
   const [open, setOpen] = useState(false);
-  const { setFrameWidth, device, isOpenLayersBar, currentOpenBar } =
-    useEditorContext();
+  const { isOpenLayersBar, currentOpenBar } = useEditorContext();
+  const { setFrameWidth, device } = useFrameDeviceSize();
 
   const currentIcon = useMemo(
     () => icons[device as keyof typeof icons],

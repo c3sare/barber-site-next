@@ -14,6 +14,7 @@ import { SmartphoneIcon, TabletIcon } from "lucide-react";
 import { useMemo } from "react";
 import { useEditorContext } from "./_ctx/editor-context";
 import { getMaxAvailableWidth } from "./utils";
+import { useFrameDeviceSize } from "./_ctx/frame-device-size-context";
 
 export const icons = {
   "2xl": {
@@ -54,8 +55,9 @@ export const icons = {
 };
 
 export const DeviceSelect = () => {
-  const { setFrameWidth, device, setDevice, isOpenLayersBar, currentOpenBar } =
-    useEditorContext();
+  const { isOpenLayersBar, currentOpenBar } = useEditorContext();
+
+  const { setFrameWidth, device, setDevice } = useFrameDeviceSize();
 
   const currentIcon = useMemo(
     () => icons[device as keyof typeof icons],
@@ -116,7 +118,10 @@ export const DeviceSelect = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-60">
-        <DropdownMenuRadioGroup value={device} onValueChange={setDevice}>
+        <DropdownMenuRadioGroup
+          value={device}
+          onValueChange={(dev) => setDevice(dev as keyof typeof icons)}
+        >
           {list}
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>

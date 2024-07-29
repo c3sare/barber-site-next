@@ -1,9 +1,8 @@
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { ToolbarElement } from "../toolbar-element";
 import { useNode } from "@craftjs/core";
-import { useEditorContext } from "../../_ctx/editor-context";
 import { useCallback, useMemo } from "react";
-import { DeviceRecord } from "./types";
+import { useFrameDeviceSize } from "../../_ctx/frame-device-size-context";
 
 type Props = {
   options: {
@@ -16,7 +15,7 @@ type Props = {
 };
 
 export const SelectToggle = ({ options, object_key, title }: Props) => {
-  const { device } = useEditorContext();
+  const { device } = useFrameDeviceSize();
   const {
     actions: { setProp },
     sizes,

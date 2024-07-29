@@ -5,19 +5,15 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useEditorContext } from "../_ctx/editor-context";
 import { EllipsisVerticalIcon } from "lucide-react";
 import { useEditor } from "@craftjs/core";
+import { useFrameDeviceSize } from "../_ctx/frame-device-size-context";
 
 export const ResizeBox = ({ children }: React.PropsWithChildren) => {
   const {
     actions: { selectNode },
   } = useEditor();
-  const {
-    currentOpenBar,
-    frameWidth,
-    setFrameWidth,
-    isOpenLayersBar,
-    isResizing,
-    setIsResizing,
-  } = useEditorContext();
+  const { currentOpenBar, isOpenLayersBar } = useEditorContext();
+  const { frameWidth, setFrameWidth, isResizing, setIsResizing } =
+    useFrameDeviceSize();
   const [maxWidth, setMaxWidth] = useState<number>(0);
 
   useEffect(() => {

@@ -10,6 +10,7 @@ import { useEditorContext } from "../../_ctx/editor-context";
 import { useNode } from "@craftjs/core";
 import { useCallback, useMemo } from "react";
 import { DeviceRecord } from "./types";
+import { useFrameDeviceSize } from "../../_ctx/frame-device-size-context";
 
 type Props = {
   options: Array<string | { value: string; label: string }>;
@@ -24,7 +25,7 @@ export const SelectInput = ({
   object_key,
   title,
 }: Props) => {
-  const { device } = useEditorContext();
+  const { device } = useFrameDeviceSize();
   const {
     actions: { setProp },
     sizes,

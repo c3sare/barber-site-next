@@ -4,7 +4,13 @@ import { useEditorContext } from "@/app/(editor)/admin/editor/_ctx/editor-contex
 import { useNode, useEditor } from "@craftjs/core";
 import { ROOT_NODE } from "@craftjs/utils";
 import { ArrowUpIcon, CopyIcon, MoveIcon, Trash2Icon } from "lucide-react";
-import React, { useEffect, useRef, useCallback, useState } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useCallback,
+  useState,
+  startTransition,
+} from "react";
 import ReactDOM from "react-dom";
 import { duplicateNode } from "./utils";
 import { cn } from "@/lib/utils";
@@ -14,7 +20,7 @@ export const RenderNode = ({
 }: {
   render: React.ReactElement<any, string | React.JSXElementConstructor<any>>;
 }) => {
-  const { frameWidth, openBar } = useEditorContext();
+  const { openBar } = useEditorContext();
   const [position, setPosition] = useState({ x: 0, y: 0, width: 0 });
   const { id } = useNode();
   const { actions, query, isActive } = useEditor((_, query) => ({
@@ -60,11 +66,13 @@ export const RenderNode = ({
   useEffect(() => {
     const iframe = document.querySelector("iframe")!.contentWindow;
     const fn = () => {
-      setPosition({
-        x: iframe?.scrollX || 0,
-        y: iframe?.scrollY || 0,
-        width: iframe?.innerWidth || 0,
-      });
+      startTransition(() =>
+        setPosition({
+          x: iframe?.scrollX || 0,
+          y: iframe?.scrollY || 0,
+          width: iframe?.innerWidth || 0,
+        })
+      );
     };
     fn();
 

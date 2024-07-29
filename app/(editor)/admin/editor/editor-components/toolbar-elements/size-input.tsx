@@ -9,6 +9,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ToolbarElement } from "../toolbar-element";
+import { useFrameDeviceSize } from "../../_ctx/frame-device-size-context";
 
 const metrics = ["px", "em", "rem", "vw", "vh", "auto", "custom"] as const;
 
@@ -20,7 +21,7 @@ type Props = {
 
 export const SizeInput = ({ title, range, object_key }: Props) => {
   const [open, setOpen] = useState(false);
-  const { device } = useEditorContext();
+  const { device } = useFrameDeviceSize();
   const {
     actions: { setProp },
     sizes,

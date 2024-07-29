@@ -16,11 +16,16 @@ import {
 } from "@/components/ui/popover";
 import { useFonts } from "../../_ctx/fonts-context";
 import { ToolbarElement } from "../toolbar-element";
-import { Virtuoso } from "react-virtuoso";
 import { Input } from "@/components/ui/input";
 import { useNode } from "@craftjs/core";
-import { useEditorContext } from "../../_ctx/editor-context";
 import { useCallback, useMemo, useState } from "react";
+import dynamic from "next/dynamic";
+import { useFrameDeviceSize } from "../../_ctx/frame-device-size-context";
+
+const Virtuoso = dynamic(
+  () => import("react-virtuoso").then((mod) => mod.Virtuoso),
+  { ssr: false }
+);
 
 type Props = {
   title: string;
@@ -28,7 +33,7 @@ type Props = {
 };
 
 export const FontSelect = ({ title, object_key }: Props) => {
-  const { device } = useEditorContext();
+  const { device } = useFrameDeviceSize();
   const {
     actions: { setProp },
     sizes,
@@ -70,7 +75,7 @@ export const FontSelect = ({ title, object_key }: Props) => {
     <ToolbarElement
       title={title}
       isVisibleResetButton={isVisibleResetButton}
-      onClickReset={() => setValue()}
+      onClickReset={() => setValue(undefined)}
     >
       <Popover>
         <PopoverTrigger asChild>

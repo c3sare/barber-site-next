@@ -19,8 +19,6 @@ const deviceWidth = {
 type Props = {
   frameWidth: number;
   setFrameWidth: React.Dispatch<React.SetStateAction<number>>;
-  isResizing: boolean;
-  setIsResizing: React.Dispatch<React.SetStateAction<boolean>>;
   device: keyof typeof deviceWidth;
   setDevice: (dev: keyof typeof deviceWidth) => void;
 };
@@ -30,7 +28,6 @@ export const FrameDeviceSizeContext = createContext<Props | null>(null);
 export const FrameDeviceSizeContextProvider = ({
   children,
 }: React.PropsWithChildren) => {
-  const [isResizing, setIsResizing] = useState(false);
   const [frameWidth, setFrameWidth] = useState(1920);
 
   const device = useMemo(() => {
@@ -47,9 +44,12 @@ export const FrameDeviceSizeContextProvider = ({
     }
   }, [frameWidth]);
 
-  const setDevice = useCallback((dev: typeof device) => {
-    setFrameWidth(deviceWidth[dev]);
-  }, []);
+  const setDevice = useCallback(
+    (dev: typeof device) => {
+      setFrameWidth(deviceWidth[dev]);
+    },
+    [setFrameWidth]
+  );
 
   const value = useMemo(
     () => ({
@@ -57,10 +57,8 @@ export const FrameDeviceSizeContextProvider = ({
       device: device as keyof typeof deviceWidth,
       setFrameWidth,
       setDevice,
-      isResizing,
-      setIsResizing,
     }),
-    [frameWidth, device, setDevice, isResizing]
+    [frameWidth, setFrameWidth, device, setDevice]
   );
 
   return (

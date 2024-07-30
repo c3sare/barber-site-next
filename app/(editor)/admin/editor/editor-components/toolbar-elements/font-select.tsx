@@ -65,9 +65,11 @@ export const FontSelect = ({ title, object_key }: Props) => {
 
   const filteredFonts = useMemo(
     () =>
-      fonts.filter((item) =>
-        item.family.toLowerCase().includes(search.toLowerCase())
-      ),
+      fonts
+        .filter((item) =>
+          item.family.toLowerCase().includes(search.toLowerCase())
+        )
+        .slice(0, 5),
     [fonts, search]
   );
 
@@ -77,7 +79,7 @@ export const FontSelect = ({ title, object_key }: Props) => {
       isVisibleResetButton={isVisibleResetButton}
       onClickReset={() => setValue(undefined)}
     >
-      <Popover>
+      <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"

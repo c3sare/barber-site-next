@@ -11,9 +11,7 @@ import {
 import { cn } from "@/lib/utils";
 import { DesktopIcon } from "@radix-ui/react-icons";
 import { SmartphoneIcon, TabletIcon } from "lucide-react";
-import { useMemo } from "react";
-import { useEditorContext } from "./_ctx/editor-context";
-import { getMaxAvailableWidth } from "./utils";
+import { memo, useMemo } from "react";
 import { useFrameDeviceSize } from "./_ctx/frame-device-size-context";
 
 export const icons = {
@@ -54,10 +52,8 @@ export const icons = {
   },
 };
 
-export const DeviceSelect = () => {
-  const { isOpenLayersBar, currentOpenBar } = useEditorContext();
-
-  const { setFrameWidth, device, setDevice } = useFrameDeviceSize();
+export const DeviceSelect = memo(() => {
+  const { device, setDevice } = useFrameDeviceSize();
 
   const currentIcon = useMemo(
     () => icons[device as keyof typeof icons],
@@ -81,15 +77,7 @@ export const DeviceSelect = () => {
             value={key}
             className={cn("flex gap-4 items-center", active && "bg-primary/10")}
             onClick={() => {
-              setFrameWidth(
-                key === "2xl"
-                  ? getMaxAvailableWidth(
-                      obj.width,
-                      isOpenLayersBar,
-                      !!currentOpenBar
-                    )
-                  : obj.width
-              );
+              setDevice(key as typeof device);
             }}
           >
             <Icon className={cn("size-6", obj.rotate && "rotate-90")} />
@@ -100,7 +88,7 @@ export const DeviceSelect = () => {
           </DropdownMenuRadioItem>
         );
       }),
-    [device, setFrameWidth, isOpenLayersBar, currentOpenBar]
+    [device, setDevice]
   );
 
   return (
@@ -127,4 +115,6 @@ export const DeviceSelect = () => {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-};
+});
+
+DeviceSelect.displayName = "DeviceSelect";

@@ -27,7 +27,7 @@ export const getFonts = async () => {
 
     const data = fontsSchema.parse(json);
 
-    return data.items;
+    return data.items.slice(0, 10);
   } catch (error) {
     console.error(error);
     return [];

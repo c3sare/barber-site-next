@@ -25,7 +25,7 @@ export const FontsContextProvider = ({ children, fonts }: Props) => {
       usedFonts,
       setUsedFonts,
     }),
-    [fonts, usedFonts]
+    [fonts, usedFonts, setUsedFonts]
   );
 
   return (

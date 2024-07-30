@@ -2,7 +2,7 @@ import { useNode } from "@craftjs/core";
 import { useEditorContext } from "../../_ctx/editor-context";
 import { ToolbarElement } from "../toolbar-element";
 import { DeviceRecord } from "./types";
-import { useCallback, useMemo } from "react";
+import { memo, useCallback, useMemo } from "react";
 import Sketch from "@uiw/react-color-sketch";
 import {
   Popover,
@@ -20,7 +20,7 @@ type Props = {
   object_key: string;
 };
 
-export const ColorInput = ({ object_key, title }: Props) => {
+export const ColorInput = memo(({ object_key, title }: Props) => {
   const { device } = useFrameDeviceSize();
   const {
     actions: { setProp },
@@ -89,4 +89,6 @@ export const ColorInput = ({ object_key, title }: Props) => {
       </Popover>
     </ToolbarElement>
   );
-};
+});
+
+ColorInput.displayName = "ColorInput";

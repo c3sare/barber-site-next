@@ -2,21 +2,18 @@
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useMemo, useState } from "react";
-import { useEditorContext } from "./_ctx/editor-context";
+import { memo, useMemo, useState } from "react";
 import { icons } from "./device-select";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { getMaxAvailableWidth } from "./utils";
 import { useFrameDeviceSize } from "./_ctx/frame-device-size-context";
 
-export const MiniDeviceSelect = () => {
+export const MiniDeviceSelect = memo(() => {
   const [open, setOpen] = useState(false);
-  const { isOpenLayersBar, currentOpenBar } = useEditorContext();
-  const { setFrameWidth, device } = useFrameDeviceSize();
+  const { setDevice, device } = useFrameDeviceSize();
 
   const currentIcon = useMemo(
     () => icons[device as keyof typeof icons],
@@ -44,15 +41,7 @@ export const MiniDeviceSelect = () => {
               active && "bg-primary/10"
             )}
             onClick={() => {
-              setFrameWidth(
-                key === "2xl"
-                  ? getMaxAvailableWidth(
-                      obj.width,
-                      isOpenLayersBar,
-                      !!currentOpenBar
-                    )
-                  : obj.width
-              );
+              setDevice(key as typeof device);
               setOpen(false);
             }}
           >
@@ -60,7 +49,7 @@ export const MiniDeviceSelect = () => {
           </Button>
         );
       }),
-    [device, setFrameWidth, isOpenLayersBar, currentOpenBar]
+    [device, setDevice]
   );
 
   return (
@@ -81,4 +70,6 @@ export const MiniDeviceSelect = () => {
       <PopoverContent className="w-8 p-0 flex flex-col">{list}</PopoverContent>
     </Popover>
   );
-};
+});
+
+MiniDeviceSelect.displayName = "MiniDeviceSelect";

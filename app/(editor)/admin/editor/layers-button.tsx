@@ -1,12 +1,18 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useEditorContext } from "./_ctx/editor-context";
 import { Layers3Icon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useEditorState } from "./stores/use-editor-state";
+import { useShallow } from "zustand/react/shallow";
 
 export const LayersButton = () => {
-  const { toggleLayersBar, isOpenLayersBar } = useEditorContext();
+  const { toggleLayersBar, isOpenLayersBar } = useEditorState(
+    useShallow((state) => ({
+      toggleLayersBar: state.toggleLayersBar,
+      isOpenLayersBar: state.isOpenLayersBar,
+    }))
+  );
   return (
     <Button
       onClick={toggleLayersBar}

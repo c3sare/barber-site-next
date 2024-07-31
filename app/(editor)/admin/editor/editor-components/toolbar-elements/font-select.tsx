@@ -19,13 +19,8 @@ import { ToolbarElement } from "../toolbar-element";
 import { Input } from "@/components/ui/input";
 import { useNode } from "@craftjs/core";
 import { useCallback, useMemo, useState } from "react";
-import dynamic from "next/dynamic";
-import { useFrameDeviceSize } from "../../_ctx/frame-device-size-context";
-
-const Virtuoso = dynamic(
-  () => import("react-virtuoso").then((mod) => mod.Virtuoso),
-  { ssr: false }
-);
+import { useFrameDeviceSize } from "../../stores/use-frame-device-size";
+import { Virtuoso } from "react-virtuoso";
 
 type Props = {
   title: string;
@@ -65,11 +60,9 @@ export const FontSelect = ({ title, object_key }: Props) => {
 
   const filteredFonts = useMemo(
     () =>
-      fonts
-        .filter((item) =>
-          item.family.toLowerCase().includes(search.toLowerCase())
-        )
-        .slice(0, 5),
+      fonts.filter((item) =>
+        item.family.toLowerCase().includes(search.toLowerCase())
+      ),
     [fonts, search]
   );
 

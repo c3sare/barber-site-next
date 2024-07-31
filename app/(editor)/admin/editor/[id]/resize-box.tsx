@@ -2,20 +2,19 @@
 
 import { Resizable } from "re-resizable";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useEditorContext } from "../_ctx/editor-context";
 import { EllipsisVerticalIcon } from "lucide-react";
 import { useEditor } from "@craftjs/core";
-import { useFrameDeviceSize } from "../_ctx/frame-device-size-context";
-import { useResizingEditor } from "../_ctx/is-resizing-context";
+import { useFrameDeviceSize } from "../stores/use-frame-device-size";
+import { useEditorState } from "../stores/use-editor-state";
 
 export const ResizeBox = ({ children }: React.PropsWithChildren) => {
-  const { isResizing, setIsResizing } = useResizingEditor();
+  const [isResizing, setIsResizing] = useState<boolean>(false);
   const {
     actions: { selectNode },
   } = useEditor();
-  const { currentOpenBar, isOpenLayersBar } = useEditorContext();
-  const { frameWidth, setFrameWidth } = useFrameDeviceSize();
-  const [maxWidth, setMaxWidth] = useState<number>(0);
+  const { currentOpenBar, isOpenLayersBar } = useEditorState();
+  const { frameWidth, setFrameWidth, maxWidth, setMaxWidth } =
+    useFrameDeviceSize();
 
   useEffect(() => {
     const fn = () => {

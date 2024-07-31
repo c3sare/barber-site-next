@@ -9,7 +9,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useFrameDeviceSize } from "./_ctx/frame-device-size-context";
+import { useFrameDeviceSize } from "./stores/use-frame-device-size";
 
 export const MiniDeviceSelect = memo(() => {
   const [open, setOpen] = useState(false);

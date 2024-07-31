@@ -6,11 +6,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ToolbarElement } from "../toolbar-element";
-import { useEditorContext } from "../../_ctx/editor-context";
 import { useNode } from "@craftjs/core";
 import { useCallback, useMemo } from "react";
 import { DeviceRecord } from "./types";
-import { useFrameDeviceSize } from "../../_ctx/frame-device-size-context";
+import { useFrameDeviceSize } from "../../stores/use-frame-device-size";
 
 type Props = {
   options: Array<string | { value: string; label: string }>;

@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { DesktopIcon } from "@radix-ui/react-icons";
 import { SmartphoneIcon, TabletIcon } from "lucide-react";
 import { memo, useMemo } from "react";
-import { useFrameDeviceSize } from "./_ctx/frame-device-size-context";
+import { useFrameDeviceSize } from "./stores/use-frame-device-size";
 
 export const icons = {
   "2xl": {

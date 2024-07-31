@@ -9,15 +9,15 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { useEditorContext } from "./_ctx/editor-context";
 import { createElement } from "react";
 import { useEditor, Element } from "@craftjs/core";
 import { Button } from "@/components/ui/button";
 import { Section } from "./editor-components/section";
 import { Column } from "./editor-components/columns";
+import { useEditorState } from "./stores/use-editor-state";
 
 export const ComponentBar = () => {
-  const { currentOpenBar, openBar } = useEditorContext();
+  const { currentOpenBar, openBar } = useEditorState();
   const { selectededNodeId, toolbarSettings } = useEditor((state) => {
     const currentSelectedNodeId = Array.from(state.events.selected).at(0);
 

@@ -1,6 +1,5 @@
 "use client";
 
-import { useEditorContext } from "@/app/(editor)/admin/editor/_ctx/editor-context";
 import { useNode, useEditor } from "@craftjs/core";
 import { ROOT_NODE } from "@craftjs/utils";
 import { ArrowUpIcon, CopyIcon, MoveIcon, Trash2Icon } from "lucide-react";
@@ -14,13 +13,15 @@ import React, {
 import ReactDOM from "react-dom";
 import { duplicateNode } from "./utils";
 import { cn } from "@/lib/utils";
+import { useEditorState } from "./stores/use-editor-state";
+import { useShallow } from "zustand/react/shallow";
 
 export const RenderNode = ({
   render,
 }: {
   render: React.ReactElement<any, string | React.JSXElementConstructor<any>>;
 }) => {
-  const { openBar } = useEditorContext();
+  const openBar = useEditorState(useShallow((state) => state.openBar));
   const [position, setPosition] = useState({ x: 0, y: 0, width: 0 });
   const { id } = useNode();
   const { actions, query, isActive } = useEditor((_, query) => ({
@@ -36,6 +37,7 @@ export const RenderNode = ({
     connectors: { drag },
     parent,
     node,
+    props,
   } = useNode((node) => ({
     isHover: node.events.hovered,
     dom: node.dom,
@@ -61,7 +63,7 @@ export const RenderNode = ({
         dom.classList.add("border-transparent");
       }
     }
-  }, [dom, isActive, isHover, name]);
+  }, [dom, isActive, isHover, name, props]);
 
   useEffect(() => {
     const iframe = document.querySelector("iframe")!.contentWindow;

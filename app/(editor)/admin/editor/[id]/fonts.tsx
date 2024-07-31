@@ -34,9 +34,8 @@ const Fonts = ({ data }: Props) => {
   const { usedFonts, setUsedFonts } = useFonts();
 
   useEffect(() => {
-    const fonts = getFonts(data, usedFonts);
-    setUsedFonts(fonts);
-  }, [data, usedFonts, setUsedFonts]);
+    setUsedFonts((state) => getFonts(data, state));
+  }, [data, setUsedFonts]);
 
   const iframe = document.querySelector("iframe")?.contentWindow?.document.head;
 

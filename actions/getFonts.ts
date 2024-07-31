@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { z } from "zod";
 
 const fontsSchema = z.object({
@@ -17,19 +18,20 @@ const fontsSchema = z.object({
   ),
 });
 
-export const getFonts = async () => {
+export const getFonts = cache(async () => {
   try {
     const request = await fetch(
       "https://www.googleapis.com/webfonts/v1/webfonts?key=" +
-        process.env.GOOGLE_FONTS_API_KEY
+        process.env.GOOGLE_FONTS_API_KEY,
+      { cache: "force-cache" }
     );
     const json = await request.json();
 
     const data = fontsSchema.parse(json);
 
-    return data.items.slice(0, 10);
+    return data.items;
   } catch (error) {
     console.error(error);
     return [];
   }
-};
+});

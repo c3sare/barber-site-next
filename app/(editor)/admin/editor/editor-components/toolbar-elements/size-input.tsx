@@ -1,7 +1,6 @@
 import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 import { useNode } from "@craftjs/core";
-import { useEditorContext } from "../../_ctx/editor-context";
 import { useCallback, useMemo, useState } from "react";
 import {
   Popover,
@@ -9,7 +8,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ToolbarElement } from "../toolbar-element";
-import { useFrameDeviceSize } from "../../_ctx/frame-device-size-context";
+import { useFrameDeviceSize } from "../../stores/use-frame-device-size";
 
 const metrics = ["px", "em", "rem", "vw", "vh", "auto", "custom"] as const;
 

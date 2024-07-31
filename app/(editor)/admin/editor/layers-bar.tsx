@@ -1,10 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useEditorContext } from "./_ctx/editor-context";
 import { XIcon } from "lucide-react";
 
 import dynamic from "next/dynamic";
+import { useEditorState } from "./stores/use-editor-state";
+import { useShallow } from "zustand/react/shallow";
 
 const Layers = dynamic(
   () => import("@craftjs/layers").then((mod) => mod.Layers),
@@ -12,7 +13,12 @@ const Layers = dynamic(
 );
 
 export const LayersBar = () => {
-  const { isOpenLayersBar, toggleLayersBar } = useEditorContext();
+  const { isOpenLayersBar, toggleLayersBar } = useEditorState(
+    useShallow((state) => ({
+      isOpenLayersBar: state.isOpenLayersBar,
+      toggleLayersBar: state.toggleLayersBar,
+    }))
+  );
 
   return (
     isOpenLayersBar && (

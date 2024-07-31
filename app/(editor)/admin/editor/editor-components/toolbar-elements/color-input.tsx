@@ -1,7 +1,5 @@
 import { useNode } from "@craftjs/core";
-import { useEditorContext } from "../../_ctx/editor-context";
 import { ToolbarElement } from "../toolbar-element";
-import { DeviceRecord } from "./types";
 import { memo, useCallback, useMemo } from "react";
 import Sketch from "@uiw/react-color-sketch";
 import {
@@ -13,7 +11,7 @@ import { PopoverClose } from "@radix-ui/react-popover";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import bgTransparentImage from "@/public/images/bg-transaprent.png";
 import Image from "next/image";
-import { useFrameDeviceSize } from "../../_ctx/frame-device-size-context";
+import { useFrameDeviceSize } from "../../stores/use-frame-device-size";
 
 type Props = {
   title: string;

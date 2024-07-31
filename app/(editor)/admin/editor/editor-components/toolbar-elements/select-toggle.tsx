@@ -2,7 +2,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { ToolbarElement } from "../toolbar-element";
 import { useNode } from "@craftjs/core";
 import { useCallback, useMemo } from "react";
-import { useFrameDeviceSize } from "../../_ctx/frame-device-size-context";
+import { useFrameDeviceSize } from "../../stores/use-frame-device-size";
 
 type Props = {
   options: {

@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { getWidth } from "./utils";
-import { DeviceRecord } from "../toolbar-elements/types";
-import { MultiDeviceWidthType } from "./default-props";
+import { DeviceRecord, MultiDeviceWidthType } from "../toolbar-elements/types";
 
 export const StyledTextDiv = styled("div")<{
   $width?: MultiDeviceWidthType;

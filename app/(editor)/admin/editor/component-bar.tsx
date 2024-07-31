@@ -13,8 +13,8 @@ import { createElement } from "react";
 import { useEditor, Element } from "@craftjs/core";
 import { Button } from "@/components/ui/button";
 import { Section } from "./editor-components/section";
-import { Column } from "./editor-components/columns";
 import { useEditorState } from "./stores/use-editor-state";
+import { Columns } from "./editor-components/columns";
 
 export const ComponentBar = () => {
   const { currentOpenBar, openBar } = useEditorState();
@@ -59,9 +59,9 @@ export const ComponentBar = () => {
                 <RectangleHorizontalIcon className="size-5" />
                 Section
               </BuilderElement>
-              <BuilderElement element={<Element canvas is={Column} />}>
+              <BuilderElement element={<Element canvas is={Columns} />}>
                 <Columns3Icon className="size-5" />
-                Column
+                Columns
               </BuilderElement>
               <BuilderElement element={<Text />}>
                 <TextIcon className="size-5" />

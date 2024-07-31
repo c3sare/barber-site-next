@@ -4,7 +4,19 @@ import { useEditor, useNode } from "@craftjs/core";
 import { TextToolbar } from "./toolbar";
 import { useEffect, useRef, useState } from "react";
 import { StyledTextDiv } from "./styled-text-div";
-import { defaultTextProps } from "./default-props";
+import { DeviceRecord, MultiDeviceWidthType } from "../toolbar-elements/types";
+
+type TextType = {
+  text?: string;
+  width?: MultiDeviceWidthType;
+  fontSize?: MultiDeviceWidthType;
+  weight?: DeviceRecord<string>;
+  marginTop?: MultiDeviceWidthType;
+  marginBottom?: MultiDeviceWidthType;
+  align?: DeviceRecord<string>;
+  color?: DeviceRecord<string>;
+  font?: DeviceRecord<string>;
+};
 
 export const Text = ({
   text,
@@ -16,7 +28,7 @@ export const Text = ({
   align,
   color,
   font,
-} = defaultTextProps) => {
+}: TextType) => {
   const [isFocused, setIsFocused] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
   const { enabled } = useEditor((state) => ({
@@ -64,7 +76,6 @@ export const Text = ({
 };
 
 Text.craft = {
-  props: defaultTextProps,
   related: {
     toolbar: TextToolbar,
   },

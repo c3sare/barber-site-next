@@ -16,9 +16,15 @@ type Props = {
   title: string;
   range: [number, number];
   object_key: string;
+  hideDeviceSelect?: boolean;
 };
 
-export const SizeInput = ({ title, range, object_key }: Props) => {
+export const SizeInput = ({
+  title,
+  range,
+  object_key,
+  hideDeviceSelect,
+}: Props) => {
   const [open, setOpen] = useState(false);
   const { device } = useFrameDeviceSize();
   const {
@@ -31,7 +37,17 @@ export const SizeInput = ({ title, range, object_key }: Props) => {
   const setValue = useCallback(
     (value: string) => {
       setProp((props: any) => {
-        props[object_key][device].value = value;
+        if (props[object_key]?.[device]) {
+          props[object_key][device].value = value;
+        } else {
+          props[object_key] = {
+            ...props[object_key],
+            [device]: {
+              metric: "px",
+              value: value,
+            },
+          };
+        }
       });
     },
     [device, setProp, object_key]
@@ -61,6 +77,7 @@ export const SizeInput = ({ title, range, object_key }: Props) => {
         })
       }
       title={title}
+      hideDeviceSelect={hideDeviceSelect}
     >
       {range[0] !== range[1] && metric === "px" && (
         <Slider

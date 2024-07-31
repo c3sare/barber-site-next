@@ -45,7 +45,14 @@ export const FontSelect = ({ title, object_key }: Props) => {
         setUsedFonts([...usedFonts, value]);
 
       setProp((props: any) => {
-        props[object_key][device] = value;
+        if (props[object_key][device]) {
+          props[object_key][device] = value;
+        } else {
+          props[object_key] = {
+            ...props[object_key],
+            [device]: value,
+          };
+        }
       });
     },
     [device, setProp, object_key, usedFonts, setUsedFonts]

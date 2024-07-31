@@ -3,10 +3,11 @@ import { Editor, Frame, Element } from "./editor-lib";
 import { Text } from "@/app/(editor)/admin/editor/editor-components/text";
 import { Root } from "@/app/(editor)/admin/editor/editor-components/root";
 import { Section } from "@/app/(editor)/admin/editor/editor-components/section";
-import { Column } from "@/app/(editor)/admin/editor/editor-components/columns";
+import { Column } from "@/app/(editor)/admin/editor/editor-components/column";
 import { SerializedNodes } from "@craftjs/core";
 import { getFonts } from "./utils/getFonts";
 import HeadPortal from "./head-portal";
+import { Columns } from "@/app/(editor)/admin/editor/editor-components/columns";
 
 export const RenderPage = ({ data }: { data?: string | null }) => {
   const content: SerializedNodes = data
@@ -23,6 +24,7 @@ export const RenderPage = ({ data }: { data?: string | null }) => {
       resolver={{
         Section,
         Column,
+        Columns,
         Root,
         Text,
       }}

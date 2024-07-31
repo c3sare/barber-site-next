@@ -1,7 +1,3 @@
-import { Card } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { useNode } from "@craftjs/core";
 import {
   Accordion,
   AccordionContent,

@@ -16,6 +16,7 @@ type Props = {
   placeholder?: string;
   object_key: string;
   title: string;
+  withoutSizes?: boolean;
 };
 
 export const SelectInput = ({
@@ -23,6 +24,7 @@ export const SelectInput = ({
   placeholder,
   object_key,
   title,
+  withoutSizes,
 }: Props) => {
   const { device } = useFrameDeviceSize();
   const {
@@ -35,16 +37,30 @@ export const SelectInput = ({
   const setValue = useCallback(
     (value: string | undefined) => {
       setProp((props: any) => {
-        props[object_key][device] = value;
+        if (withoutSizes) {
+          props[object_key] = value;
+        } else {
+          if (props[object_key][device]) {
+            props[object_key][device] = value;
+          } else {
+            props[object_key] = {
+              ...props[object_key],
+              [device]: value,
+            };
+          }
+        }
       });
     },
-    [device, setProp, object_key]
+    [device, setProp, object_key, withoutSizes]
   );
 
-  const value = useMemo(
-    () => sizes?.[device as keyof DeviceRecord<string>],
-    [sizes, device]
-  );
+  const value = useMemo(() => {
+    if (withoutSizes) {
+      return sizes;
+    } else {
+      return sizes?.[device as keyof DeviceRecord<string>];
+    }
+  }, [sizes, device, withoutSizes]);
 
   const isVisibleResetButton = useMemo(() => !!value, [value]);
 
@@ -52,6 +68,7 @@ export const SelectInput = ({
     <ToolbarElement
       title={title}
       onClickReset={() => setValue(undefined)}
+      hideDeviceSelect={withoutSizes}
       {...{ isVisibleResetButton }}
     >
       <Select onValueChange={setValue} value={value ?? ""}>

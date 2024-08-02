@@ -9,6 +9,7 @@ import {
   MultiDeviceWidthType,
 } from "../toolbar-elements/types";
 import { ColumnsToolbar } from "./toolbar";
+import { useEffect } from "react";
 
 type Props = {
   children?: React.ReactNode;
@@ -38,13 +39,24 @@ export const Columns = ({
   marginTop,
 }: Props) => {
   const {
+    actions: { setProp },
+  } = useEditor();
+  const {
     connectors: { connect },
     nodeId,
-    nodes,
+    childs,
   } = useNode((node) => ({
     nodeId: node.id,
-    nodes: node.data.nodes.length,
+    childs: node.data.nodes,
   }));
+
+  useEffect(() => {
+    childs.forEach((child) =>
+      setProp(child, (props) => {
+        props.width = parseFloat((100 / childs.length).toFixed(2));
+      })
+    );
+  }, [childs, setProp]);
 
   return (
     <StyledColumnsDiv
@@ -62,7 +74,7 @@ export const Columns = ({
       $columnPadding={columnPadding}
       $marginBottom={marginBottom}
       $marginTop={marginTop}
-      $columnsCount={nodes}
+      $columnsCount={childs.length}
     >
       {children ? children : <ColumnsSelect id={nodeId} />}
     </StyledColumnsDiv>

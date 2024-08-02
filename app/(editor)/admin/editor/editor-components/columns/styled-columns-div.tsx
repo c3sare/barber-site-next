@@ -51,19 +51,7 @@ export const StyledColumnsDiv = styled.div<ColumnDivProps>(
     ${mb?.["2xl"]?.value ? `margin-bottom: ${getWidth(mb["2xl"])};` : ""}
 
     &>div {
-      ${
-        v === "2xl"
-          ? `width: 100%;`
-          : `${
-              hw === "2xl"
-                ? `width: calc(50% - ${
-                    gap?.["2xl"]?.value ? getWidth(gap["2xl"]) : "32px"
-                  });`
-                : `width: calc(100% / ${cc} - ${
-                    gap?.["2xl"]?.value ? getWidth(gap["2xl"]) : "32px"
-                  });`
-            }`
-      }
+      ${v === "2xl" ? `width: 100% !important;` : ""}
       ${p?.["2xl"]?.value ? `padding: ${getWidth(p["2xl"])};` : ""}
     }
 
@@ -85,7 +73,11 @@ export const StyledColumnsDiv = styled.div<ColumnDivProps>(
     ${mb?.["xl"]?.value ? `margin-bottom: ${getWidth(mb["xl"])};` : ""}
 
     &>div {
-      ${v === "xl" ? `width: 100%;` : `${hw === "xl" ? `width: 50%;` : ""}`}
+      ${
+        v === "xl"
+          ? `width: 100% !important;`
+          : `${hw === "xl" ? `width: 50% !important;` : ""}`
+      }
       ${p?.["xl"]?.value ? `padding: ${getWidth(p["xl"])};` : ""}
     }
   }
@@ -108,7 +100,11 @@ export const StyledColumnsDiv = styled.div<ColumnDivProps>(
     ${mb?.["lg"]?.value ? `margin-bottom: ${getWidth(mb["lg"])};` : ""}
 
     &>div {
-      ${v === "lg" ? `width: 100%;` : `${hw === "lg" ? `width: 50%;` : ""}`}
+      ${
+        v === "lg"
+          ? `width: 100% !important;`
+          : `${hw === "lg" ? `width: 50% !important;` : ""}`
+      }
       ${p?.["lg"]?.value ? `padding: ${getWidth(p["lg"])};` : ""}
     }
   }
@@ -131,7 +127,11 @@ export const StyledColumnsDiv = styled.div<ColumnDivProps>(
     ${mb?.["md"]?.value ? `margin-bottom: ${getWidth(mb["md"])};` : ""}
 
     &>div {
-      ${v === "md" ? `width: 100%;` : `${hw === "md" ? `width: 50%;` : ""}`}
+      ${
+        v === "md"
+          ? `width: 100% !important;`
+          : `${hw === "md" ? `width: 50% !important;` : ""}`
+      }
       ${p?.["md"]?.value ? `padding: ${getWidth(p["md"])};` : ""}
     }
   }
@@ -154,7 +154,11 @@ export const StyledColumnsDiv = styled.div<ColumnDivProps>(
     ${mb?.["sm"]?.value ? `margin-bottom: ${getWidth(mb["sm"])};` : ""}
 
     &>div {
-      ${v === "sm" ? `width: 100%;` : `${hw === "sm" ? `width: 50%;` : ""}`}
+      ${
+        v === "sm"
+          ? `width: 100% !important;`
+          : `${hw === "sm" ? `width: 50% !important;` : ""}`
+      }
       ${p?.["sm"]?.value ? `padding: ${getWidth(p["sm"])};` : ""}
     }
   }

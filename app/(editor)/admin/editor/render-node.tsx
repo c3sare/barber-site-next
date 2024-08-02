@@ -54,12 +54,15 @@ export const RenderNode = ({
 
   useEffect(() => {
     if (dom) {
-      dom.classList.add("border", "border-dashed", "border-transparent");
-      if (isActive || isHover) {
+      dom.classList.add("border", "border-transparent");
+      if (isActive) {
+        dom.classList.remove("border-transparent", "border-blue-400");
+        dom.classList.add("border-black");
+      } else if (isHover) {
         dom.classList.remove("border-transparent");
-        dom.classList.add("border-gray-500");
+        dom.classList.add("border-blue-400");
       } else {
-        dom.classList.remove("border-gray-500");
+        dom.classList.remove("border-black", "border-blue-400");
         dom.classList.add("border-transparent");
       }
     }

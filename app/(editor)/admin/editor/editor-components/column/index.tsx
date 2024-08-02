@@ -36,29 +36,37 @@ export const Column = ({ children, width, ...props }: Props) => {
 
   const isLast = index === allColumns.length - 1;
 
-  console.log(width);
-
   const onResize: ResizeCallback = useCallback(
-    (event, direction, ref, delta) => {
+    (event: any, direction, ref, delta) => {
       console.log(event, direction, ref, delta);
+
+      const nearItemId = allColumns[index + (direction === "left" ? -1 : 1)];
+
       setProp((props: any) => {
-        if (delta.width > 0) {
+        if (
+          (event.movementX > 0 && direction === "right") ||
+          (event.movementX < 0 && direction === "left")
+        ) {
+          if (nodes[nearItemId]!.dom!.clientWidth! <= 32) return;
           props.width = parseFloat((props.width + 0.1).toFixed(2));
-        } else if (delta.width < 0) {
+        } else {
           props.width = parseFloat((props.width - 0.1).toFixed(2));
         }
       });
-      const nearItemId = allColumns[index + (direction === "left" ? -1 : 1)];
 
       setPropNode(nearItemId, (props) => {
-        if (delta.width > 0) {
+        if (
+          (event.movementX > 0 && direction === "right") ||
+          (event.movementX < 0 && direction === "left")
+        ) {
+          if (nodes[nearItemId]!.dom!.clientWidth! <= 32) return;
           props.width = parseFloat((props.width - 0.1).toFixed(2));
-        } else if (delta.width < 0) {
+        } else {
           props.width = parseFloat((props.width + 0.1).toFixed(2));
         }
       });
     },
-    [setProp, setPropNode, index, allColumns]
+    [setProp, setPropNode, index, allColumns, nodes]
   );
 
   return (
@@ -73,6 +81,7 @@ export const Column = ({ children, width, ...props }: Props) => {
       size={{ width: `auto`, height: "auto" }}
       className="min-h-[200px] p-4 w-full"
       $width={width}
+      minWidth="32px"
       onResize={onResize}
       {...props}
     >

@@ -10,7 +10,7 @@ type Props = {
   width?: number;
 };
 
-export const Column = ({ children, width, ...props }: Props) => {
+export const Column = ({ children, width }: Props) => {
   const {
     nodes,
     enabledEditor,
@@ -79,11 +79,10 @@ export const Column = ({ children, width, ...props }: Props) => {
         right: !isLast && enabledEditor,
       }}
       size={{ width: `auto`, height: "auto" }}
-      className="min-h-[200px] p-4 w-full"
+      className="p-4 w-full"
       $width={width}
       minWidth="32px"
       onResize={onResize}
-      {...props}
     >
       {children}
     </StyledColumnDiv>

@@ -1,12 +1,12 @@
 "use client";
 
 import { useEditor, useNode } from "@craftjs/core";
-import { TextToolbar } from "./toolbar";
+import { HeadingToolbar } from "./toolbar";
 import { useEffect, useRef, useState } from "react";
-import { StyledTextDiv } from "./styled-text-div";
+import { StyledTextDiv } from "../text/styled-text-div";
 import { DeviceRecord, MultiDeviceWidthType } from "../toolbar-elements/types";
 
-type TextType = {
+type HeadingType = {
   text?: string;
   width?: MultiDeviceWidthType;
   fontSize?: MultiDeviceWidthType;
@@ -16,9 +16,10 @@ type TextType = {
   align?: DeviceRecord<string>;
   color?: DeviceRecord<string>;
   font?: DeviceRecord<string>;
+  tag?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 };
 
-export const Text = ({
+export const Heading = ({
   text,
   width,
   fontSize,
@@ -28,7 +29,8 @@ export const Text = ({
   align,
   color,
   font,
-}: TextType) => {
+  tag,
+}: HeadingType) => {
   const [isFocused, setIsFocused] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
   const { enabled } = useEditor((state) => ({
@@ -44,10 +46,11 @@ export const Text = ({
 
   useEffect(() => {
     if (!isFocused) ref!.current!.innerText = text!;
-  }, [text, isFocused]);
+  }, [text, isFocused, tag]);
 
   return (
     <StyledTextDiv
+      as={tag ?? "h1"}
       $width={width}
       $fontSize={fontSize}
       $marginBottom={marginBottom}
@@ -75,12 +78,12 @@ export const Text = ({
   );
 };
 
-Text.craft = {
-  displayName: "Text",
+Heading.craft = {
+  displayName: "Heading",
   related: {
-    toolbar: TextToolbar,
+    toolbar: HeadingToolbar,
   },
   props: {
-    text: "This is a text element...",
+    text: "This is a heading element...",
   },
 };

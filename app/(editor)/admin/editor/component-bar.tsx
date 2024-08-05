@@ -1,6 +1,11 @@
 "use client";
 
-import { Columns3Icon, RectangleHorizontalIcon, TextIcon } from "lucide-react";
+import {
+  Columns3Icon,
+  HeadingIcon,
+  RectangleHorizontalIcon,
+  TextIcon,
+} from "lucide-react";
 import { BuilderElement } from "./builder-element";
 import { Text } from "@/app/(editor)/admin/editor/editor-components/text";
 import {
@@ -15,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Section } from "./editor-components/section";
 import { useEditorState } from "./stores/use-editor-state";
 import { Columns } from "./editor-components/columns";
+import { Heading } from "./editor-components/heading";
 
 export const ComponentBar = () => {
   const { currentOpenBar, openBar } = useEditorState();
@@ -66,6 +72,10 @@ export const ComponentBar = () => {
               <BuilderElement element={<Text />}>
                 <TextIcon className="size-5" />
                 Text
+              </BuilderElement>
+              <BuilderElement element={<Heading />}>
+                <HeadingIcon className="size-5" />
+                Heading
               </BuilderElement>
             </AccordionContent>
           </AccordionItem>

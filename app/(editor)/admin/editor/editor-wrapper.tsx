@@ -7,6 +7,7 @@ import { Root } from "./editor-components/root";
 import { Text } from "./editor-components/text";
 import { RenderNode } from "./render-node";
 import { Columns } from "./editor-components/columns";
+import { Heading } from "./editor-components/heading";
 
 export default function EditorWrapper({ children }: React.PropsWithChildren) {
   return (
@@ -18,6 +19,7 @@ export default function EditorWrapper({ children }: React.PropsWithChildren) {
         Root,
         Text,
         Columns,
+        Heading,
       }}
       onRender={RenderNode}
     >

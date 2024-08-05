@@ -1,29 +1,59 @@
 import { Resizable } from "re-resizable";
 import styled from "styled-components";
-import { MultiDeviceWidthType } from "../toolbar-elements/types";
-import { getWidth } from "../text/utils";
+import {
+  DeviceRecord,
+  MultiDeviceWidthType,
+  SingleWidthType,
+} from "../toolbar-elements/types";
+import {
+  BorderRadiusType,
+  GradientType,
+  ShadowType,
+  SideType,
+  WithHover,
+} from "./types";
+import { calculateColumnGap } from "../../helpers/calculateGap";
 
 type Props = {
   $width?: number;
+  $minHeight?: MultiDeviceWidthType;
   $gap?: MultiDeviceWidthType;
+  $alignY?: DeviceRecord<string>;
+  $alignX?: DeviceRecord<string>;
+  $horizontalAlignY?: DeviceRecord<string>;
+  $horizontalAlignX?: DeviceRecord<string>;
+  $verticalAt?: "2xl" | "xl" | "lg" | "md" | "sm";
+  $order?: DeviceRecord<number>;
+  $padding?: SideType<number>;
+  $borderRadius?: BorderRadiusType;
+  $borderWidth?: DeviceRecord<SideType<SingleWidthType>>;
+  $borderColor?: DeviceRecord<SideType<string>>;
+  $borderStyle?: DeviceRecord<SideType<string>>;
+  $shadow?: DeviceRecord<ShadowType>;
+  $bgColor?: WithHover<string>;
+  $bgType?: "image" | "gradient";
+  $gradient?: GradientType;
+  $bgGradientScalePercent?: number;
+  $bgGradientSpeedSeconds?: number;
 };
 
 export const StyledColumnDiv = styled(Resizable)<Props>(
   ({ $width: w, $gap: gap }) => `
+    display: flex;
+    flex-wrap: wrap;
+    height: 100%;
     ${
       w
-        ? `width: calc(${w}% - ${
-            gap?.["2xl"] ? getWidth(gap?.["2xl"]) : "32px"
-          }) !important;`
+        ? `width: calc(${w}% - ${calculateColumnGap(gap?.["2xl"])}) !important;`
         : ""
     }
 
     @media (max-width: 1119px) {
         ${
           w
-            ? `width: calc(${w}% - ${
-                gap?.["xl"] ? getWidth(gap?.["xl"]) : "32px"
-              }) !important;`
+            ? `width: calc(${w}% - ${calculateColumnGap(
+                gap?.["xl"]
+              )}) !important;`
             : ""
         }
     }
@@ -31,9 +61,9 @@ export const StyledColumnDiv = styled(Resizable)<Props>(
     @media (max-width: 1023px) {
         ${
           w
-            ? `width: calc(${w}% - ${
-                gap?.["lg"] ? getWidth(gap?.["lg"]) : "32px"
-              }) !important;`
+            ? `width: calc(${w}% - ${calculateColumnGap(
+                gap?.["lg"]
+              )}) !important;`
             : ""
         }
     }
@@ -41,9 +71,9 @@ export const StyledColumnDiv = styled(Resizable)<Props>(
     @media (max-width: 767px) {
         ${
           w
-            ? `width: calc(${w}% - ${
-                gap?.["md"] ? getWidth(gap?.["md"]) : "32px"
-              }) !important;`
+            ? `width: calc(${w}% - ${calculateColumnGap(
+                gap?.["md"]
+              )}) !important;`
             : ""
         }
     }
@@ -51,9 +81,9 @@ export const StyledColumnDiv = styled(Resizable)<Props>(
     @media (max-width: 479px) {
         ${
           w
-            ? `width: calc(${w}% - ${
-                gap?.["sm"] ? getWidth(gap?.["sm"]) : "32px"
-              }) !important;`
+            ? `width: calc(${w}% - ${calculateColumnGap(
+                gap?.["sm"]
+              )}) !important;`
             : ""
         }
     }

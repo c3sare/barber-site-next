@@ -1,7 +1,6 @@
 "use client";
 
 import { useEditor, useNode } from "@craftjs/core";
-import { Column } from "../column";
 import { StyledColumnsDiv } from "./styled-columns-div";
 import {
   DeviceRecord,
@@ -9,7 +8,8 @@ import {
   MultiDeviceWidthType,
 } from "../toolbar-elements/types";
 import { ColumnsToolbar } from "./toolbar";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { ColumnsSelect } from "./columns-select";
 
 type Props = {
   children?: React.ReactNode;
@@ -38,9 +38,13 @@ export const Columns = ({
   marginBottom,
   marginTop,
 }: Props) => {
+  const initialMount = useRef<boolean>(true);
   const {
     actions: { setProp },
-  } = useEditor();
+    enabled,
+  } = useEditor((state) => ({
+    enabled: state.options.enabled,
+  }));
   const {
     connectors: { connect },
     nodeId,
@@ -51,19 +55,25 @@ export const Columns = ({
   }));
 
   useEffect(() => {
-    childs.forEach((child) =>
-      setProp(child, (props) => {
-        props.width = parseFloat((100 / childs.length).toFixed(2));
-      })
-    );
-  }, [childs, setProp]);
+    if (!childs.length || enabled) return;
+
+    if (initialMount.current) {
+      initialMount.current = false;
+    } else {
+      childs.forEach((child) =>
+        setProp(child, (props) => {
+          props.width = parseFloat((100 / childs.length).toFixed(2));
+        })
+      );
+    }
+  }, [childs, setProp, enabled]);
 
   return (
     <StyledColumnsDiv
       ref={(ref) => {
         connect(ref!);
       }}
-      className="min-h-[200px] p-4 w-full flex items-center flex-wrap justify-center"
+      className="p-4 w-full flex justify-center"
       $vertical={vertical}
       $halfWidth={halfWidth}
       $reverseOrder={reverseOrder}
@@ -76,7 +86,7 @@ export const Columns = ({
       $marginTop={marginTop}
       $columnsCount={childs.length}
     >
-      {children ? children : <ColumnsSelect id={nodeId} />}
+      {children ? children : enabled && <ColumnsSelect id={nodeId} />}
     </StyledColumnsDiv>
   );
 };
@@ -92,157 +102,4 @@ Columns.craft = {
   related: {
     toolbar: ColumnsToolbar,
   },
-};
-
-const getDefaultProps = (val: { metric: string; value: number }) => {
-  const defaultVal = {
-    metric: "px",
-  };
-
-  return {
-    width: {
-      "2xl": val,
-      xl: defaultVal,
-      lg: defaultVal,
-      md: defaultVal,
-      sm: defaultVal,
-    },
-  };
-};
-
-export const ColumnsSelect = ({ id }: { id: string }) => {
-  const {
-    actions: { add },
-    query: { parseFreshNode },
-  } = useEditor();
-
-  return (
-    <div className="w-full bg-white p-12 flex justify-center flex-wrap items-center">
-      <div className="text-base font-bold w-full text-center">
-        Choose a column structure
-      </div>
-      <button
-        className="h-24 w-48 p-4 flex gap-4 group"
-        onClick={() => {
-          const freshNode = {
-            data: {
-              type: Column,
-              props: getDefaultProps({ metric: "%", value: 50 }),
-              isCanvas: true,
-            },
-          };
-
-          add(parseFreshNode(freshNode).toNode(), id);
-          add(parseFreshNode(freshNode).toNode(), id);
-        }}
-      >
-        <div className="bg-gray-400 h-full w-1/2 transition-colors group-hover:bg-blue-300" />
-        <div className="bg-gray-400 h-full w-1/2 transition-colors group-hover:bg-blue-300" />
-      </button>
-      <button
-        className="h-24 w-48 p-4 flex gap-4 group"
-        onClick={() => {
-          const freshNode = {
-            data: {
-              type: Column,
-              props: getDefaultProps({ metric: "%", value: 33.33 }),
-              isCanvas: true,
-            },
-          };
-
-          add(parseFreshNode(freshNode).toNode(), id);
-          add(parseFreshNode(freshNode).toNode(), id);
-          add(parseFreshNode(freshNode).toNode(), id);
-        }}
-      >
-        <div className="bg-gray-400 h-full w-1/3 transition-colors group-hover:bg-blue-300" />
-        <div className="bg-gray-400 h-full w-1/3 transition-colors group-hover:bg-blue-300" />
-        <div className="bg-gray-400 h-full w-1/3 transition-colors group-hover:bg-blue-300" />
-      </button>
-      <button
-        className="h-24 w-48 p-4 flex gap-4 group"
-        onClick={() => {
-          const freshNode = {
-            data: {
-              type: Column,
-              props: getDefaultProps({ metric: "%", value: 25 }),
-              isCanvas: true,
-            },
-          };
-
-          add(parseFreshNode(freshNode).toNode(), id);
-          add(parseFreshNode(freshNode).toNode(), id);
-          add(parseFreshNode(freshNode).toNode(), id);
-          add(parseFreshNode(freshNode).toNode(), id);
-        }}
-      >
-        <div className="bg-gray-400 h-full w-1/4 transition-colors group-hover:bg-blue-300" />
-        <div className="bg-gray-400 h-full w-1/4 transition-colors group-hover:bg-blue-300" />
-        <div className="bg-gray-400 h-full w-1/4 transition-colors group-hover:bg-blue-300" />
-        <div className="bg-gray-400 h-full w-1/4 transition-colors group-hover:bg-blue-300" />
-      </button>
-      <button
-        className="h-24 w-48 p-4 flex gap-4 group"
-        onClick={() => {
-          const freshNode1 = {
-            data: {
-              type: Column,
-              props: getDefaultProps({ metric: "%", value: 70 }),
-              isCanvas: true,
-            },
-          };
-          const freshNode2 = {
-            data: {
-              type: Column,
-              props: getDefaultProps({ metric: "%", value: 30 }),
-              isCanvas: true,
-            },
-          };
-
-          add(parseFreshNode(freshNode1).toNode(), id);
-          add(parseFreshNode(freshNode2).toNode(), id);
-        }}
-      >
-        <div
-          className="bg-gray-400 h-full transition-colors group-hover:bg-blue-300"
-          style={{ width: "70%" }}
-        />
-        <div
-          className="bg-gray-400 h-full transition-colors group-hover:bg-blue-300"
-          style={{ width: "30%" }}
-        />
-      </button>
-      <button
-        className="h-24 w-48 p-4 flex gap-4 group"
-        onClick={() => {
-          const freshNode1 = {
-            data: {
-              type: Column,
-              props: getDefaultProps({ metric: "%", value: 30 }),
-              isCanvas: true,
-            },
-          };
-          const freshNode2 = {
-            data: {
-              type: Column,
-              props: getDefaultProps({ metric: "%", value: 70 }),
-              isCanvas: true,
-            },
-          };
-
-          add(parseFreshNode(freshNode1).toNode(), id);
-          add(parseFreshNode(freshNode2).toNode(), id);
-        }}
-      >
-        <div
-          className="bg-gray-400 h-full transition-colors group-hover:bg-blue-300"
-          style={{ width: "30%" }}
-        />
-        <div
-          className="bg-gray-400 h-full transition-colors group-hover:bg-blue-300"
-          style={{ width: "70%" }}
-        />
-      </button>
-    </div>
-  );
 };

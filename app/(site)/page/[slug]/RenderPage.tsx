@@ -8,6 +8,7 @@ import { SerializedNodes } from "@craftjs/core";
 import { getFonts } from "./utils/getFonts";
 import HeadPortal from "./head-portal";
 import { Columns } from "@/app/(editor)/admin/editor/editor-components/columns";
+import { Heading } from "@/app/(editor)/admin/editor/editor-components/heading";
 
 export const RenderPage = ({ data }: { data?: string | null }) => {
   const content: SerializedNodes = data
@@ -27,6 +28,7 @@ export const RenderPage = ({ data }: { data?: string | null }) => {
         Columns,
         Root,
         Text,
+        Heading,
       }}
     >
       <Frame data={content}>

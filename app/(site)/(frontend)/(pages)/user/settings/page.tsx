@@ -1,12 +1,19 @@
-import { Accordion } from "@/components/ui/accordion";
-import { ChangePasswordTab } from "./_tabs/ChangePasswordTab";
-import { ProfileInformationsTab } from "./_tabs/ProfileInformationsTab";
-import { Suspense } from "react";
-import { SkeletonAccordionTrigger } from "./_components/skeletons/SkeletonAccordionTrigger";
-import { SkeletonProfileInformationsForm } from "./_components/skeletons/SkeletonProfileInformationsForm";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { ProfileInformationsTab } from "./ProfileInformationsTab";
 import { Typography } from "@/components/typography";
+import { auth } from "@/auth.config";
+import ChangePasswordForm from "./_components/forms/ChangePasswordForm";
 
-export default function SettingsPage() {
+export default async function SettingsPage() {
+  const session = await auth();
+
+  const isOAuthAccount = session?.user?.isOAuth;
+
   return (
     <div className="mx-auto max-w-7xl py-8 px-4">
       <Typography
@@ -16,16 +23,22 @@ export default function SettingsPage() {
         Settings
       </Typography>
       <Accordion type="single" collapsible defaultValue="user-profile">
-        <Suspense
-          fallback={
-            <SkeletonAccordionTrigger>
-              <SkeletonProfileInformationsForm />
-            </SkeletonAccordionTrigger>
-          }
-        >
-          <ProfileInformationsTab />
-        </Suspense>
-        <ChangePasswordTab />
+        <AccordionItem value="user-profile">
+          <AccordionTrigger className="text-xl">
+            Profile Informations
+          </AccordionTrigger>
+          <AccordionContent>
+            <ProfileInformationsTab />
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="user-password">
+          <AccordionTrigger className="text-xl">
+            Change Password
+          </AccordionTrigger>
+          <AccordionContent>
+            <ChangePasswordForm isOAuthAccount={isOAuthAccount} />
+          </AccordionContent>
+        </AccordionItem>
       </Accordion>
     </div>
   );

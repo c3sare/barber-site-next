@@ -1,10 +1,8 @@
 import NextAuth from "next-auth";
 
 import db from "@/lib/drizzle";
-import { getUserByEmail, getUserById } from "@/data/user";
-// import { getTwoFactorConfirmationByUserId } from "@/data/two-factor-confirmation";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { getAccountByUserId } from "./data/account";
+import { getAccountByUserId } from "./actions/auth/getAccountByUserId";
 import * as schema from "./drizzle/schema";
 
 import { user } from "./drizzle/schema";
@@ -15,6 +13,8 @@ import Credentials from "next-auth/providers/credentials";
 import { loginSchema } from "./validators/loginSchema";
 import bcrypt from "bcrypt-edge";
 import { z } from "zod";
+import { getUserByEmail } from "./actions/auth/getUserByEmail";
+import { getUserById } from "./actions/auth/getUserById";
 
 type UserRole = (typeof user.$inferSelect)["role"];
 
@@ -46,26 +46,11 @@ export const {
   },
   callbacks: {
     async signIn({ user, account }) {
-      // Allow OAuth without email verification
       if (account?.provider !== "credentials") return true;
 
       const existingUser = await getUserById(user.id!);
 
-      // // Prevent sign in without email verification
       if (!existingUser?.emailVerified) return false;
-
-      // if (existingUser.isTwoFactorEnabled) {
-      //   const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(
-      //     existingUser.id
-      //   );
-
-      //   if (!twoFactorConfirmation) return false;
-
-      //   // Delete two factor confirmation for next sign in
-      //   await db.twoFactorConfirmation.delete({
-      //     where: { id: twoFactorConfirmation.id },
-      //   });
-      // }
 
       return true;
     },

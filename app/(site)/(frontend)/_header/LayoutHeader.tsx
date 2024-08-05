@@ -5,7 +5,6 @@ import Link from "next/link";
 import NavLinkHeader from "./_components/NavLinkHeader";
 import Header from "./_components/Header";
 import Navigation from "./_components/Navigation";
-import Account from "./_components/Account";
 import db from "@/lib/drizzle";
 
 const LayoutHeader = async () => {
@@ -34,7 +33,7 @@ const LayoutHeader = async () => {
             height={50}
           />
         </Link>
-        <Navigation account={<Account />}>
+        <Navigation>
           {menuItems.map((route, i) => (
             <NavLinkHeader
               key={i}

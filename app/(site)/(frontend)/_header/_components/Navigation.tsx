@@ -1,53 +1,35 @@
-"use client";
-
-import { Button } from "@/components/ui/button";
+import { PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { HamburgerMenuIcon } from "@radix-ui/react-icons";
-import { CircleUserRoundIcon } from "lucide-react";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+  CircleUserRoundIcon,
+  FileClockIcon,
+  ListOrderedIcon,
+  SettingsIcon,
+  ShieldEllipsisIcon,
+} from "lucide-react";
 import Image from "next/image";
-import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import { AccountPopover } from "./AccountPopover";
+import { MobileMenu } from "./MobileMenu";
+import { auth, signOut } from "@/auth.config";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import AccountListItem from "./AccountListItem";
 
 type NavigationProps = {
   children?: React.ReactNode;
-  account?: React.ReactNode;
 };
 
-const Navigation: React.FC<NavigationProps> = ({ children, account }) => {
-  const user = useCurrentUser();
-  const pathname = usePathname();
-  const [isVisibleMenu, setIsVisibleMenu] = useState<boolean>(false);
-  const [isVisibleAccount, setIsVisibleAccount] = useState<boolean>(false);
+const Navigation: React.FC<NavigationProps> = async ({ children }) => {
+  const session = await auth();
 
-  useEffect(() => {
-    setIsVisibleMenu(false);
-    setIsVisibleAccount(false);
-  }, [pathname]);
-
-  const handleToggleMenuVisibility = () => setIsVisibleMenu((prev) => !prev);
+  const user = session?.user;
 
   return (
     <>
       <ul className="mx-auto w-full hidden md:flex text-sm uppercase pl-3 items-between flex-row justify-center items-center flex-wrap">
         {children}
       </ul>
-      <Sheet open={isVisibleMenu} onOpenChange={setIsVisibleMenu}>
-        <SheetContent side="left">
-          <SheetTitle className="text-3xl">Menu</SheetTitle>
-          <ul className="flex flex-col list-none">{children}</ul>
-        </SheetContent>
-      </Sheet>
       <div className="flex items-center gap-2">
-        <Popover
-          open={isVisibleAccount}
-          onOpenChange={(state) => setIsVisibleAccount(state)}
-        >
+        <AccountPopover>
           <PopoverTrigger>
             {user?.image ? (
               <Image
@@ -63,17 +45,70 @@ const Navigation: React.FC<NavigationProps> = ({ children, account }) => {
             <span className="sr-only">Profile</span>
           </PopoverTrigger>
           <PopoverContent className="z-[9999] max-w-[200px]">
-            {account}
+            {user ? (
+              <>
+                <div className="flex items-center gap-3 w-full">
+                  <Image
+                    src={user.image ?? "/images/avatar.png"}
+                    width={32}
+                    height={32}
+                    alt={user.name ?? "Avatar"}
+                    className="rounded-full"
+                  />
+                  <span className="text-sm">
+                    {user.name ?? user.email ?? "Unknown user"}
+                  </span>
+                </div>
+                <ul className="w-full flex flex-col">
+                  <AccountListItem
+                    title="Booking History"
+                    href="/user/booking-history"
+                    icon={FileClockIcon}
+                  />
+                  <AccountListItem
+                    title="Order History"
+                    href="/user/order-history"
+                    icon={ListOrderedIcon}
+                  />
+                  <AccountListItem
+                    title="Settings"
+                    href="/user/settings"
+                    icon={SettingsIcon}
+                  />
+                  {user.role === "ADMIN" && (
+                    <AccountListItem
+                      title="Admin Panel"
+                      href="/admin"
+                      icon={ShieldEllipsisIcon}
+                    />
+                  )}
+                </ul>
+                <form className="w-full my-2">
+                  <Button
+                    className="mx-auto block"
+                    formAction={async () => {
+                      "use server";
+                      await signOut();
+                    }}
+                  >
+                    Logout
+                  </Button>
+                </form>
+              </>
+            ) : (
+              <div className="flex justify-between w-full">
+                <Button asChild>
+                  <Link href="/register">Register</Link>
+                </Button>
+
+                <Button asChild>
+                  <Link href="/login">Log In</Link>
+                </Button>
+              </div>
+            )}
           </PopoverContent>
-        </Popover>
-        <Button
-          variant="outline"
-          className="bg-transparent md:hidden"
-          onClick={handleToggleMenuVisibility}
-        >
-          <HamburgerMenuIcon />
-          <span className="sr-only">Menu</span>
-        </Button>
+        </AccountPopover>
+        <MobileMenu>{children}</MobileMenu>
       </div>
     </>
   );

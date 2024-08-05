@@ -5,14 +5,16 @@ import { FormInput } from "@/components/form/FormInput";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useToast } from "@/components/ui/use-toast";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useZodForm } from "@/hooks/useZodForm";
 import { changePasswordSchema } from "@/validators/changePasswordSchema";
 import { useAction } from "next-safe-action/hooks";
 
-const ChangePasswordForm = () => {
+type Props = {
+  isOAuthAccount?: boolean;
+};
+
+const ChangePasswordForm = ({ isOAuthAccount }: Props) => {
   const { toast } = useToast();
-  const user = useCurrentUser();
 
   const action = useAction(updateUserPassword, {
     onSettled: (data) => {
@@ -34,7 +36,7 @@ const ChangePasswordForm = () => {
   const isLoading = action.status === "executing";
   const form = useZodForm({
     schema: changePasswordSchema,
-    disabled: user?.isOAuth || isLoading,
+    disabled: isOAuthAccount || isLoading,
     defaultValues: {
       password: "",
       newPassword: "",

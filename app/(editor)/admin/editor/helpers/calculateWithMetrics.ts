@@ -1,6 +1,6 @@
 import type { SingleWidthType } from "../editor-components/toolbar-elements/types";
 
-export const calculateWidth = (width: SingleWidthType | undefined) => {
+export const calculateWithMetrics = (width: SingleWidthType | undefined) => {
   if (width?.metric === "auto") return "auto";
   if (width?.metric === "custom") return width.value ?? "auto";
 

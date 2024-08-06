@@ -1,29 +1,8 @@
 import styled from "styled-components";
 import { DeviceRecord, MultiDeviceWidthType } from "../toolbar-elements/types";
-import { calculateWidth } from "../../helpers/calculateWidth";
-
-const heading = ["h1", "h2", "h3", "h4", "h5", "h6"];
-
-const isHeading = (tag?: string) => !!tag && heading.includes(tag);
-
-const HeadingSize = (tag: (typeof heading)[number]) => {
-  switch (tag) {
-    case "h1":
-      return Math.round(16 * 1.25 * 1.25 * 1.25 * 1.25 * 1.25);
-    case "h2":
-      return Math.round(16 * 1.25 * 1.25 * 1.25 * 1.25);
-    case "h3":
-      return Math.round(16 * 1.25 * 1.25 * 1.25);
-    case "h4":
-      return Math.round(16 * 1.25 * 1.25);
-    case "h5":
-      return Math.round(16 * 1.25);
-    case "h6":
-      return 16;
-    default:
-      return 16;
-  }
-};
+import { getFontSize, getFontWeight } from "../../helpers/getFontSize";
+import { getCalculatedProperty } from "../../helpers/getCalculatedProperty";
+import { getProperty } from "../../helpers/getProperty";
 
 export const StyledTextDiv = styled("div")<{
   $width?: MultiDeviceWidthType;
@@ -34,6 +13,7 @@ export const StyledTextDiv = styled("div")<{
   $align?: DeviceRecord<string>;
   $color?: DeviceRecord<string>;
   $font?: DeviceRecord<string>;
+  as: string;
 }>(
   ({
     $width: w,
@@ -44,71 +24,59 @@ export const StyledTextDiv = styled("div")<{
     $align: al,
     $color: c,
     $font: f,
-    as,
+    as: tag,
   }) => `
-  width: ${calculateWidth(w?.["2xl"])};
-  ${
-    fs?.["2xl"]?.value
-      ? `font-size: ${calculateWidth(fs["2xl"])};`
-      : isHeading(as as string)
-      ? `font-size: ${HeadingSize(as as string)}px;`
-      : ""
-  }
-  ${mt?.["2xl"]?.value ? `margin-top: ${calculateWidth(mt["2xl"])};` : ""}
-  ${mb?.["2xl"]?.value ? `margin-bottom: ${calculateWidth(mb["2xl"])};` : ""}
-  ${
-    wg?.["2xl"]
-      ? `font-weight: ${wg["2xl"]};`
-      : isHeading(as as string)
-      ? "font-weight: bold;"
-      : ""
-  }
-  ${al?.["2xl"] ? `text-align: ${al["2xl"]};` : ""}
-  ${c?.["2xl"] ? `color: ${c["2xl"]};` : ""}
-  ${f?.["2xl"] ? `font-family: "${f["2xl"]}", sans-serif;` : ""}
+  ${getCalculatedProperty("width", w?.["2xl"])}
+  ${getFontSize(fs?.["2xl"], tag)}
+  ${getCalculatedProperty("margin-top", mt?.["2xl"])}
+  ${getCalculatedProperty("margin-bottom", mb?.["2xl"])}
+  ${getFontWeight(wg?.["2xl"], tag)}
+  ${getProperty("text-align", al?.["2xl"])}
+  ${getProperty("color", c?.["2xl"])}
+  ${getProperty("font-family", f?.["2xl"], ", sans-serif")}
 
   @media (max-width: 1119px) {
-    ${w?.["xl"]?.value ? `width: ${calculateWidth(w["xl"])};` : ""}
-    ${fs?.["xl"]?.value ? `font-size: ${calculateWidth(fs["xl"])};` : ""}
-    ${mt?.["xl"]?.value ? `margin-top: ${calculateWidth(mt["xl"])};` : ""}
-    ${mb?.["xl"]?.value ? `margin-bottom: ${calculateWidth(mb["xl"])};` : ""}
-    ${wg?.["xl"] ? `font-weight: ${wg["xl"]};` : ""}
-    ${al?.["xl"] ? `text-align: ${al["xl"]};` : ""}
-    ${c?.["xl"] ? `color: ${c["xl"]};` : ""}
-    ${f?.["xl"] ? `font-family: "${f["xl"]}", sans-serif;` : ""}
+    ${getCalculatedProperty("width", w?.["xl"])}
+    ${getFontSize(fs?.["xl"])}
+    ${getCalculatedProperty("margin-top", mt?.["xl"])}
+    ${getCalculatedProperty("margin-bottom", mb?.["xl"])}
+    ${getFontWeight(wg?.["xl"])}
+    ${getProperty("text-align", al?.["xl"])}
+    ${getProperty("color", c?.["xl"])}
+    ${getProperty("font-family", f?.["xl"], ", sans-serif")}
   }
 
   @media (max-width: 1023px) {
-    ${w?.["lg"]?.value ? `width: ${calculateWidth(w["lg"])};` : ""}
-    ${fs?.["lg"]?.value ? `font-size: ${calculateWidth(fs["lg"])};` : ""}
-    ${mt?.["lg"]?.value ? `margin-top: ${calculateWidth(mt["lg"])};` : ""}
-    ${mb?.["lg"]?.value ? `margin-bottom: ${calculateWidth(mb["lg"])};` : ""}
-    ${wg?.["lg"] ? `font-weight: ${wg["lg"]};` : ""}
-    ${al?.["lg"] ? `text-align: ${al["lg"]};` : ""}
-    ${c?.["lg"] ? `color: ${c["lg"]};` : ""}
-    ${f?.["lg"] ? `font-family: "${f["lg"]}", sans-serif;` : ""}
+    ${getCalculatedProperty("width", w?.["lg"])}
+    ${getFontSize(fs?.["lg"])}
+    ${getCalculatedProperty("margin-top", mt?.["lg"])}
+    ${getCalculatedProperty("margin-bottom", mb?.["lg"])}
+    ${getFontWeight(wg?.["lg"])}
+    ${getProperty("text-align", al?.["lg"])}
+    ${getProperty("color", c?.["lg"])}
+    ${getProperty("font-family", f?.["lg"], ", sans-serif")}
   }
 
   @media (max-width: 767px) {
-    ${w?.["md"]?.value ? `width: ${calculateWidth(w["md"])};` : ""}
-    ${fs?.["md"]?.value ? `font-size: ${calculateWidth(fs["md"])};` : ""}
-    ${mt?.["md"]?.value ? `margin-top: ${calculateWidth(mt["md"])};` : ""}
-    ${mb?.["md"]?.value ? `margin-bottom: ${calculateWidth(mb["md"])};` : ""}
-    ${wg?.["md"] ? `font-weight: ${wg["md"]};` : ""}
-    ${al?.["md"] ? `text-align: ${al["md"]};` : ""}
-    ${c?.["md"] ? `color: ${c["md"]};` : ""}
-    ${f?.["md"] ? `font-family: "${f["md"]}", sans-serif;` : ""}
+    ${getCalculatedProperty("width", w?.["md"])}
+    ${getFontSize(fs?.["md"])}
+    ${getCalculatedProperty("margin-top", mt?.["md"])}
+    ${getCalculatedProperty("margin-bottom", mb?.["md"])}
+    ${getFontWeight(wg?.["md"])}
+    ${getProperty("text-align", al?.["md"])}
+    ${getProperty("color", c?.["md"])}
+    ${getProperty("font-family", f?.["md"], ", sans-serif")}
   }
 
   @media (max-width: 479px) {
-    ${w?.["sm"]?.value ? `width: ${calculateWidth(w["sm"])};` : ""}
-    ${fs?.["sm"]?.value ? `font-size: ${calculateWidth(fs["sm"])};` : ""}
-    ${mt?.["sm"]?.value ? `margin-top: ${calculateWidth(mt["sm"])};` : ""}
-    ${mb?.["sm"]?.value ? `margin-bottom: ${calculateWidth(mb["sm"])};` : ""}
-    ${wg?.["sm"] ? `font-weight: ${wg["sm"]};` : ""}
-    ${al?.["sm"] ? `text-align: ${al["sm"]};` : ""}
-    ${c?.["sm"] ? `color: ${c["sm"]};` : ""}
-    ${f?.["sm"] ? `font-family: "${f["sm"]}", sans-serif;` : ""}
+    ${getCalculatedProperty("width", w?.["sm"])}
+    ${getFontSize(fs?.["lg"])}
+    ${getCalculatedProperty("margin-top", mt?.["sm"])}
+    ${getCalculatedProperty("margin-bottom", mb?.["sm"])}
+    ${getFontWeight(wg?.["sm"])}
+    ${getProperty("text-align", al?.["sm"])}
+    ${getProperty("color", c?.["sm"])}
+    ${getProperty("font-family", f?.["sm"], ", sans-serif")}
   }
 `
 );

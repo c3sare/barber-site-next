@@ -12,7 +12,7 @@ import {
   SideType,
   WithHover,
 } from "./types";
-import { calculateColumnGap } from "../../helpers/calculateGap";
+import { calculateColumnWidth } from "../../helpers/calculateColumnWidth";
 
 type Props = {
   $width?: number;
@@ -42,50 +42,22 @@ export const StyledColumnDiv = styled(Resizable)<Props>(
     display: flex;
     flex-wrap: wrap;
     height: 100%;
-    ${
-      w
-        ? `width: calc(${w}% - ${calculateColumnGap(gap?.["2xl"])}) !important;`
-        : ""
-    }
+    ${calculateColumnWidth(w, gap?.["2xl"] ?? { metric: "px", value: "32" })}
 
     @media (max-width: 1119px) {
-        ${
-          w
-            ? `width: calc(${w}% - ${calculateColumnGap(
-                gap?.["xl"]
-              )}) !important;`
-            : ""
-        }
+      ${calculateColumnWidth(w, gap?.["xl"])}
     }
 
     @media (max-width: 1023px) {
-        ${
-          w
-            ? `width: calc(${w}% - ${calculateColumnGap(
-                gap?.["lg"]
-              )}) !important;`
-            : ""
-        }
+      ${calculateColumnWidth(w, gap?.["lg"])}
     }
 
     @media (max-width: 767px) {
-        ${
-          w
-            ? `width: calc(${w}% - ${calculateColumnGap(
-                gap?.["md"]
-              )}) !important;`
-            : ""
-        }
+      ${calculateColumnWidth(w, gap?.["md"])}
     }
 
     @media (max-width: 479px) {
-        ${
-          w
-            ? `width: calc(${w}% - ${calculateColumnGap(
-                gap?.["sm"]
-              )}) !important;`
-            : ""
-        }
+      ${calculateColumnWidth(w, gap?.["2xl"])}
     }
 `
 );

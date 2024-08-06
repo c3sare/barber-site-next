@@ -54,7 +54,7 @@ export const ResizeBox = ({ children }: React.PropsWithChildren) => {
     <div className="flex-1 m-2 z-10 flex flex-col">
       <Resizable
         className="relative mx-auto !h-full flex-1 -z-[1] bg-background flex flex-col"
-        size={{ width: frameWidth, height: 0 }}
+        size={{ width: frameWidth, height: "auto" }}
         maxWidth={calculatedMaxWidth}
         onResizeStart={() => {
           selectNode();

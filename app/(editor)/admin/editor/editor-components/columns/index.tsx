@@ -55,7 +55,7 @@ export const Columns = ({
   }));
 
   useEffect(() => {
-    if (!childs.length || enabled) return;
+    if (!childs.length || !enabled) return;
 
     if (initialMount.current) {
       initialMount.current = false;
@@ -73,7 +73,7 @@ export const Columns = ({
       ref={(ref) => {
         connect(ref!);
       }}
-      className="p-4 w-full flex justify-center"
+      className="p-4 w-full flex justify-center max-w-full"
       $vertical={vertical}
       $halfWidth={halfWidth}
       $reverseOrder={reverseOrder}

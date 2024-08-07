@@ -10,7 +10,7 @@ type Props = React.DetailedHTMLProps<
   HTMLIFrameElement
 >;
 
-const Iframe = ({ children, ref, className, ...props }: Props) => {
+const Iframe = ({ children, ref, className }: Props) => {
   const frameRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const Iframe = ({ children, ref, className, ...props }: Props) => {
 
   const initalContent = useMemo(
     () =>
-      `<!DOCTYPE html><html><head>${document.head.innerHTML}</head><body class="${document.body.className}"><div id="root"></div></body></html>`,
+      `<!DOCTYPE html><html><head>${document.head.innerHTML}</head><body class="${document.body.className} overflow-x-hidden max-w-full"><div id="root"></div></body></html>`,
     []
   );
 

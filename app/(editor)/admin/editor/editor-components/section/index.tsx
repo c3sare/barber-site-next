@@ -1,7 +1,6 @@
 "use client";
 
 import { useNode } from "@craftjs/core";
-import { cn } from "@/lib/utils";
 
 type Props = {
   children?: React.ReactNode;
@@ -13,7 +12,7 @@ export const Section = ({ children, ...props }: Props) => {
   } = useNode();
 
   return (
-    <section className={cn("w-full")}>
+    <section className="w-full">
       <div
         className="container min-h-[400px] flex justify-between gap-4 flex-col md:flex-row"
         ref={(ref) => {

@@ -6,6 +6,6 @@ export const getCalculatedProperty = (
   value?: SingleWidthType,
   defaultValue?: SingleWidthType
 ) =>
-  value || defaultValue
+  value ?? defaultValue
     ? `${property}: ${calculateWithMetrics(value ?? defaultValue)};`
     : "";

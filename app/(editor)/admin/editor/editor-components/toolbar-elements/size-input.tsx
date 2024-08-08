@@ -38,7 +38,8 @@ export const SizeInput = ({
     (value: string) => {
       setProp((props: any) => {
         if (props[object_key]?.[device]) {
-          props[object_key][device].value = value;
+          if (!value) delete props[object_key][device];
+          else props[object_key][device].value = value;
         } else {
           props[object_key] = {
             ...props[object_key],
@@ -73,7 +74,7 @@ export const SizeInput = ({
       onClickReset={() =>
         setProp((props: any) => {
           props[object_key][device].metric = "px";
-          delete props[object_key][device].value;
+          delete props[object_key][device];
         })
       }
       title={title}

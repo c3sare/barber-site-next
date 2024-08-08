@@ -15,6 +15,7 @@ import {
 } from "./types";
 import { calculateColumnWidth } from "../../helpers/calculateColumnWidth";
 import { getCalculatedProperty } from "../../helpers/getCalculatedProperty";
+import { calculateWithMetrics } from "../../helpers/calculateWithMetrics";
 
 type ColumnLayout = "vertical" | "horizontal" | "grid" | "advanced";
 
@@ -67,6 +68,7 @@ type Props = {
     };
   };
   $width?: number;
+  $columnsCount?: number;
   $minHeight?: MultiDeviceWidthType;
   $gap?: MultiDeviceWidthType;
   $alignY?: DeviceRecord<string>;
@@ -88,27 +90,17 @@ type Props = {
   $bgGradientSpeedSeconds?: number;
 };
 
-export const StyledColumnDiv = styled(Resizable).attrs<Props>(() => ({}))(
-  ({ $width: w, $gap: gap }) => `
+export const StyledColumnDiv = styled.div.attrs<Props>(({ $width: w }) => ({
+  style: {
+    "--width": `${w}%`,
+  } as any,
+}))(
+  ({ $width: w, $gap: gap, $columnsCount: cc }) => `
     display: flex;
     flex-direction: column;
     height: 100%;
-    ${getCalculatedProperty("gap", gap?.["2xl"], { metric: "px", value: "32" })}
-
-    @media (max-width: 1119px) {
-      ${getCalculatedProperty("gap", gap?.["2xl"])}
-    }
-
-    @media (max-width: 1023px) {
-      ${getCalculatedProperty("gap", gap?.["2xl"])}
-    }
-
-    @media (max-width: 767px) {
-      ${getCalculatedProperty("gap", gap?.["2xl"])}
-    }
-
-    @media (max-width: 479px) {
-      ${getCalculatedProperty("gap", gap?.["2xl"])}
-    }
+    width: calc(var(--width) - (${calculateWithMetrics(
+      gap?.["2xl"] ?? { metric: "px", value: "32" }
+    )} * ${cc && cc > 1 ? cc - 1 : 0})/${cc || 1});
 `
 );

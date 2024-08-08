@@ -18,17 +18,21 @@ export const Column = ({ children, width }: Props) => {
     parentId,
     actions: { setProp },
     id,
+    selected,
   } = useNode((node) => ({
     parentId: node.data.parent,
+    selected: node.events.selected,
   }));
   const {
     parentNode,
     nodes,
     actions: { setProp: setPropNode },
     query: { node: getNode },
+    enabled,
   } = useEditor((state) => ({
     parentNode: state.nodes[parentId!],
     nodes: state.nodes,
+    enabled: state.options.enabled,
   }));
 
   const allColumns = nodes[parentId!].data.nodes;
@@ -80,6 +84,7 @@ export const Column = ({ children, width }: Props) => {
   );
 
   useEffect(() => {
+    if (!enabled) return;
     const iframe = document.querySelector("iframe")!.contentWindow!.window;
     const fn = (e: MouseEvent) => {
       setDirection(null);
@@ -105,10 +110,11 @@ export const Column = ({ children, width }: Props) => {
     }
 
     return () => {
+      if (!enabled) return;
       iframe.removeEventListener("mouseup", fn, true);
       iframe.removeEventListener("mousemove", fnMove, true);
     };
-  }, [direction, setDirection, onResize]);
+  }, [direction, setDirection, onResize, enabled]);
 
   return (
     <StyledColumnDiv
@@ -121,11 +127,11 @@ export const Column = ({ children, width }: Props) => {
       $width={width}
     >
       {children}
-      {!isFirst && (
+      {!isFirst && enabled && selected && (
         <div
           className={cn(
-            "absolute h-full w-1 top-0 right-full cursor-col-resize",
-            direction === "left" ? "bg-red-500" : "bg-transparent"
+            "absolute h-full w-1 top-0 right-full translate-x-1/2 cursor-col-resize after:absolute after:size-3 after:top-1/2 after:bg-black after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:rounded-full",
+            direction === "left" ? "bg-black" : "bg-transparent"
           )}
           onMouseDown={(e) => {
             setDirection("left");
@@ -133,17 +139,27 @@ export const Column = ({ children, width }: Props) => {
           }}
         />
       )}
-      {!isLast && (
+      {!isLast && enabled && selected && (
         <div
           className={cn(
-            "absolute h-full w-1 top-0 left-full cursor-col-resize",
-            direction === "right" ? "bg-red-500" : "bg-transparent"
+            "absolute h-full w-1 top-0 left-full -translate-x-1/2 cursor-col-resize after:absolute after:size-3 after:top-1/2 after:bg-black after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:rounded-full",
+            direction === "right" ? "bg-black" : "bg-transparent"
           )}
           onMouseDown={(e) => {
             setDirection("right");
             cursorPosition.current = e.clientX;
           }}
         />
+      )}
+      {!!direction && (
+        <div
+          className={cn(
+            "absolute top-1/2 -translate-y-1/2 bg-black text-white p-1 text-xs rounded-md",
+            direction === "left" ? "left-2" : "right-2"
+          )}
+        >
+          {width}%
+        </div>
       )}
     </StyledColumnDiv>
   );

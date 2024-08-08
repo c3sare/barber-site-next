@@ -56,7 +56,7 @@ export const Columns = ({
   }));
 
   useEffect(() => {
-    if (childs.length === 0) return;
+    if (childs.length === 0 || !enabled) return;
 
     if (initialMount.current) {
       initialMount.current = false;
@@ -69,7 +69,7 @@ export const Columns = ({
         })
       );
     }
-  }, [childs, setProp]);
+  }, [childs, setProp, enabled]);
 
   return (
     <StyledColumnsDiv

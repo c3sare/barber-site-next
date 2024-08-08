@@ -50,7 +50,12 @@ export const StyledColumnsDiv = styled.div<ColumnDivProps>(
     ${getCalculatedProperty("margin-bottom", mb?.["2xl"])}
 
     &>div {
-      ${getWidthOnVertical("2xl", v)}
+      ${getWidthOnVertical(
+        "2xl",
+        v,
+        hw,
+        gap?.["2xl"] ?? { metric: "px", value: "32" }
+      )}
       ${getCalculatedProperty("padding", p?.["2xl"])}
     }
 
@@ -63,7 +68,7 @@ export const StyledColumnsDiv = styled.div<ColumnDivProps>(
     ${getCalculatedProperty("margin-bottom", mb?.["xl"])}
 
     &>div {
-      ${getWidthOnVertical("xl", v, hw)}
+      ${getWidthOnVertical("xl", v, hw, gap?.["xl"])}
       ${getCalculatedProperty("padding", p?.["xl"])}
     }
   }
@@ -77,7 +82,7 @@ export const StyledColumnsDiv = styled.div<ColumnDivProps>(
     ${getCalculatedProperty("margin-bottom", mb?.["lg"])}
 
     &>div {
-      ${getWidthOnVertical("lg", v, hw)}
+      ${getWidthOnVertical("lg", v, hw, gap?.["lg"])}
       ${getCalculatedProperty("padding", p?.["lg"])}
     }
   }
@@ -91,7 +96,7 @@ export const StyledColumnsDiv = styled.div<ColumnDivProps>(
     ${getCalculatedProperty("margin-bottom", mb?.["md"])}
 
     &>div {
-      ${getWidthOnVertical("md", v, hw)}
+      ${getWidthOnVertical("md", v, hw, gap?.["md"])}
       ${getCalculatedProperty("padding", p?.["md"])}
     }
   }
@@ -105,7 +110,7 @@ export const StyledColumnsDiv = styled.div<ColumnDivProps>(
     ${getCalculatedProperty("margin-bottom", mb?.["sm"])}
 
     &>div {
-      ${getWidthOnVertical("sm", v, hw)}
+      ${getWidthOnVertical("sm", v, hw, gap?.["sm"])}
       ${getCalculatedProperty("padding", p?.["sm"])}
     }
   }

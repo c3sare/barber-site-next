@@ -39,6 +39,7 @@ export const Columns = ({
   marginTop,
 }: Props) => {
   const initialMount = useRef<boolean>(true);
+  const lastChildCount = useRef<number>(0);
   const {
     actions: { setProp },
     enabled,
@@ -55,18 +56,20 @@ export const Columns = ({
   }));
 
   useEffect(() => {
-    if (!childs.length || !enabled) return;
+    if (childs.length === 0) return;
 
     if (initialMount.current) {
       initialMount.current = false;
-    } else {
+      lastChildCount.current = childs.length;
+    } else if (lastChildCount.current !== childs.length) {
+      lastChildCount.current = childs.length;
       childs.forEach((child) =>
         setProp(child, (props) => {
           props.width = parseFloat((100 / childs.length).toFixed(2));
         })
       );
     }
-  }, [childs, setProp, enabled]);
+  }, [childs, setProp]);
 
   return (
     <StyledColumnsDiv

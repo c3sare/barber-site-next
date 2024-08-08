@@ -16,6 +16,7 @@ import {
 import { calculateColumnWidth } from "../../helpers/calculateColumnWidth";
 import { getCalculatedProperty } from "../../helpers/getCalculatedProperty";
 import { calculateWithMetrics } from "../../helpers/calculateWithMetrics";
+import { getColumnWidthWithGap } from "../../helpers/getColumnWithGap";
 
 type ColumnLayout = "vertical" | "horizontal" | "grid" | "advanced";
 
@@ -99,8 +100,22 @@ export const StyledColumnDiv = styled.div.attrs<Props>(({ $width: w }) => ({
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: calc(var(--width) - (${calculateWithMetrics(
-      gap?.["2xl"] ?? { metric: "px", value: "32" }
-    )} * ${cc && cc > 1 ? cc - 1 : 0})/${cc || 1});
+    ${getColumnWidthWithGap(gap?.["2xl"] ?? { metric: "px", value: "32" }, cc)}
+
+    @media (max-width: 1119px) {
+      ${getColumnWidthWithGap(gap?.["xl"], cc)}
+    }
+
+    @media (max-width: 1023px) {
+      ${getColumnWidthWithGap(gap?.["lg"], cc)}
+    }
+
+    @media (max-width: 767px) {
+      ${getColumnWidthWithGap(gap?.["md"], cc)}
+    }
+
+    @media (max-width: 479px) {
+      ${getColumnWidthWithGap(gap?.["sm"], cc)}
+    }
 `
 );

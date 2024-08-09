@@ -41,7 +41,7 @@ export const StyledColumnsDiv = styled.div<ColumnDivProps>(
     $columnsCount: cc,
   }) => `
     ${ifTrueReturn(cc === 0, "min-height: 200px;")}
-    ${ifTrueReturn(!!hw, "flex-wrap: wrap;")}
+    ${ifTrueReturn(hw === "2xl" || v === "2xl", "flex-wrap: wrap;")}
     ${getFlexDirection("2xl", v, ro)}
     ${getCalculatedProperty("width", w?.["2xl"])}
     ${getHeightVariant(hv?.["2xl"], h?.["2xl"])}
@@ -66,9 +66,15 @@ export const StyledColumnsDiv = styled.div<ColumnDivProps>(
     ${getCalculatedProperty("gap", gap?.["xl"])}
     ${getCalculatedProperty("margin-top", mt?.["xl"])}
     ${getCalculatedProperty("margin-bottom", mb?.["xl"])}
+    ${ifTrueReturn(hw === "xl" || v === "xl", "flex-wrap: wrap;")}
 
     &>div {
-      ${getWidthOnVertical("xl", v, hw, gap?.["xl"])}
+      ${getWidthOnVertical(
+        "xl",
+        v,
+        hw,
+        gap?.["xl"] ?? gap?.["2xl"] ?? { metric: "px", value: "32" }
+      )}
       ${getCalculatedProperty("padding", p?.["xl"])}
     }
   }
@@ -80,9 +86,17 @@ export const StyledColumnsDiv = styled.div<ColumnDivProps>(
     ${getCalculatedProperty("gap", gap?.["lg"])}
     ${getCalculatedProperty("margin-top", mt?.["lg"])}
     ${getCalculatedProperty("margin-bottom", mb?.["lg"])}
+    ${ifTrueReturn(hw === "lg" || v === "lg", "flex-wrap: wrap;")}
 
     &>div {
-      ${getWidthOnVertical("lg", v, hw, gap?.["lg"])}
+      ${getWidthOnVertical(
+        "lg",
+        v,
+        hw,
+        gap?.["lg"] ??
+          gap?.["xl"] ??
+          gap?.["2xl"] ?? { metric: "px", value: "32" }
+      )}
       ${getCalculatedProperty("padding", p?.["lg"])}
     }
   }
@@ -94,9 +108,15 @@ export const StyledColumnsDiv = styled.div<ColumnDivProps>(
     ${getCalculatedProperty("gap", gap?.["md"])}
     ${getCalculatedProperty("margin-top", mt?.["md"])}
     ${getCalculatedProperty("margin-bottom", mb?.["md"])}
+    ${ifTrueReturn(hw === "md" || v === "md", "flex-wrap: wrap;")}
 
     &>div {
-      ${getWidthOnVertical("md", v, hw, gap?.["md"])}
+      ${
+        getWidthOnVertical("md", v, hw, gap?.["md"]) ??
+        gap?.["lg"] ??
+        gap?.["xl"] ??
+        gap?.["2xl"] ?? { metric: "px", value: "32" }
+      }
       ${getCalculatedProperty("padding", p?.["md"])}
     }
   }
@@ -108,9 +128,15 @@ export const StyledColumnsDiv = styled.div<ColumnDivProps>(
     ${getCalculatedProperty("gap", gap?.["sm"])}
     ${getCalculatedProperty("margin-top", mt?.["sm"])}
     ${getCalculatedProperty("margin-bottom", mb?.["sm"])}
+    ${ifTrueReturn(hw === "sm" || v === "sm", "flex-wrap: wrap;")}
 
     &>div {
-      ${getWidthOnVertical("sm", v, hw, gap?.["sm"])}
+      ${
+        getWidthOnVertical("sm", v, hw, gap?.["sm"] ?? gap?.["md"]) ??
+        gap?.["lg"] ??
+        gap?.["xl"] ??
+        gap?.["2xl"] ?? { metric: "px", value: "32" }
+      }
       ${getCalculatedProperty("padding", p?.["sm"])}
     }
   }

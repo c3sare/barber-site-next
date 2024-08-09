@@ -40,8 +40,9 @@ export const SelectInput = ({
         if (withoutSizes) {
           props[object_key] = value;
         } else {
-          if (props[object_key][device]) {
-            props[object_key][device] = value;
+          if (props[object_key]?.[device]) {
+            if (!value) delete props[object_key][device];
+            else props[object_key][device] = value;
           } else {
             props[object_key] = {
               ...props[object_key],

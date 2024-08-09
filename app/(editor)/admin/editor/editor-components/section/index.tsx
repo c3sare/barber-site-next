@@ -12,14 +12,14 @@ export const Section = ({ children, ...props }: Props) => {
   } = useNode();
 
   return (
-    <section className="w-full">
-      <div
-        className="container min-h-[400px] flex justify-between gap-4 flex-col md:flex-row"
-        ref={(ref) => {
-          connect(ref!);
-        }}
-        {...props}
-      >
+    <section
+      className="w-full"
+      ref={(ref) => {
+        connect(ref!);
+      }}
+      {...props}
+    >
+      <div className="container min-h-[400px] flex justify-between gap-4 flex-col items-center">
         {children}
       </div>
     </section>

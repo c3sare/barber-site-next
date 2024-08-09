@@ -65,7 +65,7 @@ export const Heading = ({
       }}
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
-      className="block whitespace-pre-line max-w-full outline-none"
+      className="block whitespace-pre-line max-w-full outline-none w-full"
       contentEditable={enabled ? "plaintext-only" : "false"}
       onInput={(e) => {
         setProp((props: { text: string }) => {

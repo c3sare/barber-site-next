@@ -26,8 +26,9 @@ export const SelectToggle = ({ options, object_key, title }: Props) => {
   const setValue = useCallback(
     (value?: string) => {
       setProp((props: any) => {
-        if (props[object_key][device]) {
-          props[object_key][device] = value;
+        if (props[object_key]?.[device]) {
+          if (!value) delete props[object_key][device];
+          else props[object_key][device] = value;
         } else {
           props[object_key] = {
             ...props[object_key],

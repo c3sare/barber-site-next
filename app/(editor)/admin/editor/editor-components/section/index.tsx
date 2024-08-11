@@ -1,6 +1,7 @@
 "use client";
 
 import { useNode } from "@craftjs/core";
+import { StyledSection } from "./styled-section";
 
 type Props = {
   children?: React.ReactNode;
@@ -12,7 +13,7 @@ export const Section = ({ children, ...props }: Props) => {
   } = useNode();
 
   return (
-    <section
+    <StyledSection
       className="w-full"
       ref={(ref) => {
         connect(ref!);
@@ -22,7 +23,7 @@ export const Section = ({ children, ...props }: Props) => {
       <div className="container min-h-[400px] flex justify-between gap-4 flex-col items-center">
         {children}
       </div>
-    </section>
+    </StyledSection>
   );
 };
 

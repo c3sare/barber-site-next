@@ -1,4 +1,3 @@
-import { Resizable } from "re-resizable";
 import styled from "styled-components";
 import {
   DeviceRecord,
@@ -13,9 +12,6 @@ import {
   SideType,
   WithHover,
 } from "./types";
-import { calculateColumnWidth } from "../../helpers/calculateColumnWidth";
-import { getCalculatedProperty } from "../../helpers/getCalculatedProperty";
-import { calculateWithMetrics } from "../../helpers/calculateWithMetrics";
 import { getColumnWidthWithGap } from "../../helpers/getColumnWithGap";
 
 type ColumnLayout = "vertical" | "horizontal" | "grid" | "advanced";

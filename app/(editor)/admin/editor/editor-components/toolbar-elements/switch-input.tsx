@@ -1,31 +1,17 @@
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { ToolbarElement } from "../toolbar-element";
+import { useFrameDeviceSize } from "../../stores/use-frame-device-size";
 import { useNode } from "@craftjs/core";
 import { useCallback, useMemo } from "react";
-import { useFrameDeviceSize } from "../../stores/use-frame-device-size";
 import { safeObjectSet } from "@/lib/utils";
 
 type Props = {
-  options: Array<string | { value: string; label: string }>;
-  placeholder?: string;
-  object_key: string;
   title: string;
+  object_key: string;
   withoutSizes?: boolean;
 };
 
-export const SelectInput = ({
-  options,
-  placeholder,
-  object_key,
-  title,
-  withoutSizes,
-}: Props) => {
+export const SwitchInput = ({ title, object_key, withoutSizes }: Props) => {
   const { device } = useFrameDeviceSize();
   const {
     actions: { setProp },
@@ -41,7 +27,7 @@ export const SelectInput = ({
   }));
 
   const setValue = useCallback(
-    (value: string | undefined) => {
+    (value?: boolean) => {
       setProp((props: any) => {
         const newProps = safeObjectSet(
           props,
@@ -65,27 +51,10 @@ export const SelectInput = ({
   return (
     <ToolbarElement
       title={title}
-      onClickReset={() => setValue(undefined)}
-      hideDeviceSelect={withoutSizes}
-      {...{ isVisibleResetButton }}
+      onClickReset={setValue}
+      isVisibleResetButton={isVisibleResetButton}
     >
-      <Select onValueChange={setValue} value={value ?? ""}>
-        <SelectTrigger>
-          <SelectValue placeholder={placeholder ?? ""} />
-        </SelectTrigger>
-        <SelectContent>
-          {options.map((option) => {
-            const title = typeof option === "string" ? option : option.label;
-            const value = typeof option === "string" ? option : option.value;
-
-            return (
-              <SelectItem value={value} key={value}>
-                {title}
-              </SelectItem>
-            );
-          })}
-        </SelectContent>
-      </Select>
+      <Switch checked={value ?? false} onCheckedChange={setValue} />
     </ToolbarElement>
   );
 };

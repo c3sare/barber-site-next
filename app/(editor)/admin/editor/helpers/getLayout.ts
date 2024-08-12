@@ -100,6 +100,8 @@ export const getLayout = (
       properties.push("flex-direction: column;");
       properties.push(`align-items: ${vertical?.align ?? "center"};`);
       properties.push(`justify-content: ${vertical?.valign ?? "center"};`);
+      if (vertical?.gap?.metric && vertical?.gap?.value)
+        properties.push(`gap: ${calculateWithMetrics(vertical?.gap)};`);
       break;
     }
 

@@ -20,6 +20,8 @@ import {
 import { PaddingType } from "../../helpers/getPadding";
 import { BorderType } from "../../helpers/getBorder";
 import { BorderRadiusType } from "../../helpers/getBorderRadius";
+import { cn } from "@/lib/utils";
+import { Children } from "react";
 
 type Props = {
   children?: React.ReactNode;
@@ -92,6 +94,10 @@ export const Section = ({
         $vertical={vertical}
         $width={width}
         $advancedGrid={advancedgrid}
+        className={cn(
+          (!children || (children instanceof Array && children.length === 0)) &&
+            "min-h-[400px]"
+        )}
       >
         {children}
       </StyledSection>

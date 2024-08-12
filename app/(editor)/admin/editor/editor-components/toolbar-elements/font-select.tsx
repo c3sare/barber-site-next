@@ -32,9 +32,15 @@ export const FontSelect = ({ title, object_key, withoutSizes }: Props) => {
   const { device } = useFrameDeviceSize();
   const {
     actions: { setProp },
-    sizes,
+    value,
   } = useNode((node) => ({
-    sizes: object_key.split(".").reduce((o, k) => o[k], node.data.props),
+    value: [
+      object_key.split(".")[0],
+      withoutSizes ? undefined : device,
+      ...object_key.split(".").slice(1),
+    ]
+      .filter((item) => item)
+      .reduce((o, k) => o?.[k as string], node.data.props) as any,
   }));
   const { fonts, usedFonts, setUsedFonts } = useFonts();
   const [search, setSearch] = useState("");
@@ -48,18 +54,19 @@ export const FontSelect = ({ title, object_key, withoutSizes }: Props) => {
       setProp((props: any) => {
         const newProps = safeObjectSet(
           props,
-          `${object_key}${withoutSizes ? "" : "." + device}`,
+          [
+            object_key.split(".")[0],
+            withoutSizes ? undefined : device,
+            ...object_key.split(".").slice(1),
+          ]
+            .filter((item) => item)
+            .join("."),
           value
         );
         props = newProps;
       });
     },
     [device, setProp, object_key, usedFonts, setUsedFonts, withoutSizes]
-  );
-
-  const value = useMemo(
-    () => (withoutSizes ? sizes : sizes?.[device as keyof typeof sizes]),
-    [sizes, device, withoutSizes]
   );
 
   const isVisibleResetButton = useMemo(() => !!value, [value]);

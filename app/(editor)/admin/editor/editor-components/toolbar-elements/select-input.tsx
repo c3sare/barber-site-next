@@ -10,6 +10,7 @@ import { useNode } from "@craftjs/core";
 import { useCallback, useMemo } from "react";
 import { DeviceRecord } from "./types";
 import { useFrameDeviceSize } from "../../stores/use-frame-device-size";
+import { safeObjectSet } from "@/lib/utils";
 
 type Props = {
   options: Array<string | { value: string; label: string }>;
@@ -31,25 +32,18 @@ export const SelectInput = ({
     actions: { setProp },
     sizes,
   } = useNode((node) => ({
-    sizes: node.data.props[object_key],
+    sizes: object_key.split(".").reduce((o, k) => o[k], node.data.props),
   }));
 
   const setValue = useCallback(
     (value: string | undefined) => {
       setProp((props: any) => {
-        if (withoutSizes) {
-          props[object_key] = value;
-        } else {
-          if (props[object_key]?.[device]) {
-            if (!value) delete props[object_key][device];
-            else props[object_key][device] = value;
-          } else {
-            props[object_key] = {
-              ...props[object_key],
-              [device]: value,
-            };
-          }
-        }
+        const newProps = safeObjectSet(
+          props,
+          `${object_key}${withoutSizes ? "" : "." + device}`,
+          value
+        );
+        props = newProps;
       });
     },
     [device, setProp, object_key, withoutSizes]

@@ -3,6 +3,7 @@ import { ToolbarElement } from "../toolbar-element";
 import { useNode } from "@craftjs/core";
 import { useCallback, useMemo } from "react";
 import { useFrameDeviceSize } from "../../stores/use-frame-device-size";
+import { safeObjectSet } from "@/lib/utils";
 
 type Props = {
   options: {
@@ -12,37 +13,47 @@ type Props = {
   }[];
   object_key: string;
   title: string;
+  withoutSizes?: boolean;
 };
 
-export const SelectToggle = ({ options, object_key, title }: Props) => {
+export const SelectToggle = ({
+  options,
+  object_key,
+  title,
+  withoutSizes,
+}: Props) => {
   const { device } = useFrameDeviceSize();
   const {
     actions: { setProp },
-    sizes,
+    value,
   } = useNode((node) => ({
-    sizes: node.data.props[object_key],
+    value: [
+      object_key.split(".")[0],
+      withoutSizes ? undefined : device,
+      ...object_key.split(".").slice(1),
+    ]
+      .filter((item) => item)
+      .reduce((o, k) => o?.[k as string], node.data.props) as any,
   }));
 
   const setValue = useCallback(
     (value?: string) => {
       setProp((props: any) => {
-        if (props[object_key]?.[device]) {
-          if (!value) delete props[object_key][device];
-          else props[object_key][device] = value;
-        } else {
-          props[object_key] = {
-            ...props[object_key],
-            [device]: value,
-          };
-        }
+        const newProps = safeObjectSet(
+          props,
+          [
+            object_key.split(".")[0],
+            withoutSizes ? undefined : device,
+            ...object_key.split(".").slice(1),
+          ]
+            .filter((item) => item)
+            .join("."),
+          value
+        );
+        props = newProps;
       });
     },
-    [device, setProp, object_key]
-  );
-
-  const value = useMemo(
-    () => sizes?.[device as keyof typeof sizes],
-    [sizes, device]
+    [device, setProp, object_key, withoutSizes]
   );
 
   const isVisibleResetButton = useMemo(() => !!value, [value]);
@@ -52,12 +63,13 @@ export const SelectToggle = ({ options, object_key, title }: Props) => {
       isVisibleResetButton={isVisibleResetButton}
       onClickReset={() => setValue()}
       title={title}
+      hideDeviceSelect={withoutSizes}
     >
       <ToggleGroup
         size="sm"
         variant="outline"
         type="single"
-        value={value}
+        value={value ?? ""}
         onValueChange={setValue}
       >
         {options.map((option) => (
@@ -65,7 +77,7 @@ export const SelectToggle = ({ options, object_key, title }: Props) => {
             value={option.value}
             aria-label={option.title}
             key={option.value}
-            className="[&>svg]:size-3"
+            className="[&>svg]:size-3 text-xs"
           >
             {option.icon}
           </ToggleGroupItem>

@@ -12,41 +12,40 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import bgTransparentImage from "@/public/images/bg-transaprent.png";
 import Image from "next/image";
 import { useFrameDeviceSize } from "../../stores/use-frame-device-size";
+import { safeObjectSet } from "@/lib/utils";
 
 type Props = {
   title: string;
   object_key: string;
+  withoutSizes?: boolean;
 };
 
-export const ColorInput = memo(({ object_key, title }: Props) => {
+export const ColorInput = memo(({ object_key, title, withoutSizes }: Props) => {
   const { device } = useFrameDeviceSize();
   const {
     actions: { setProp },
     sizes,
   } = useNode((node) => ({
-    sizes: node.data.props[object_key],
+    sizes: object_key.split(".").reduce((o, k) => o?.[k], node.data.props),
   }));
 
   const setValue = useCallback(
     (value?: string) => {
       setProp((props: any) => {
-        if (props[object_key]?.[device]) {
-          if (!value) delete props[object_key][device];
-          else props[object_key][device] = value;
-        } else {
-          props[object_key] = {
-            ...props[object_key],
-            [device]: value,
-          };
-        }
+        const newProps = safeObjectSet(
+          props,
+          `${object_key}${withoutSizes ? "" : "." + device}`,
+          value
+        );
+        props = newProps;
       });
     },
-    [device, setProp, object_key]
+    [device, setProp, object_key, withoutSizes]
   );
 
   const value = useMemo(
-    () => sizes?.[device as keyof typeof sizes],
-    [sizes, device]
+    () => (withoutSizes ? sizes : sizes?.[device as keyof typeof sizes]),
+    [sizes, device, withoutSizes]
   );
 
   const isVisibleResetButton = useMemo(() => !!value, [value]);

@@ -1,7 +1,7 @@
 "use client";
 
 import { Check, ChevronsUpDown } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, safeObjectSet } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -25,15 +25,16 @@ import { Virtuoso } from "react-virtuoso";
 type Props = {
   title: string;
   object_key: string;
+  withoutSizes?: boolean;
 };
 
-export const FontSelect = ({ title, object_key }: Props) => {
+export const FontSelect = ({ title, object_key, withoutSizes }: Props) => {
   const { device } = useFrameDeviceSize();
   const {
     actions: { setProp },
     sizes,
   } = useNode((node) => ({
-    sizes: node.data.props[object_key],
+    sizes: object_key.split(".").reduce((o, k) => o[k], node.data.props),
   }));
   const { fonts, usedFonts, setUsedFonts } = useFonts();
   const [search, setSearch] = useState("");
@@ -45,23 +46,20 @@ export const FontSelect = ({ title, object_key }: Props) => {
         setUsedFonts([...usedFonts, value]);
 
       setProp((props: any) => {
-        if (props[object_key]?.[device]) {
-          if (!value) delete props[object_key][device];
-          else props[object_key][device] = value;
-        } else {
-          props[object_key] = {
-            ...props[object_key],
-            [device]: value,
-          };
-        }
+        const newProps = safeObjectSet(
+          props,
+          `${object_key}${withoutSizes ? "" : "." + device}`,
+          value
+        );
+        props = newProps;
       });
     },
-    [device, setProp, object_key, usedFonts, setUsedFonts]
+    [device, setProp, object_key, usedFonts, setUsedFonts, withoutSizes]
   );
 
   const value = useMemo(
-    () => sizes?.[device as keyof typeof sizes],
-    [sizes, device]
+    () => (withoutSizes ? sizes : sizes?.[device as keyof typeof sizes]),
+    [sizes, device, withoutSizes]
   );
 
   const isVisibleResetButton = useMemo(() => !!value, [value]);

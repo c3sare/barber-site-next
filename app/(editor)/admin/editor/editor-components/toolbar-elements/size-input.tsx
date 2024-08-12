@@ -1,5 +1,5 @@
 import { Slider } from "@/components/ui/slider";
-import { cn } from "@/lib/utils";
+import { cn, safeObjectSet } from "@/lib/utils";
 import { useNode } from "@craftjs/core";
 import { useCallback, useMemo, useState } from "react";
 import {
@@ -17,6 +17,7 @@ type Props = {
   range: [number, number];
   object_key: string;
   hideDeviceSelect?: boolean;
+  withoutSizes?: boolean;
 };
 
 export const SizeInput = ({
@@ -24,44 +25,48 @@ export const SizeInput = ({
   range,
   object_key,
   hideDeviceSelect,
+  withoutSizes,
 }: Props) => {
   const [open, setOpen] = useState(false);
   const { device } = useFrameDeviceSize();
   const {
     actions: { setProp },
-    sizes,
+    objValue,
   } = useNode((node) => ({
-    sizes: node.data.props[object_key],
+    objValue: [
+      object_key.split(".")[0],
+      withoutSizes ? undefined : device,
+      ...object_key.split(".").slice(1),
+    ]
+      .filter((item) => item)
+      .reduce((o, k) => o?.[k as string], node.data.props) as any,
   }));
 
   const setValue = useCallback(
-    (value: string) => {
+    (property: string, value?: string) => {
       setProp((props: any) => {
-        if (props[object_key]?.[device]) {
-          if (!value) delete props[object_key][device];
-          else props[object_key][device].value = value;
-        } else {
-          props[object_key] = {
-            ...props[object_key],
-            [device]: {
-              metric: "px",
-              value: value,
-            },
-          };
-        }
+        const newProps = safeObjectSet(
+          props,
+          [
+            object_key.split(".")[0],
+            withoutSizes ? undefined : device,
+            ...object_key.split(".").slice(1),
+            property,
+          ]
+            .filter((item) => item)
+            .join("."),
+          value
+        );
+        props = newProps;
       });
     },
-    [device, setProp, object_key]
+    [device, setProp, object_key, withoutSizes]
   );
 
-  const { metric, value } = useMemo(
-    () =>
-      sizes?.[device as keyof typeof sizes] || {
-        metric: "px",
-        value: "",
-      },
-    [sizes, device]
-  );
+  const { metric, value } = objValue ?? {
+    metric: "px",
+    value: "",
+  };
 
   const isVisibleResetButton = useMemo(
     () => metric !== "px" || value,
@@ -71,14 +76,12 @@ export const SizeInput = ({
   return (
     <ToolbarElement
       isVisibleResetButton={!!isVisibleResetButton}
-      onClickReset={() =>
-        setProp((props: any) => {
-          props[object_key][device].metric = "px";
-          delete props[object_key][device];
-        })
-      }
+      onClickReset={() => {
+        setValue("value");
+        setValue("metric", "px");
+      }}
       title={title}
-      hideDeviceSelect={hideDeviceSelect}
+      hideDeviceSelect={withoutSizes || hideDeviceSelect}
     >
       {range[0] !== range[1] && metric === "px" && (
         <Slider
@@ -86,14 +89,17 @@ export const SizeInput = ({
           min={range[0]}
           max={range[1]}
           value={[value ? parseInt(value) : 0]}
-          onValueChange={([value]) => setValue(value.toString())}
+          onValueChange={([value]) => {
+            setValue("value", value.toString());
+            if (!objValue?.metric) setValue("metric", "px");
+          }}
         />
       )}
       <div className="relative border rounded-sm p-1 flex gap-1 items-center">
         <input
           value={value ?? ""}
           disabled={metric === "auto"}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => setValue("value", e.target.value)}
           className={cn(
             "w-8 text-xs disabled:hidden",
             metric === "custom" && "w-12"
@@ -107,9 +113,7 @@ export const SizeInput = ({
                 key={metric}
                 className="text-[10px] py-1"
                 onClick={() => {
-                  setProp((props: any) => {
-                    props[object_key][device].metric = metric;
-                  });
+                  setValue("metric", metric);
                   setOpen(false);
                 }}
               >

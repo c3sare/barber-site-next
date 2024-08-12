@@ -22,7 +22,13 @@ export const TextToolbar = () => {
   return (
     <ToolbarWrapper
       editContent={
-        <TextareaInput title="Text" object_key="text" placeholder="Text..." />
+        <TextareaInput
+          hideResetButton
+          withoutSizes
+          title="Text"
+          object_key="text"
+          placeholder="Text..."
+        />
       }
       editDesign={
         <Accordion

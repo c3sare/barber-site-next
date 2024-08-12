@@ -23,7 +23,13 @@ export const HeadingToolbar = () => {
     <ToolbarWrapper
       editContent={
         <>
-          <TextareaInput title="Text" object_key="text" placeholder="Text..." />
+          <TextareaInput
+            hideResetButton
+            withoutSizes
+            title="Text"
+            object_key="text"
+            placeholder="Text..."
+          />
           <SelectInput
             title="Tags"
             object_key="tag"

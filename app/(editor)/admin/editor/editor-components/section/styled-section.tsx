@@ -31,11 +31,9 @@ type Props = {
   $horizontalVerticalAt?: Devices;
   $grid?: DeviceRecord<GridLayoutType>;
   $useOrginalItemDimensions?: boolean;
-  $advancedGrid?: {
-    display?: AdvancedDisplayVariantsType;
-    flex?: DeviceRecord<AdvancedFlexLayoutType>;
-    grid?: DeviceRecord<AdvancedGridLayoutType>;
-  };
+  $advancedGridDisplay?: AdvancedDisplayVariantsType;
+  $advancedFlexGrid?: DeviceRecord<AdvancedFlexLayoutType>;
+  $advancedGridGrid?: DeviceRecord<AdvancedGridLayoutType>;
   $height?: DeviceRecord<"fit-content" | "viewport" | "custom">;
   $customHeight?: DeviceRecord<SingleWidthType>;
   $width?: DeviceRecord<"contained" | "full" | "custom">;
@@ -64,7 +62,9 @@ export const StyledSection = styled.div<Props>(
     $horizontalVerticalAt: hva,
     $grid: gl,
     $useOrginalItemDimensions: oid,
-    $advancedGrid: agl,
+    $advancedGridDisplay: agd,
+    $advancedFlexGrid: afg,
+    $advancedGridGrid: agg,
   }) =>
     `
       margin: 0 auto;
@@ -82,9 +82,9 @@ export const StyledSection = styled.div<Props>(
         hva === "2xl",
         gl?.["2xl"],
         oid,
-        agl?.display,
-        agl?.flex?.["2xl"],
-        agl?.grid?.["2xl"]
+        agd,
+        afg?.["2xl"],
+        agg?.["2xl"]
       )}
 
       @media (max-width: 1119px) {
@@ -102,9 +102,9 @@ export const StyledSection = styled.div<Props>(
           hva === "xl",
           gl?.["xl"],
           oid,
-          agl?.display,
-          agl?.flex?.["xl"],
-          agl?.grid?.["xl"]
+          agd,
+          afg?.["xl"],
+          agg?.["xl"]
         )}
       }
 
@@ -123,9 +123,9 @@ export const StyledSection = styled.div<Props>(
           hva === "lg",
           gl?.["lg"],
           oid,
-          agl?.display,
-          agl?.flex?.["lg"],
-          agl?.grid?.["lg"]
+          agd,
+          afg?.["lg"],
+          agg?.["lg"]
         )}
       }
 
@@ -144,9 +144,9 @@ export const StyledSection = styled.div<Props>(
           hva === "md",
           gl?.["md"],
           oid,
-          agl?.display,
-          agl?.flex?.["md"],
-          agl?.grid?.["md"]
+          agd,
+          afg?.["md"],
+          agg?.["md"]
         )}
       }
 
@@ -165,9 +165,9 @@ export const StyledSection = styled.div<Props>(
           hva === "sm",
           gl?.["sm"],
           oid,
-          agl?.display,
-          agl?.flex?.["sm"],
-          agl?.grid?.["sm"]
+          agd,
+          afg?.["sm"],
+          agg?.["sm"]
         )}
       }
     `

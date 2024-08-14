@@ -31,11 +31,9 @@ type Props = {
   horizontalverticalat?: Devices;
   grid?: DeviceRecord<GridLayoutType>;
   useorginalitemdimensions?: boolean;
-  advancedgrid?: {
-    display?: AdvancedDisplayVariantsType;
-    flex?: DeviceRecord<AdvancedFlexLayoutType>;
-    grid?: DeviceRecord<AdvancedGridLayoutType>;
-  };
+  advancedgriddisplay?: AdvancedDisplayVariantsType;
+  advancedflexgrid: DeviceRecord<AdvancedFlexLayoutType>;
+  advancedgridgrid: DeviceRecord<AdvancedGridLayoutType>;
   height?: DeviceRecord<"fit-content" | "viewport" | "custom">;
   customheight?: DeviceRecord<SingleWidthType>;
   width?: DeviceRecord<"contained" | "full" | "custom">;
@@ -55,7 +53,9 @@ export const Section = ({
   horizontalverticalat,
   grid,
   useorginalitemdimensions,
-  advancedgrid,
+  advancedgriddisplay,
+  advancedflexgrid,
+  advancedgridgrid,
   height,
   customheight,
   width,
@@ -93,7 +93,9 @@ export const Section = ({
         $useOrginalItemDimensions={useorginalitemdimensions}
         $vertical={vertical}
         $width={width}
-        $advancedGrid={advancedgrid}
+        $advancedGridDisplay={advancedgriddisplay}
+        $advancedFlexGrid={advancedflexgrid}
+        $advancedGridGrid={advancedgridgrid}
         className={cn(
           (!children || (children instanceof Array && children.length === 0)) &&
             "min-h-[400px]"

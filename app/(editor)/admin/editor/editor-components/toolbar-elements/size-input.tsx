@@ -51,16 +51,23 @@ export const SizeInput = ({
             object_key.split(".")[0],
             withoutSizes ? undefined : device,
             ...object_key.split(".").slice(1),
-            property,
           ]
             .filter((item) => item)
             .join("."),
-          value
+          {
+            ...(objValue ? objValue : {}),
+            ...(!objValue?.metric &&
+            property !== "metric" &&
+            value !== undefined
+              ? { metric: "px" }
+              : {}),
+            [property]: value,
+          }
         );
         props = newProps;
       });
     },
-    [device, setProp, object_key, withoutSizes]
+    [device, setProp, object_key, withoutSizes, objValue]
   );
 
   const { metric, value } = objValue ?? {
@@ -76,10 +83,7 @@ export const SizeInput = ({
   return (
     <ToolbarElement
       isVisibleResetButton={!!isVisibleResetButton}
-      onClickReset={() => {
-        setValue("value");
-        setValue("metric", "px");
-      }}
+      onClickReset={() => setValue("value")}
       title={title}
       hideDeviceSelect={withoutSizes || hideDeviceSelect}
     >
@@ -89,10 +93,7 @@ export const SizeInput = ({
           min={range[0]}
           max={range[1]}
           value={[value ? parseInt(value) : 0]}
-          onValueChange={([value]) => {
-            setValue("value", value.toString());
-            if (!objValue?.metric) setValue("metric", "px");
-          }}
+          onValueChange={([value]) => setValue("value", value.toString())}
         />
       )}
       <div className="relative border rounded-sm p-1 flex gap-1 items-center">

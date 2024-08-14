@@ -31,7 +31,12 @@ export const ToolbarElement = memo(
           column ? "flex-col" : "items-center justify-between"
         )}
       >
-        <div className="flex items-center gap-1 w-1/2 relative">
+        <div
+          className={cn(
+            "flex items-center gap-1 relative",
+            column ? "w-full" : "flex-1"
+          )}
+        >
           <span className={cn("text-xs", hideResetButton ? "" : "pl-3")}>
             {title}
           </span>
@@ -49,7 +54,7 @@ export const ToolbarElement = memo(
         <div
           className={cn(
             "flex items-center gap-2 justify-end",
-            column ? "w-full" : "w-1/2"
+            column ? "w-full" : "flex-1"
           )}
         >
           {children}

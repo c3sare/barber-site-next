@@ -4,11 +4,12 @@ import { HorizontalLayoutSet } from "./horizontal-layout-set";
 import { GridLayoutSet } from "./grid-layout-set";
 import { SelectToggle } from "../toolbar-elements/select-toggle";
 import { AdvancedFlexSet } from "./advanced-flex-set";
+import { AdvancedGridSet } from "./advanced-grid-set";
 
 export const LayoutSet = () => {
   const { layout, advancedGridDisplay } = useNode((state) => ({
     layout: state.data.props?.layout,
-    advancedGridDisplay: state.data.props?.advancedGrid?.display,
+    advancedGridDisplay: state.data.props?.advancedgriddisplay,
   }));
 
   switch (layout) {
@@ -23,7 +24,7 @@ export const LayoutSet = () => {
         <>
           <SelectToggle
             title="Display"
-            object_key="advancedgrid.display"
+            object_key="advancedgriddisplay"
             withoutSizes
             options={[
               {
@@ -39,7 +40,7 @@ export const LayoutSet = () => {
             ]}
           />
           {advancedGridDisplay === "flex" && <AdvancedFlexSet />}
-          {advancedGridDisplay === "grid" && <AdvancedFlexSet />}
+          {advancedGridDisplay === "grid" && <AdvancedGridSet />}
         </>
       );
     default:

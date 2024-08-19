@@ -32,8 +32,8 @@ type Props = {
   grid?: DeviceRecord<GridLayoutType>;
   useorginalitemdimensions?: boolean;
   advancedgriddisplay?: AdvancedDisplayVariantsType;
-  advancedflexgrid: DeviceRecord<AdvancedFlexLayoutType>;
-  advancedgridgrid: DeviceRecord<AdvancedGridLayoutType>;
+  advancedflexgrid?: DeviceRecord<AdvancedFlexLayoutType>;
+  advancedgridgrid?: DeviceRecord<AdvancedGridLayoutType>;
   height?: DeviceRecord<"fit-content" | "viewport" | "custom">;
   customheight?: DeviceRecord<SingleWidthType>;
   width?: DeviceRecord<"contained" | "full" | "custom">;

@@ -41,7 +41,7 @@ export const action = createSafeActionClient({
 }).use(async ({ next }) => {
   await rateLimiter();
 
-  return next({ ctx: null });
+  return next({ ctx: {} });
 });
 
 export const actionWithAuth = createSafeActionClient({

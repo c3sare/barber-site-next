@@ -19,7 +19,7 @@ const rateLimit = new Ratelimit({
   limiter: Ratelimit.slidingWindow(10, "60s"),
 });
 
-function handleReturnedServerError(e: Error) {
+function handleServerError(e: Error) {
   if (e instanceof ServerActionErrorClient) {
     return e.message;
   }
@@ -37,7 +37,7 @@ async function rateLimiter() {
 }
 
 export const action = createSafeActionClient({
-  handleReturnedServerError,
+  handleServerError,
 }).use(async ({ next }) => {
   await rateLimiter();
 
@@ -45,7 +45,7 @@ export const action = createSafeActionClient({
 });
 
 export const actionWithAuth = createSafeActionClient({
-  handleReturnedServerError,
+  handleServerError,
 }).use(async ({ next }) => {
   await rateLimiter();
 

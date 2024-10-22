@@ -11,15 +11,14 @@ import { and, eq, isNull } from "drizzle-orm";
 import { Typography } from "@/components/typography";
 
 type VerifyPageProps = {
-  searchParams: {
+  searchParams: Promise<{
     email?: string;
     passcode?: string;
-  };
+  }>;
 };
 
-export default async function VerifyPage({
-  searchParams: { email, passcode },
-}: VerifyPageProps) {
+export default async function VerifyPage({ searchParams }: VerifyPageProps) {
+  const { email, passcode } = await searchParams;
   const session = await auth();
   if (
     !email ||

@@ -3,12 +3,13 @@ import { notFound } from "next/navigation";
 import { RenderPage } from "./RenderPage";
 
 type Props = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
-export default async function PageBuilderContent({ params: { slug } }: Props) {
+export default async function PageBuilderContent({ params }: Props) {
+  const { slug } = await params;
   const page = await db.query.page.findFirst({
     where: (page, { eq }) => eq(page.slug, slug),
   });

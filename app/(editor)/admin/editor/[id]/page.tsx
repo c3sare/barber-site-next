@@ -5,18 +5,16 @@ import Iframe from "./iframe";
 import { SerializedNodes } from "@craftjs/core";
 import { Content } from "./content";
 import { ResizeBox } from "./resize-box";
-import dynamic from "next/dynamic";
-const Fonts = dynamic(() => import("./fonts"), { ssr: false });
+import Fonts from "./fonts";
 
 type Props = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
-export default async function AdminEditorPreviewPage({
-  params: { id },
-}: Props) {
+export default async function AdminEditorPreviewPage({ params }: Props) {
+  const { id } = await params;
   const pageDb = await db.query.page.findFirst({
     where: (page, { eq }) => eq(page.id, parseInt(id)),
   });

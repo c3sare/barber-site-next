@@ -5,15 +5,16 @@ import { notFound } from "next/navigation";
 import { Typography } from "@/components/typography";
 
 type RemindPasswordPageProps = {
-  searchParams: {
+  searchParams: Promise<{
     id?: string;
     token?: string;
-  };
+  }>;
 };
 
 export default async function RemindPasswordPage({
-  searchParams: { id, token },
+  searchParams,
 }: RemindPasswordPageProps) {
+  const { id, token } = await searchParams;
   if (id && token) {
     const user = await db.query.user.findFirst({
       where: (user, { eq, and }) =>

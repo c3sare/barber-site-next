@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Layers3Icon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEditorState } from "./stores/use-editor-state";
-import { useShallow } from "zustand/react/shallow";
+import { useShallow } from "zustand/shallow";
 
 export const LayersButton = () => {
   const { toggleLayersBar, isOpenLayersBar } = useEditorState(

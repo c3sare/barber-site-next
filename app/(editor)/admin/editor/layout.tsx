@@ -20,8 +20,7 @@ import { SavePageButton } from "./save-page-button";
 import dynamic from "next/dynamic";
 import { getFonts } from "@/actions/getFonts";
 import { FontsContextProvider } from "./_ctx/fonts-context";
-
-const EditorWrapper = dynamic(() => import("./editor-wrapper"), { ssr: false });
+import EditorWrapper from "./editor-wrapper";
 
 type Props = {
   children?: React.ReactNode;

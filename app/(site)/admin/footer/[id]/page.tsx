@@ -9,9 +9,9 @@ import { linkBoxSchema } from "@/validators/linkBoxSchema";
 import { notFound } from "next/navigation";
 
 type FooterComponentEditPageProps = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
 type PhotoGalleryValues = z.infer<typeof galleryComponentSchema>;
@@ -21,8 +21,9 @@ type LinkBoxValues = z.infer<typeof linkBoxSchema>;
 type HeroBoxValues = z.infer<typeof heroComponentSchema>;
 
 export default async function FooterComponentEditPage({
-  params: { id },
+  params,
 }: FooterComponentEditPageProps) {
+  const { id } = await params;
   const images = await db.query.file.findMany({
     columns: {
       id: true,

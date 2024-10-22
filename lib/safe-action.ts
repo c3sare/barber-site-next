@@ -28,7 +28,8 @@ function handleServerError(e: Error) {
 }
 
 async function rateLimiter() {
-  const ip = headers().get("x-forwarded-for");
+  const header = await headers();
+  const ip = header.get("x-forwarded-for");
 
   const { success } = await rateLimit.limit(ip!);
 

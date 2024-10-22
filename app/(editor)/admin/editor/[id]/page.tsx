@@ -1,11 +1,13 @@
 import lz from "lzutf8";
 import db from "@/lib/drizzle";
 import { notFound } from "next/navigation";
-import Iframe from "./iframe";
 import { SerializedNodes } from "@craftjs/core";
 import { Content } from "./content";
 import { ResizeBox } from "./resize-box";
 import Fonts from "./fonts";
+import { IframeLoader } from "./iframe-loader";
+
+export const dynamic = "force-dynamic";
 
 type Props = {
   params: Promise<{
@@ -31,9 +33,9 @@ export default async function AdminEditorPreviewPage({ params }: Props) {
   return (
     <>
       <ResizeBox>
-        <Iframe className="w-full bg-background">
+        <IframeLoader>
           <Content data={content} />
-        </Iframe>
+        </IframeLoader>
       </ResizeBox>
       <Fonts data={content} />
     </>

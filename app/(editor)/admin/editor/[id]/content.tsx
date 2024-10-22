@@ -1,6 +1,15 @@
 "use client";
 
-import { Frame, Element, SerializedNodes } from "@craftjs/core";
+import dynamic from "next/dynamic";
+import { type SerializedNodes } from "@craftjs/core";
+const Frame = dynamic(
+  () => import("@craftjs/core").then((item) => item.Frame),
+  { ssr: false }
+);
+const Element = dynamic(
+  () => import("@craftjs/core").then((item) => item.Element),
+  { ssr: false }
+);
 import { Root } from "../editor-components/root";
 
 type Props = {

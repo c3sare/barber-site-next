@@ -2,7 +2,6 @@
 import { cn } from "@/lib/utils";
 import { SlotProps } from "input-otp";
 
-// Feel free to copy. Uses @shadcn/ui tailwind colors.
 export function Slot(props: SlotProps) {
   return (
     <div

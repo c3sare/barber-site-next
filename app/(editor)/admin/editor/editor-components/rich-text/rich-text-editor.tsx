@@ -33,7 +33,7 @@ export default function App() {
               <ContentEditable
                 className="editor-input"
                 aria-placeholder={placeholder}
-                placeholder={placeholder}
+                placeholder={<>{placeholder}</>}
               />
             }
             placeholder={

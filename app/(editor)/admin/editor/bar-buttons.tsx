@@ -10,10 +10,14 @@ import { useEditorState } from "./stores/use-editor-state";
 
 export const BarButtons = () => {
   const [firstMount, setFirstMount] = useState(true);
-  const { selectededNodeId, currentNode } = useEditor((state) => ({
-    selectededNodeId: state.events.selected,
-    currentNode: state.nodes[state.events.selected.values().next().value],
-  }));
+  const { selectededNodeId, currentNode } = useEditor((state) => {
+    const key = state.events.selected.values().next().value;
+
+    return {
+      selectededNodeId: state.events.selected,
+      currentNode: key ? state.nodes?.[key] : undefined,
+    };
+  });
   const { currentOpenBar, toggleBar, openBar } = useEditorState();
 
   useEffect(() => {

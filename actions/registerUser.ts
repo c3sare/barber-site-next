@@ -58,7 +58,7 @@ export const registerUser = action
       await mailer.sendMail({
         to: email,
         subject: "Email confirmation - Barberia",
-        html: render(AfterRegisterEmail({ name, passcode, email })),
+        html: await render(AfterRegisterEmail({ name, passcode, email })),
       });
 
       return {

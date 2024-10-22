@@ -37,7 +37,7 @@ export const remindPassword = action
       await mailer.sendMail({
         to: currentUser.email!,
         subject: "Change Password Request - Barberia",
-        html: render(
+        html: await render(
           RemindPasswordEmail({
             name: currentUser.name!,
             userId: currentUser.id,

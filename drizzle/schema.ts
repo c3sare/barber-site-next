@@ -32,13 +32,7 @@ export const twoFactorConfirmation = pgTable(
       .notNull()
       .references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" }),
   },
-  (table) => {
-    return {
-      userIdKey: uniqueIndex("two_factor_confirmation_userid_key").on(
-        table.userId
-      ),
-    };
-  }
+  (t) => [uniqueIndex("two_factor_confirmation_userid_key").on(t.userId)]
 );
 
 export const twoFactorConfirmationRelations = relations(
@@ -58,9 +52,7 @@ export const verificationToken = pgTable(
     token: text("token").notNull(),
     expires: timestamp("expires", { mode: "date" }).notNull(),
   },
-  (vt) => ({
-    compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
-  })
+  (vt) => [primaryKey({ columns: [vt.identifier, vt.token] })]
 );
 
 export const file = pgTable("file", {
@@ -94,15 +86,10 @@ export const passwordResetToken = pgTable(
       .notNull()
       .default(sql`now()`),
   },
-  (table) => {
-    return {
-      tokenKey: uniqueIndex("password_reset_token_key").on(table.token),
-      emailTokenKey: uniqueIndex("password_reset_email_token_key").on(
-        table.email,
-        table.token
-      ),
-    };
-  }
+  (t) => [
+    uniqueIndex("password_reset_token_key").on(t.token),
+    uniqueIndex("password_reset_email_token_key").on(t.email, t.token),
+  ]
 );
 
 export const twoFactorToken = pgTable(
@@ -113,15 +100,10 @@ export const twoFactorToken = pgTable(
     token: text("token").notNull(),
     expires: timestamp("expires", { mode: "date" }).notNull(),
   },
-  (table) => {
-    return {
-      tokenKey: uniqueIndex("two_factor_token_key").on(table.token),
-      emailTokenKey: uniqueIndex("two_factor_email_token_key").on(
-        table.email,
-        table.token
-      ),
-    };
-  }
+  (t) => [
+    uniqueIndex("two_factor_token_key").on(t.token),
+    uniqueIndex("two_factor_email_token_key").on(t.email, t.token),
+  ]
 );
 
 export const menuItem = pgTable("menu_item", {
@@ -219,11 +201,7 @@ export const page = pgTable(
       .notNull(),
     pageVariant: pageVariants("page_variant"),
   },
-  (table) => {
-    return {
-      slugKey: uniqueIndex("page_slug_key").on(table.slug),
-    };
-  }
+  (t) => [uniqueIndex("page_slug_key").on(t.slug)]
 );
 
 export const pageRelations = relations(page, ({ one }) => ({
@@ -255,11 +233,11 @@ export const account = pgTable(
     id_token: text("id_token"),
     session_state: text("session_state"),
   },
-  (table) => ({
-    compoundKey: primaryKey({
-      columns: [table.provider, table.providerAccountId],
+  (t) => [
+    primaryKey({
+      columns: [t.provider, t.providerAccountId],
     }),
-  })
+  ]
 );
 
 export const accountRelations = relations(account, ({ one }) => ({

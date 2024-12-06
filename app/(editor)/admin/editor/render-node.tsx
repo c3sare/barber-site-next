@@ -50,7 +50,7 @@ export const RenderNode = ({
     props: node.data.props,
   }));
 
-  const currentRef = useRef<HTMLDivElement>();
+  const currentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (dom) {

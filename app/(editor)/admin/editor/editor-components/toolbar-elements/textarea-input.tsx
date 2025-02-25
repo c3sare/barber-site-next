@@ -31,14 +31,14 @@ export const TextareaInput = ({
       ...object_key.split(".").slice(1),
     ]
       .filter((item) => item)
-      .reduce((o, k) => o?.[k as string], node.data.props) as any,
+      .reduce((o, k) => o?.[k as string], node.data.props) as never,
   }));
 
   const isVisibleResetButton = useMemo(() => !!value, [value]);
 
   const setValue = useCallback(
     (value?: string) => {
-      setProp((props: any) => {
+      setProp((props: never) => {
         const newProps = safeObjectSet(
           props,
           [
@@ -48,7 +48,7 @@ export const TextareaInput = ({
           ]
             .filter((item) => item)
             .join("."),
-          value
+          value as unknown as never
         );
         props = newProps;
       });

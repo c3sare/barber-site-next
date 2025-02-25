@@ -17,7 +17,6 @@ import { UndoRedoButtons } from "./undo-redo-buttons";
 import { LayersBar } from "./layers-bar";
 import { LayersButton } from "./layers-button";
 import { SavePageButton } from "./save-page-button";
-import dynamic from "next/dynamic";
 import { getFonts } from "@/actions/getFonts";
 import { FontsContextProvider } from "./_ctx/fonts-context";
 import EditorWrapper from "./editor-wrapper";

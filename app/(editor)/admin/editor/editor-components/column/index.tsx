@@ -58,7 +58,7 @@ export const Column = ({ children, width }: Props) => {
       if ((node1 - move < 0 || node2 + move < 0) && direction === "right")
         return;
 
-      setProp((props: any) => {
+      setProp((props: { width: number }) => {
         if (
           (move < 0 && direction === "right") ||
           (move > 0 && direction === "left")
@@ -86,7 +86,7 @@ export const Column = ({ children, width }: Props) => {
   useEffect(() => {
     if (!enabled) return;
     const iframe = document.querySelector("iframe")!.contentWindow!.window;
-    const fn = (e: MouseEvent) => {
+    const fn = () => {
       setDirection(null);
     };
 
@@ -168,7 +168,7 @@ export const Column = ({ children, width }: Props) => {
 Column.craft = {
   displayName: "Column",
   rules: {
-    canDrop: (props: any) => {
+    canDrop: (props: { data: { name: string } }) => {
       if (props.data.name === "Columns") return true;
       return false;
     },

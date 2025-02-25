@@ -1,4 +1,4 @@
-export const getProperty = <T extends unknown>(
+export const getProperty = <T,>(
   property: string,
   value: T,
   suffix = ""

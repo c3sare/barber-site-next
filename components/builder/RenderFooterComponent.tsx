@@ -12,7 +12,7 @@ export const RenderFooterComponent = ({
   data,
   component,
 }: RenderFooterComponent) => {
-  const componentData = data as any;
+  const componentData = data as never;
 
   switch (component) {
     default:

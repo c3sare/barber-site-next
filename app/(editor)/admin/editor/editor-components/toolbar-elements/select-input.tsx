@@ -37,12 +37,12 @@ export const SelectInput = ({
       ...object_key.split(".").slice(1),
     ]
       .filter((item) => item)
-      .reduce((o, k) => o?.[k as string], node.data.props) as any,
+      .reduce((o, k) => o?.[k as string], node.data.props) as never,
   }));
 
   const setValue = useCallback(
-    (value: string | undefined) => {
-      setProp((props: any) => {
+    (value: string | undefined) =>
+      setProp((props: never) => {
         const newProps = safeObjectSet(
           props,
           [
@@ -52,11 +52,11 @@ export const SelectInput = ({
           ]
             .filter((item) => item)
             .join("."),
-          value
+          value as unknown as never
         );
         props = newProps;
-      });
-    },
+      })
+    ,
     [device, setProp, object_key, withoutSizes]
   );
 

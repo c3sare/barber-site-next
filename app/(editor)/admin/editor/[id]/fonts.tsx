@@ -3,7 +3,7 @@
 import { SerializedNodes } from "@craftjs/core";
 import { createPortal } from "react-dom";
 import { useFonts } from "../_ctx/fonts-context";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 
 type Props = {
   data?: SerializedNodes;

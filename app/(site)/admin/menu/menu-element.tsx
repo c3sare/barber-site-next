@@ -1,5 +1,4 @@
-import { Button } from "@/components/ui/button";
-import { Edit2Icon, SquareCheckBigIcon } from "lucide-react";
+import { Edit2Icon } from "lucide-react";
 import Link from "next/link";
 import { DeleteMenuDialog } from "./delete-menu-dialog";
 import { TooltipProvider } from "@/components/ui/tooltip";

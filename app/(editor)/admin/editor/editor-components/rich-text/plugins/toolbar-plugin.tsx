@@ -13,7 +13,7 @@ import {
   $isElementNode,
 } from "lexical";
 import { BoldIcon, ItalicIcon } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { alignItems } from "../toolbar";
 import { getSelectedNode } from "../_utils/get-selected-node";
 import { $isLinkNode } from "@lexical/link";
@@ -26,8 +26,8 @@ export default function ToolbarPlugin() {
   const [editor] = useLexicalComposerContext();
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
-  const [isUnderline, setIsUnderline] = useState(false);
-  const [isStrikethrough, setIsStrikethrough] = useState(false);
+  const [, setIsUnderline] = useState(false);
+  const [, setIsStrikethrough] = useState(false);
 
   const $updateToolbar = useCallback(() => {
     const selection = $getSelection();
@@ -72,6 +72,7 @@ export default function ToolbarPlugin() {
       }),
       editor.registerCommand(
         SELECTION_CHANGE_COMMAND,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
         (_payload, _newEditor) => {
           $updateToolbar();
           return false;

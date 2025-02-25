@@ -2,12 +2,10 @@ import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
-import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 
 import exampleTheme from "./example-theme";
 import ToolbarPlugin from "./plugins/toolbar-plugin";
-import TreeViewPlugin from "./plugins/tree-view-plugin";
 
 const placeholder = "Enter some rich text...";
 

@@ -10,7 +10,7 @@ type Props = React.DetailedHTMLProps<
   HTMLIFrameElement
 >;
 
-const Iframe = ({ children, ref, className }: Props) => {
+const Iframe = ({ children, className }: Props) => {
   const frameRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {

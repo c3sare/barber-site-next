@@ -35,9 +35,10 @@ export const ResizeBox = ({ children }: React.PropsWithChildren) => {
 
   const onResize = useCallback(
     (
-      event: any,
-      dir: any,
+      event: unknown,
+      dir: unknown,
       ref: HTMLElement,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       size: { width: number; height: number }
     ) => {
       setFrameWidth(ref.clientWidth);

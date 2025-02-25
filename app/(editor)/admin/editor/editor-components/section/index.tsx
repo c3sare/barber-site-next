@@ -21,7 +21,6 @@ import { PaddingType } from "../../helpers/getPadding";
 import { BorderType } from "../../helpers/getBorder";
 import { BorderRadiusType } from "../../helpers/getBorderRadius";
 import { cn } from "@/lib/utils";
-import { Children } from "react";
 
 type Props = {
   children?: React.ReactNode;

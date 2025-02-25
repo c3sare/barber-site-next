@@ -90,8 +90,9 @@ type Props = {
 export const StyledColumnDiv = styled.div.attrs<Props>(({ $width: w }) => ({
   style: {
     "--width": `${w}%`,
-  } as any,
+  } as never,
 }))(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ({ $width: w, $gap: gap, $columnsCount: cc }) => `
     display: flex;
     flex-direction: column;

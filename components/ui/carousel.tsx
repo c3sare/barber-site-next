@@ -53,7 +53,7 @@ const Carousel = ({
       ...opts,
       axis: orientation === "horizontal" ? "x" : "y",
     },
-    plugins as any
+    plugins as never
   );
   const [canScrollPrev, setCanScrollPrev] = React.useState(false);
   const [canScrollNext, setCanScrollNext] = React.useState(false);

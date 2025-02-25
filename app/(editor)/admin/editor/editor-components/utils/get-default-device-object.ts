@@ -1,6 +1,6 @@
 import { DeviceRecord } from "../toolbar-elements/types";
 
-export const getDefaultDeviceObject = <const T extends unknown>(
+export const getDefaultDeviceObject = <T,>(
   obj: T
 ): DeviceRecord<T> => {
   return {

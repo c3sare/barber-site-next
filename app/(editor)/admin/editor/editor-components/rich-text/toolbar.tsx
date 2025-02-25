@@ -1,23 +1,12 @@
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useEditor, useNode } from "@craftjs/core";
 import {
   AlignCenter,
   AlignJustify,
   AlignLeft,
   AlignRight,
-  Bold,
-  Italic,
   PaletteIcon,
   PencilIcon,
   SettingsIcon,
@@ -29,8 +18,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Slider } from "@/components/ui/slider";
-import { Toggle } from "@/components/ui/toggle";
-import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Editor from "./rich-text-editor";
@@ -74,12 +61,8 @@ export const TextToolbar = () => {
     id,
     actions: { setProp },
     fontSize,
-    htmlTag,
     text,
-    align,
     color,
-    bold,
-    italic,
   } = useNode((node) => ({
     fontSize: node.data.props.fontSize,
     htmlTag: node.data.props.htmlTag,

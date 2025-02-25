@@ -20,7 +20,7 @@ type MultiActionsDropDownProps<TData> = {
   table: Table<TData>;
 };
 
-export const MultiActionsDropDown = <TData extends unknown>({
+export const MultiActionsDropDown = <TData,>({
   table,
 }: MultiActionsDropDownProps<TData>) => {
   const { deleteFilesFromState } = useFilesLibraryContext();

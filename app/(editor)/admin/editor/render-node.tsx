@@ -19,7 +19,7 @@ import { useShallow } from "zustand/shallow";
 export const RenderNode = ({
   render,
 }: {
-  render: React.ReactElement<any, string | React.JSXElementConstructor<any>>;
+  render: React.ReactElement
 }) => {
   const openBar = useEditorState(useShallow((state) => state.openBar));
   const [position, setPosition] = useState({ x: 0, y: 0, width: 0 });

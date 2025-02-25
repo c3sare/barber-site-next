@@ -39,12 +39,12 @@ export const SizeInput = ({
       ...object_key.split(".").slice(1),
     ]
       .filter((item) => item)
-      .reduce((o, k) => o?.[k as string], node.data.props) as any,
+      .reduce((o, k) => o?.[k as string], node.data.props) as never,
   }));
 
   const setValue = useCallback(
     (property: string, value?: string) => {
-      setProp((props: any) => {
+      setProp((props: never) => {
         const newProps = safeObjectSet(
           props,
           [
@@ -56,13 +56,13 @@ export const SizeInput = ({
             .join("."),
           {
             ...(objValue ? objValue : {}),
-            ...(!objValue?.metric &&
+            ...(!(objValue as {metric?: string})?.metric &&
             property !== "metric" &&
             value !== undefined
               ? { metric: "px" }
               : {}),
             [property]: value,
-          }
+          } as unknown as never
         );
         props = newProps;
       });

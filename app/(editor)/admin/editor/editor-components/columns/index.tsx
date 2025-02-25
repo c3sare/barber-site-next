@@ -97,7 +97,7 @@ export const Columns = ({
 Columns.craft = {
   displayName: "Columns",
   rules: {
-    canMoveIn: (props: any) => {
+    canMoveIn: (props: { data: { name: string } }) => {
       if (props.data.name === "Column") return true;
       return false;
     },

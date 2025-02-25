@@ -1,5 +1,4 @@
 import {
-  Devices,
   SingleWidthType,
 } from "../editor-components/toolbar-elements/types";
 import { calculateWithMetrics } from "./calculateWithMetrics";

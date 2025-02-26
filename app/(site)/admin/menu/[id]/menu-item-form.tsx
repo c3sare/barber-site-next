@@ -45,15 +45,15 @@ export const MenuItemForm = ({
     schema: menuItemAddEditSchema,
     defaultValues: id
       ? {
-        name,
-        type: pageId ? "page" : "link",
-        pageId: pageId ? pageId : undefined,
-        url: url ? url : undefined,
-      }
+          name,
+          type: pageId ? "page" : "link",
+          pageId: pageId ? pageId : undefined,
+          url: url ? url : undefined,
+        }
       : {
-        name: "",
-        type: "page",
-      },
+          name: "",
+          type: "page",
+        },
   });
 
   const currentType = form.watch("type");
@@ -87,7 +87,7 @@ export const MenuItemForm = ({
       <DialogContent>
         <DialogHeader>Menu Item</DialogHeader>
         <FormProvider {...form}>
-          <form className="space-y-4" onSubmit={onSubmit}>
+          <form className="flex flex-col gap-4" onSubmit={onSubmit}>
             <FormInput
               control={form.control}
               name="name"

@@ -12,11 +12,11 @@ export default function LoginLoading() {
           >
             Log In Panel
           </Typography>
-          <div className="space-y-2 w-full max-w-[300px]">
+          <div className="flex flex-col gap-2 w-full max-w-[300px]">
             <Skeleton className="w-[200px] h-[17px]" />
             <Skeleton className="w-full h-10" />
           </div>
-          <div className="space-y-2 w-full max-w-[300px]">
+          <div className="flex flex-col gap-2 w-full max-w-[300px]">
             <Skeleton className="w-[200px] h-[17px]" />
             <Skeleton className="w-full h-10" />
           </div>

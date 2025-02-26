@@ -60,7 +60,7 @@ export const FileEditDialog: React.FC<FileEditDialogProps> = ({
     <Dialog open={open || isLoading} onOpenChange={onOpenChange}>
       <DialogContent>
         <Form {...form}>
-          <form onSubmit={onSubmit} className="space-y-4">
+          <form onSubmit={onSubmit} className="flex flex-col gap-4">
             <FormInput
               control={form.control}
               name="name"

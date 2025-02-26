@@ -102,7 +102,7 @@ export const FontSelect = ({ title, object_key, withoutSizes }: Props) => {
         <PopoverContent className="w-[200px] p-0">
           <Command>
             <Input
-              className="rounded-b-none focus-visible::outline-none focus-visible:ring-0"
+              className="rounded-b-none focus-visible::outline-hidden focus-visible:ring-0"
               placeholder="Search font..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}

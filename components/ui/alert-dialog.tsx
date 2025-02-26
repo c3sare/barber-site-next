@@ -47,7 +47,7 @@ const AlertDialogHeader = ({
 }: React.ComponentProps<"div">) => (
   <div
     className={cn(
-      "flex flex-col space-y-2 text-center sm:text-left",
+      "flex flex-col flex flex-col gap-2 text-center sm:text-left",
       className
     )}
     {...props}

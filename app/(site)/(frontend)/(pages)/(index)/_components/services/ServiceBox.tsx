@@ -18,7 +18,7 @@ const ServiceBox: React.FC<ServiceBoxProps> = ({
 }) => {
   return (
     <div className="w-full md:w-1/3 float-left pb-6">
-      <div className="bg-white p-6 border-b-2 border-b-gray-300 flex flex-col items-center mx-6 shadow-sm pb-8 relative">
+      <div className="bg-white p-6 border-b-2 border-b-gray-300 flex flex-col items-center mx-6 shadow-xs pb-8 relative">
         <Typography
           tag="h4"
           className="text-center w-full after:left-1/2 after:-translate-x-1/2"

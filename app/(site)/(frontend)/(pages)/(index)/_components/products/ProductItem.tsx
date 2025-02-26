@@ -22,7 +22,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
 }) => {
   return (
     <div className="float-left w-full px-2 md:w-1/2 lg:w-1/4 mb-8">
-      <div className="p-1 bg-white shadow-sm w-full flex flex-col items-center justify-between">
+      <div className="p-1 bg-white shadow-xs w-full flex flex-col items-center justify-between">
         <Image src={image} alt={name} width={243} height={243} />
         <span className="text-lg">{name}</span>
         <div className="flex gap-3 text-xs my-1">

@@ -66,12 +66,12 @@ export const ColorInput = memo(({ object_key, title, withoutSizes }: Props) => {
       <input
         value={value ?? ""}
         onChange={(e) => setValue(e.target.value)}
-        className="border rounded-sm w-20 h-8 px-1 text-xs"
+        className="border rounded-xs w-20 h-8 px-1 text-xs"
       />
       <Popover>
         <PopoverTrigger asChild>
           <button
-            className="size-8 rounded-sm border"
+            className="size-8 rounded-xs border"
             style={{ backgroundColor: value }}
           >
             {!value && (

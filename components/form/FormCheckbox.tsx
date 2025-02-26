@@ -39,14 +39,14 @@ const FormCheckbox = <T extends FieldValues>({
       render={({ field: { value, onChange, ...rest } }) => (
         <FormItem
           className={cn(
-            "flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow",
+            "flex flex-row items-start space-x-3 flex flex-col gap-0 rounded-md border p-4 shadow-sm",
             className
           )}
         >
           <FormControl>
             <Checkbox checked={value} onCheckedChange={onChange} {...rest} />
           </FormControl>
-          <div className="space-y-1 leading-none">
+          <div className="flex flex-col gap-1 leading-none">
             <FormLabel>{label}</FormLabel>
             <FormDescription>{description}</FormDescription>
           </div>

@@ -25,13 +25,7 @@ const LayoutHeader = async () => {
     <Header>
       <nav className="max-w-7xl mx-auto flex justify-between items-center px-4 flex-wrap md:flex-nowrap">
         <Link href="/" className="w-[calc(100%_-_90px)] sm:w-auto">
-          <Image
-            src={logo}
-            alt="Logo"
-            className="dark:invert"
-            priority
-            height={50}
-          />
+          <Image src={logo} alt="Logo" priority height={50} />
         </Link>
         <Navigation>
           {menuItems.map((route, i) => (

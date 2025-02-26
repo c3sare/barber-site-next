@@ -82,7 +82,7 @@ export const FileUploadArea = <T extends FieldValues>({
         onDrop={handleOnDrop}
         onDragOver={(e) => e.preventDefault()}
         onDragLeave={(e) => e.preventDefault()}
-        className="flex justify-center w-full min-h-32 px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-md appearance-none hover:border-gray-400 focus:outline-none"
+        className="flex justify-center w-full min-h-32 px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-md appearance-none hover:border-gray-400 focus:outline-hidden"
       >
         {!filesWatch?.length && (
           <button

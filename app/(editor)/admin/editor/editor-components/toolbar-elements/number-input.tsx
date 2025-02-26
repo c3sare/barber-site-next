@@ -57,7 +57,7 @@ export const NumberInput = ({ title, object_key, withoutSizes }: Props) => {
         type="number"
         value={value ?? ""}
         onChange={(e) => setValue(e.target.value)}
-        className="border rounded-sm p-1 w-20"
+        className="border rounded-xs p-1 w-20"
       />
     </ToolbarElement>
   );

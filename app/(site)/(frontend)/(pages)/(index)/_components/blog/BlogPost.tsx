@@ -21,7 +21,7 @@ const BlogPost: React.FC<BlogPostProps> = ({
 }) => {
   return (
     <div className="float-left w-full sm:w-1/2 md:w-1/2 lg:w-1/4 mb-8 self-stretch">
-      <div className="mx-2 p-1 bg-[#f7f8fa] flex flex-col items-center text-center shadow-sm self-stretch">
+      <div className="mx-2 p-1 bg-[#f7f8fa] flex flex-col items-center text-center shadow-xs self-stretch">
         <Typography
           tag="h4"
           className="before:content-none after:left-1/2 after:-translate-x-1/2 text-lg"

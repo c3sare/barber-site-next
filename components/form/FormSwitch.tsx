@@ -28,7 +28,7 @@ const FormSwitch = <T extends FieldValues>({
   label,
   className,
   disabled,
-  defaultValue
+  defaultValue,
 }: FormSwitchProps<T>) => {
   return (
     <FormField
@@ -39,11 +39,11 @@ const FormSwitch = <T extends FieldValues>({
       render={({ field: { value, onChange, ...rest } }) => (
         <FormItem
           className={cn(
-            "flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm",
+            "flex flex-row items-center justify-between rounded-lg border p-3 shadow-xs",
             className
           )}
         >
-          <div className="space-y-0.5">
+          <div className="flex flex-col gap-0.5">
             <FormLabel>{label}</FormLabel>
             {!!description && <FormDescription>{description}</FormDescription>}
           </div>

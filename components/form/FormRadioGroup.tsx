@@ -44,14 +44,14 @@ const FormRadioGroup = <T extends FieldValues>({
       disabled={disabled}
       defaultValue={defaultValue}
       render={({ field }) => (
-        <FormItem className="space-y-3">
+        <FormItem className="flex flex-col gap-3">
           <FormLabel>{label}</FormLabel>
           <FormControl>
             <RadioGroup
               onValueChange={field.onChange}
               value={field.value}
               disabled={field.disabled}
-              className={cn("flex flex-col space-y-1", className)}
+              className={cn("flex flex-col flex flex-col gap-1", className)}
             >
               {options.map((option) => {
                 const value =
@@ -61,7 +61,7 @@ const FormRadioGroup = <T extends FieldValues>({
                 return (
                   <FormItem
                     key={value}
-                    className="flex items-center space-x-3 space-y-0"
+                    className="flex items-center space-x-3 flex flex-col gap-0"
                   >
                     <FormControl>
                       <RadioGroupItem value={value} />

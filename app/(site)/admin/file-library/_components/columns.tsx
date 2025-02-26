@@ -96,26 +96,26 @@ export const columns = ({
       <Dialog>
         <DialogTrigger asChild>
           <Image
-            className="cursor-pointer aspect-square object-cover transition-[filter] duration-100 blur-sm overflow-hidden"
+            className="cursor-pointer aspect-square object-cover transition-[filter] duration-100 blur-xs overflow-hidden"
             src={row.getValue("preview") as string}
             alt={row.getValue("name") as string}
             width={100}
             height={100}
             placeholder="blur"
             blurDataURL={row.original.blurDataUrl}
-            onLoad={(e) => e.currentTarget.classList.remove("blur-sm")}
+            onLoad={(e) => e.currentTarget.classList.remove("blur-xs")}
           />
         </DialogTrigger>
         <DialogContent className="max-w-screen-xl w-full max-h-screen">
           <Image
-            className="mx-auto max-w-full max-h-full w-auto h-full transition-[filter] duration-100 blur-sm overflow-hidden"
+            className="mx-auto max-w-full max-h-full w-auto h-full transition-[filter] duration-100 blur-xs overflow-hidden"
             src={row.getValue("preview")}
             alt={row.getValue("name")}
             width={row.getValue("width")}
             height={row.getValue("height")}
             placeholder="blur"
             blurDataURL={row.original.blurDataUrl}
-            onLoad={(e) => e.currentTarget.classList.remove("blur-sm")}
+            onLoad={(e) => e.currentTarget.classList.remove("blur-xs")}
           />
         </DialogContent>
       </Dialog>

@@ -54,7 +54,7 @@ export const CreatePageDialogForm = () => {
       <DialogContent>
         <DialogTitle>Create new page</DialogTitle>
         <Form {...form}>
-          <form onSubmit={onSubmit} className="space-y-2">
+          <form onSubmit={onSubmit} className="flex flex-col gap-2">
             <FormInput
               control={form.control}
               label="Title"

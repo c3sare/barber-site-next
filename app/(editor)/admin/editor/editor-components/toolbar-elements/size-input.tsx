@@ -56,7 +56,7 @@ export const SizeInput = ({
             .join("."),
           {
             ...(objValue ? objValue : {}),
-            ...(!(objValue as {metric?: string})?.metric &&
+            ...(!(objValue as { metric?: string })?.metric &&
             property !== "metric" &&
             value !== undefined
               ? { metric: "px" }
@@ -96,7 +96,7 @@ export const SizeInput = ({
           onValueChange={([value]) => setValue("value", value.toString())}
         />
       )}
-      <div className="relative border rounded-sm p-1 flex gap-1 items-center">
+      <div className="relative border rounded-xs p-1 flex gap-1 items-center">
         <input
           value={value ?? ""}
           disabled={metric === "auto"}

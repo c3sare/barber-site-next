@@ -24,7 +24,7 @@ const AlternativeLoginOptions = ({
         <button
           disabled={disabled}
           type="button"
-          className="w-[140px] h-[40px] flex items-center gap-2 rounded-sm text-white bg-[#d62d20] font-bold py-2 px-8 hover:opacity-90 transition-opacity disabled:opacity-70"
+          className="w-[140px] h-[40px] flex items-center gap-2 rounded-xs text-white bg-[#d62d20] font-bold py-2 px-8 hover:opacity-90 transition-opacity disabled:opacity-70"
           onClick={() =>
             startTransition(async () => {
               await GoogleLogin({ callbackUrl });
@@ -42,7 +42,7 @@ const AlternativeLoginOptions = ({
               await GithubLogin({ callbackUrl });
             })
           }
-          className="w-[140px] h-[40px] flex items-center gap-2 rounded-sm text-white bg-[#0d1117] font-bold py-2 px-8 hover:opacity-90 transition-opacity disabled:opacity-70"
+          className="w-[140px] h-[40px] flex items-center gap-2 rounded-xs text-white bg-[#0d1117] font-bold py-2 px-8 hover:opacity-90 transition-opacity disabled:opacity-70"
         >
           <GithubIcon width={16} height={16} />
           <span>GitHub</span>

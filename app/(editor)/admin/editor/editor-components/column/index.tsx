@@ -1,9 +1,9 @@
 "use client";
 
 import { useEditor, useNode } from "@craftjs/core";
-import { StyledColumnDiv } from "./styled-column-div";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { style } from "./style";
 
 type Props = {
   children?: React.ReactNode;
@@ -116,52 +116,59 @@ export const Column = ({ children, width }: Props) => {
     };
   }, [direction, setDirection, onResize, enabled]);
 
+  const props = {
+    id,
+    gap: parentNode.data.props.columnGap,
+    width,
+    columnsCount: parentNode.data.nodes.length,
+  };
+
   return (
-    <StyledColumnDiv
-      ref={(ref) => {
-        connect(ref!);
-      }}
-      $gap={parentNode.data.props.columnGap}
-      $columnsCount={parentNode.data.nodes.length}
-      className={cn("p-4 relative", !!direction && "select-none")}
-      $width={width}
-    >
-      {children}
-      {!isFirst && enabled && selected && (
-        <div
-          className={cn(
-            "absolute h-full w-1 top-0 right-full translate-x-1/2 cursor-col-resize after:absolute after:size-3 after:top-1/2 after:bg-black after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:rounded-full",
-            direction === "left" ? "bg-black" : "bg-transparent"
-          )}
-          onMouseDown={(e) => {
-            setDirection("left");
-            cursorPosition.current = e.clientX;
-          }}
-        />
-      )}
-      {!isLast && enabled && selected && (
-        <div
-          className={cn(
-            "absolute h-full w-1 top-0 left-full -translate-x-1/2 cursor-col-resize after:absolute after:size-3 after:top-1/2 after:bg-black after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:rounded-full",
-            direction === "right" ? "bg-black" : "bg-transparent"
-          )}
-          onMouseDown={(e) => {
-            setDirection("right");
-            cursorPosition.current = e.clientX;
-          }}
-        />
-      )}
-      {!!direction && (
-        <div
-          className={cn(
-            "absolute top-1/2 -translate-y-1/2 bg-black text-white p-1 text-xs rounded-md",
-            direction === "left" ? "left-2" : "right-2"
-          )}
-        >
-          {width}%
-        </div>
-      )}
-    </StyledColumnDiv>
+    <>
+      <style>{style(props)}</style>
+      <div
+        ref={(ref) => {
+          connect(ref!);
+        }}
+        className={id}
+      >
+        {children}
+        {!isFirst && enabled && selected && (
+          <div
+            className={cn(
+              "absolute h-full w-1 top-0 right-full translate-x-1/2 cursor-col-resize after:absolute after:size-3 after:top-1/2 after:bg-black after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:rounded-full",
+              direction === "left" ? "bg-black" : "bg-transparent"
+            )}
+            onMouseDown={(e) => {
+              setDirection("left");
+              cursorPosition.current = e.clientX;
+            }}
+          />
+        )}
+        {!isLast && enabled && selected && (
+          <div
+            className={cn(
+              "absolute h-full w-1 top-0 left-full -translate-x-1/2 cursor-col-resize after:absolute after:size-3 after:top-1/2 after:bg-black after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:rounded-full",
+              direction === "right" ? "bg-black" : "bg-transparent"
+            )}
+            onMouseDown={(e) => {
+              setDirection("right");
+              cursorPosition.current = e.clientX;
+            }}
+          />
+        )}
+        {!!direction && (
+          <div
+            className={cn(
+              "absolute top-1/2 -translate-y-1/2 bg-black text-white p-1 text-xs rounded-md",
+              direction === "left" ? "left-2" : "right-2"
+            )}
+          >
+            {width}%
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

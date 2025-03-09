@@ -3,7 +3,7 @@
 import { SerializedNodes } from "@craftjs/core";
 import { createPortal } from "react-dom";
 import { useFonts } from "../_ctx/fonts-context";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
   data?: SerializedNodes;
@@ -31,13 +31,18 @@ const getFonts = (data: SerializedNodes | undefined, usedFonts: string[]) => {
 };
 
 const Fonts = ({ data }: Props) => {
+  const [iframe, setIFrame] = useState<HTMLHeadElement | null>(null);
   const { usedFonts, setUsedFonts } = useFonts();
 
   useEffect(() => {
     setUsedFonts((state) => getFonts(data, state));
   }, [data, setUsedFonts]);
 
-  const iframe = document.querySelector("iframe")?.contentWindow?.document.head;
+  useEffect(() => {
+    const iframe =
+      document.querySelector("iframe")?.contentWindow?.document.head;
+    if (iframe) setIFrame(iframe);
+  }, []);
 
   return (
     !!iframe &&

@@ -5,6 +5,7 @@ import {
   MultiDeviceWidthType,
   SingleWidthType,
 } from "../toolbar-elements/types";
+import { genStyle } from "../utils/genStyle";
 import {
   BorderRadiusType,
   GradientType,
@@ -88,51 +89,26 @@ type Props = {
 };
 
 export const style = ({ id, width: w, gap: gap, columnsCount: cc }: Props) => {
+  const desktop = getColumnWidthWithGap(gap?.["2xl"], cc, w ?? 100);
   const xl = getColumnWidthWithGap(gap?.["xl"], cc, w);
   const lg = getColumnWidthWithGap(gap?.["lg"], cc, w);
   const md = getColumnWidthWithGap(gap?.["md"], cc, w);
   const sm = getColumnWidthWithGap(gap?.["sm"], cc, w);
 
-  return `.${id} {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    padding: 16px;
-    position: relative;
-    ${getColumnWidthWithGap(gap?.["2xl"] ?? { metric: "px", value: "32" }, cc, w)}
+  const styleProperties = genStyle(id, {
+    "2xl": {
+      display: "flex",
+      "flex-direction": "column",
+      height: "100%",
+      padding: "16px",
+      position: "relative",
+      ...desktop,
+    },
+    xl,
+    lg,
+    md,
+    sm,
+  });
 
-    ${
-      xl
-        ? `@media (max-width: 1119px) {
-      ${xl}
-    }`
-        : ""
-    }
-
-    ${
-      lg
-        ? `@media (max-width: 1023px) {
-      ${lg}
-    }`
-        : ""
-    }
-
-    ${
-      md
-        ? `@media (max-width: 767px) {
-      ${md}
-    }`
-        : ""
-    }
-
-    ${
-      sm
-        ? `@media (max-width: 479px) {
-      ${sm}
-    }`
-        : ""
-    }
-    }`
-    .replaceAll(" ", "")
-    .replaceAll("\n", "");
+  return styleProperties.replaceAll(" ", "").replaceAll("\n", "");
 };

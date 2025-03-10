@@ -5,9 +5,12 @@ export const getColumnWidthWithGap = (
   gap?: SingleWidthType,
   columnCount?: number,
   width?: number
-) =>
-  gap
-    ? `width: calc(${width}% - (${calculateWithMetrics(gap)} * ${
+) => ({
+  width: gap
+    ? `calc(${width}% - (${calculateWithMetrics(gap)} * ${
         columnCount && columnCount > 1 ? columnCount - 1 : 0
       })/${columnCount || 1});`
-    : "";
+    : width
+      ? `${width}%`
+      : "",
+});

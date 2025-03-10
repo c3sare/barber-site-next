@@ -1,7 +1,7 @@
 "use client";
 
 import { useEditor, useNode } from "@craftjs/core";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { style } from "./style";
 
@@ -11,6 +11,7 @@ type Props = {
 };
 
 export const Column = ({ children, width }: Props) => {
+  const rId = useId();
   const cursorPosition = useRef<number>(0);
   const [direction, setDirection] = useState<"left" | "right" | null>(null);
   const {
@@ -23,6 +24,7 @@ export const Column = ({ children, width }: Props) => {
     parentId: node.data.parent,
     selected: node.events.selected,
   }));
+
   const {
     parentNode,
     nodes,
@@ -117,7 +119,7 @@ export const Column = ({ children, width }: Props) => {
   }, [direction, setDirection, onResize, enabled]);
 
   const props = {
-    id,
+    id: rId,
     gap: parentNode.data.props.columnGap,
     width,
     columnsCount: parentNode.data.nodes.length,
@@ -130,7 +132,7 @@ export const Column = ({ children, width }: Props) => {
         ref={(ref) => {
           connect(ref!);
         }}
-        className={id}
+        className={rId}
       >
         {children}
         {!isFirst && enabled && selected && (

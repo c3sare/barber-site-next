@@ -5,7 +5,7 @@ import { action } from "@/lib/safe-action";
 import { z } from "zod";
 
 export const getLeftTimeToResendPasscode = action
-  .schema(z.string().email())
+  .inputSchema(z.string().email())
   .action(async ({ parsedInput: email }) => {
     const user = await db.query.user.findFirst({
       where: (user, { eq }) => eq(user.email, email),

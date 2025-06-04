@@ -7,10 +7,10 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 type CommentCarouselProps = {
-  children: JSX.Element[];
+  children: React.ReactElement[];
 };
 
 export const CommentCarousel: React.FC<CommentCarouselProps> = ({

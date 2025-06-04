@@ -13,7 +13,7 @@ import bcrypt from "bcrypt-edge";
 import { z } from "zod";
 
 export const registerUser = action
-  .schema(registerSchema.and(z.object({ captcha: z.string() })))
+  .inputSchema(registerSchema.and(z.object({ captcha: z.string() })))
   .action(
     async ({ parsedInput: { name, email, password, phone, captcha } }) => {
       const isValidCaptcha = await verifyCaptcha(captcha);

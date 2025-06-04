@@ -10,7 +10,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 export const upsertGalleryBoxComponent = adminAction
-  .schema(
+  .inputSchema(
     galleryComponentSchema.and(
       z.object({ id: z.number().optional().nullable() })
     )

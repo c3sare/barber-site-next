@@ -21,7 +21,7 @@ export const useZodForm = <Z extends ZodSchema>({
 
   return {
     ...useForm<z.infer<typeof schema>>({
-      resolver: zodResolver(schema) as Resolver<z.TypeOf<Z>, any>,
+      resolver: zodResolver(schema) as Resolver<z.TypeOf<Z>, unknown>,
       ...props,
     }),
     isLoading,

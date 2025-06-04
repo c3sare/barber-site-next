@@ -7,8 +7,9 @@ import { editImageSchema } from "@/validators/editImageSchema";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
-export const updateImage = adminAction.schema(editImageSchema).action(
-  async ({ parsedInput: { id, name, description } }) => {
+export const updateImage = adminAction
+  .inputSchema(editImageSchema)
+  .action(async ({ parsedInput: { id, name, description } }) => {
     const updateImages = await db
       .update(file)
       .set({
@@ -27,5 +28,4 @@ export const updateImage = adminAction.schema(editImageSchema).action(
     revalidatePath("/admin/file-library");
 
     return { ...updatedImage, author: author!.name!, preview: url };
-  }
-);
+  });

@@ -7,7 +7,7 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 export const setHeaderMenu = adminAction
-  .schema(z.number())
+  .inputSchema(z.number())
   .action(async ({ parsedInput: menuId }) => {
     try {
       await db

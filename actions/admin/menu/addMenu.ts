@@ -6,7 +6,7 @@ import { adminAction } from "@/lib/safe-action";
 import { z } from "zod";
 
 export const addMenu = adminAction
-  .schema(z.string())
+  .inputSchema(z.string())
   .action(async ({ parsedInput: title }) => {
     try {
       await db.insert(menu).values({

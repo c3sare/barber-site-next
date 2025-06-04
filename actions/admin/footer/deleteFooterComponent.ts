@@ -8,7 +8,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 export const deleteFooterComponent = adminAction
-  .schema(z.number().int().nonnegative())
+  .inputSchema(z.number().int().nonnegative())
   .action(async ({ parsedInput: id }) => {
     await db.delete(footerComponent).where(eq(footerComponent.id, id));
 

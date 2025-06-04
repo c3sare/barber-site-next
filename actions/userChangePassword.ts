@@ -8,7 +8,7 @@ import bcrypt from "bcrypt-edge";
 import { and, eq } from "drizzle-orm";
 
 export const userChangePassword = action
-  .schema(userChangePasswordSchema)
+  .inputSchema(userChangePasswordSchema)
   .action(async ({ parsedInput: { userId, token, password } }) => {
     try {
       const newPassword = bcrypt.hashSync(password, 10);

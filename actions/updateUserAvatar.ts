@@ -12,7 +12,7 @@ import { revalidatePath } from "next/cache";
 import sharp from "sharp";
 
 export const updateUserAvatar = actionWithAuth
-  .schema(avatarChangeSchema)
+  .inputSchema(avatarChangeSchema)
   .action(async ({ parsedInput: { image }, ctx: session }) => {
     const parsedAvatar = image as File;
 

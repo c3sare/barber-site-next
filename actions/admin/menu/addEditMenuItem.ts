@@ -9,7 +9,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 export const addEditMenuItem = adminAction
-  .schema(
+  .inputSchema(
     menuItemAddEditSchema.and(
       z.object({ menuId: z.number(), id: z.number().optional().nullable() })
     )

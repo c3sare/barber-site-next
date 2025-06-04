@@ -11,7 +11,7 @@ import { render } from "@react-email/components";
 import { eq } from "drizzle-orm";
 
 export const remindPassword = action
-  .schema(remindPasswordSchema)
+  .inputSchema(remindPasswordSchema)
   .action(async ({ parsedInput: { email } }) => {
     try {
       const token = generateToken();

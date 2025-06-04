@@ -8,7 +8,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 export const deleteMenu = adminAction
-  .schema(z.number())
+  .inputSchema(z.number())
   .action(async ({ parsedInput: id }) => {
     try {
       await db.delete(menu).where(eq(menu.id, id));

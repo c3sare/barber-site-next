@@ -6,8 +6,9 @@ import { passcodeVerifySchema } from "@/validators/passcodeVerifySchema";
 import { eq, isNull } from "drizzle-orm";
 import { user as userSchema } from "@/drizzle/schema";
 
-export const verifyEmail = action.schema(passcodeVerifySchema).action(
-  async ({ parsedInput: { email, passcode } }) => {
+export const verifyEmail = action
+  .inputSchema(passcodeVerifySchema)
+  .action(async ({ parsedInput: { email, passcode } }) => {
     const user = await db.query.user.findFirst({
       where: (users, { eq, and }) =>
         and(eq(users.email, email), isNull(users.emailVerified)),
@@ -33,5 +34,4 @@ export const verifyEmail = action.schema(passcodeVerifySchema).action(
     return {
       success: true,
     };
-  }
-);
+  });

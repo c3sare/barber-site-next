@@ -9,7 +9,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 export const upsertHeroBoxComponent = adminAction
-  .schema(
+  .inputSchema(
     heroComponentSchema.and(
       z.object({ id: z.optional(z.number().nonnegative().nullable()) })
     )

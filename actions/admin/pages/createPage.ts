@@ -7,7 +7,7 @@ import { createPageSchema } from "@/validators/createPageSchema";
 import { revalidatePath } from "next/cache";
 
 export const createPage = adminAction
-  .schema(createPageSchema)
+  .inputSchema(createPageSchema)
   .action(async ({ parsedInput: { name, slug }, ctx: { id: creatorId } }) => {
     const createdPage = await db
       .insert(page)

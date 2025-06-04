@@ -12,61 +12,67 @@ import { getPlaiceholder } from "plaiceholder";
 
 type FileType = (typeof fileType.enumValues)[number];
 
-export const uploadImages = actionWithAuth.schema(uploadImagesSchema).action(
-  async ({
-    parsedInput: data,
-    ctx: {
-      user: { id: userId },
-    },
-  }) => {
-    const files = Object.keys(data).map((item) => data[item] as File);
+export const uploadImages = actionWithAuth
+  .inputSchema(uploadImagesSchema)
+  .action(
+    async ({
+      parsedInput: data,
+      ctx: {
+        user: { id: userId },
+      },
+    }) => {
+      const files = Object.keys(data).map(
+        (item) => data[item] as unknown as File
+      );
 
-    const items = await Promise.all(
-      files.map(async (fileToUpload) => {
-        const buffer = Buffer.from(await fileToUpload.arrayBuffer());
+      const items = await Promise.all(
+        files.map(async (fileToUpload) => {
+          const buffer = Buffer.from(await fileToUpload.arrayBuffer());
 
-        const base64 = bufferToBase64Url(buffer);
+          const base64 = bufferToBase64Url(buffer);
 
-        const fileUpload = await upload(base64);
+          const fileUpload = await upload(base64);
 
-        const {
-          metadata: { width, height },
-          base64: blurDataUrl,
-        } = await getPlaiceholder(buffer);
+          const {
+            metadata: { width, height },
+            base64: blurDataUrl,
+          } = await getPlaiceholder(buffer);
 
-        const type = fileToUpload.type.split("/")[0].toUpperCase() as FileType;
+          const type = fileToUpload.type
+            .split("/")[0]
+            .toUpperCase() as FileType;
 
-        const data = await db
-          .insert(file)
-          .values({
-            id: fileUpload.public_id,
-            name: fileToUpload.name,
-            type,
-            width,
-            height,
-            blurDataUrl,
-            url: fileUpload.secure_url,
-            desc: "",
-            userId: userId!,
-          })
-          .returning();
+          const data = await db
+            .insert(file)
+            .values({
+              id: fileUpload.public_id,
+              name: fileToUpload.name,
+              type,
+              width,
+              height,
+              blurDataUrl,
+              url: fileUpload.secure_url,
+              desc: "",
+              userId: userId!,
+            })
+            .returning();
 
-        const uploadedFile = data[0]!;
+          const uploadedFile = data[0]!;
 
-        const author = await db.query.user.findFirst({
-          where: (user, { eq }) => eq(user.id, userId!),
-        });
+          const author = await db.query.user.findFirst({
+            where: (user, { eq }) => eq(user.id, userId!),
+          });
 
-        return { ...uploadedFile, author: { name: author?.name ?? "" } };
-      })
-    );
+          return { ...uploadedFile, author: { name: author?.name ?? "" } };
+        })
+      );
 
-    revalidatePath("/admin/file-library");
+      revalidatePath("/admin/file-library");
 
-    return items.map(({ author, url, ...file }) => ({
-      ...file,
-      author: author.name ?? "",
-      preview: url,
-    }));
-  }
-);
+      return items.map(({ author, url, ...file }) => ({
+        ...file,
+        author: author.name ?? "",
+        preview: url,
+      }));
+    }
+  );

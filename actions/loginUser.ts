@@ -10,13 +10,11 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 
 export const loginUser = action
-  .schema(
-    loginSchema.and(
-      z.object({
-        token: z.string(),
-        callbackUrl: z.string().optional().nullable(),
-      })
-    )
+  .inputSchema(
+    loginSchema.extend({
+      token: z.string(),
+      callbackUrl: z.string().optional().nullable(),
+    })
   )
   .action(async ({ parsedInput: { email, password, callbackUrl, token } }) => {
     const isValidCaptchaToken = await verifyCaptcha(token);

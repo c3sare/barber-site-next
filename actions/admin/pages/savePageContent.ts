@@ -18,7 +18,7 @@ function isValidJson(str: string) {
 }
 
 export const savePageContent = adminAction
-  .schema(
+  .inputSchema(
     z.object({
       id: z.number().int().nonnegative(),
       content: z

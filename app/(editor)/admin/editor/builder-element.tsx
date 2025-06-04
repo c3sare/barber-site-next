@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useEditor } from "@craftjs/core";
 
 type Props = {
-  element: JSX.Element;
+  element: React.ReactElement;
   children?: React.ReactNode;
 };
 

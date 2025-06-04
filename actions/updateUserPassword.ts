@@ -8,7 +8,7 @@ import bcrypt from "bcrypt-edge";
 import { eq } from "drizzle-orm";
 
 export const updateUserPassword = actionWithAuth
-  .schema(changePasswordSchema)
+  .inputSchema(changePasswordSchema)
   .action(async ({ parsedInput: { newPassword, password }, ctx: session }) => {
     try {
       const currentUser = await db.query.user.findFirst({

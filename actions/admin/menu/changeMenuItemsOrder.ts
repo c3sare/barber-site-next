@@ -7,7 +7,7 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 export const changeMenuItemsOrder = adminAction
-  .schema(z.array(z.number()))
+  .inputSchema(z.array(z.number()))
   .action(async ({ parsedInput: items }) => {
     try {
       await Promise.all(

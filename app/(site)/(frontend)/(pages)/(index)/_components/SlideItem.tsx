@@ -8,7 +8,7 @@ import React, { useEffect, useRef } from "react";
 import useMediaQuery from "@/hooks/useMediaQuery";
 
 type SlideItemProps = {
-  children: JSX.Element | JSX.Element[];
+  children: React.ReactElement | React.ReactElement[];
   index: number;
   backgroundUrl: string;
   itemsAlign: "left" | "right" | "center";
@@ -56,7 +56,7 @@ const SlideItem: React.FC<SlideItemProps> = ({
   useEffect(() => {
     if (slider && slider.slideHeight !== null && contentRef.current) {
       const header = document.querySelector("body > div > header");
-      const headerHeight = isMobile ? 0 : header?.clientHeight ?? 0;
+      const headerHeight = isMobile ? 0 : (header?.clientHeight ?? 0);
       const slideHeight = slider.slideHeight - headerHeight;
       const contentHeight = contentRef.current.offsetHeight;
       if (slideHeight <= contentHeight) {

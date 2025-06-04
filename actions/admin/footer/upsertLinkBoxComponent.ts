@@ -18,7 +18,7 @@ const schema = z.object({
 });
 
 export const upsertLinkBoxComponent = adminAction
-  .schema(
+  .inputSchema(
     schema.and(
       z.object({ id: z.optional(z.number().nonnegative().nullable()) })
     )

@@ -8,7 +8,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 export const deletePage = adminAction
-  .schema(z.number().int().nonnegative())
+  .inputSchema(z.number().int().nonnegative())
   .action(async ({ parsedInput: pageId }) => {
     const deletePage = await db
       .delete(page)

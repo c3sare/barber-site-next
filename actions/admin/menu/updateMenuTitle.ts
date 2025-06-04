@@ -13,7 +13,7 @@ const schema = z.object({
 });
 
 export const updateMenuTitle = adminAction
-  .schema(schema)
+  .inputSchema(schema)
   .action(async ({ parsedInput: { id, title } }) => {
     try {
       await db.update(menuSchema).set({ title }).where(eq(menuSchema.id, id));

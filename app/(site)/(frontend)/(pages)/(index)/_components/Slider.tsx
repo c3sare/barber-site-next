@@ -1,10 +1,16 @@
 "use client";
 
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import SlideChangeButton from "./SlideChangeButton";
 
 type SliderProps = {
-  children: JSX.Element[];
+  children: React.ReactElement[];
 };
 
 type SliderContextType = {

@@ -12,9 +12,9 @@
         "@dnd-kit/sortable": "^10.0.0",
         "@dnd-kit/utilities": "^3.2.2",
         "@eslint/eslintrc": "^3.3.1",
-        "@hookform/resolvers": "^5.1.1",
+        "@hookform/resolvers": "^5.2.0",
         "@lexical/react": "^0.32.1",
-        "@next/env": "^15.4.2",
+        "@next/env": "^15.4.4",
         "@paralleldrive/cuid2": "^2.2.2",
         "@radix-ui/react-accordion": "^1.2.11",
         "@radix-ui/react-alert-dialog": "^1.1.14",
@@ -44,7 +44,7 @@
         "@tailwindcss/typography": "^0.5.16",
         "@tanstack/react-table": "^8.21.3",
         "@uiw/react-color-sketch": "^2.7.1",
-        "@upstash/ratelimit": "^2.0.5",
+        "@upstash/ratelimit": "^2.0.6",
         "@upstash/redis": "^1.35.1",
         "@vercel/analytics": "^1.5.0",
         "@vercel/postgres": "^0.10.0",
@@ -62,7 +62,7 @@
         "lexical": "^0.32.1",
         "lucide-react": "^0.512.0",
         "lzutf8": "^0.6.3",
-        "next": "^15.4.2",
+        "next": "^15.4.4",
         "next-auth": "^5.0.0-beta.29",
         "next-safe-action": "^8.0.8",
         "next-themes": "^0.4.6",
@@ -72,12 +72,12 @@
         "re-resizable": "^6.11.2",
         "react": "^19.1.0",
         "react-contenteditable": "^3.3.7",
-        "react-day-picker": "^9.8.0",
+        "react-day-picker": "^9.8.1",
         "react-dom": "^19.1.0",
-        "react-email": "^4.2.3",
+        "react-email": "^4.2.4",
         "react-frame-component": "^5.2.7",
         "react-google-recaptcha-v3": "^1.11.0",
-        "react-hook-form": "^7.60.0",
+        "react-hook-form": "^7.61.1",
         "react-photoswipe-gallery": "^3.1.1",
         "react-scroll-parallax": "^3.4.5",
         "react-virtuoso": "^4.13.0",
@@ -87,8 +87,7 @@
         "tailwindcss-animate": "^1.0.7",
         "validator": "^13.15.15",
         "vaul": "^1.1.2",
-        "zod": "^3.25.76",
-        "zod-form-data": "^2.0.7",
+        "zod": "^4.1.5",
         "zustand": "^5.0.6",
       },
       "devDependencies": {
@@ -101,8 +100,8 @@
         "@types/validator": "^13.15.2",
         "autoprefixer": "^10.4.21",
         "drizzle-kit": "^0.31.4",
-        "eslint": "^9.31.0",
-        "eslint-config-next": "^15.4.2",
+        "eslint": "^9.32.0",
+        "eslint-config-next": "^15.4.4",
         "pg": "^8.16.3",
         "postcss": "^8.5.6",
         "tailwind": "^4.0.0",
@@ -557,8 +556,6 @@
     "@rtsao/scc": ["@rtsao/scc@1.1.0", "", {}, "sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g=="],
 
     "@rushstack/eslint-patch": ["@rushstack/eslint-patch@1.10.5", "", {}, "sha512-kkKUDVlII2DQiKy7UstOR1ErJP8kUKAQ4oa+SQtM0K+lPdmmjj0YnnxBgtTVYH7mUKtbsxeFC9y0AmK7Yb78/A=="],
-
-    "@rvf/set-get": ["@rvf/set-get@7.0.1", "", {}, "sha512-GkTSn9K1GrTYoTUqlUs36k6nJnzjQaFBTTEIqUYmzBcsGsoJM8xG7EAx2WLHWAA4QzFjcwWUSHQ3vM3Fbw50Tg=="],
 
     "@selderee/plugin-htmlparser2": ["@selderee/plugin-htmlparser2@0.11.0", "", { "dependencies": { "domhandler": "^5.0.3", "selderee": "^0.11.0" } }, "sha512-P33hHGdldxGabLFjPPpaTxVolMrzrcegejx+0GxjrIb9Zv48D8yAIA/QTDR2dFl7Uz7urX8aX6+5bCZslr+gWQ=="],
 
@@ -1838,9 +1835,7 @@
 
     "yoctocolors": ["yoctocolors@2.1.1", "", {}, "sha512-GQHQqAopRhwU8Kt1DDM8NjibDXHC8eoh1erhGAJPEyveY9qqVeXvVikNKrDz69sHowPMorbPUrH/mx8c50eiBQ=="],
 
-    "zod": ["zod@3.25.76", "", {}, "sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ=="],
-
-    "zod-form-data": ["zod-form-data@2.0.7", "", { "dependencies": { "@rvf/set-get": "^7.0.0" }, "peerDependencies": { "zod": ">= 3.11.0" } }, "sha512-O27uzKMx7qc7z51KXER326Fp966jqHGvZX3i18CbvElF/QqVsQQN6Q7BnzepkzeBzTJnU3golibVSagf4dp7RQ=="],
+    "zod": ["zod@4.1.5", "", {}, "sha512-rcUUZqlLJgBC33IT3PNMgsCq6TzLQEG/Ei/KTCU0PedSWRMAXoOUN+4t/0H+Q8bdnLPdqUYnvboJT0bn/229qg=="],
 
     "zustand": ["zustand@5.0.6", "", { "peerDependencies": { "@types/react": ">=18.0.0", "immer": ">=9.0.6", "react": ">=18.0.0", "use-sync-external-store": ">=1.2.0" }, "optionalPeers": ["@types/react", "immer", "react", "use-sync-external-store"] }, "sha512-ihAqNeUVhe0MAD+X8M5UzqyZ9k3FFZLBTtqo6JLPwV53cbRB/mJwBI0PxcIgqhBBHlEs8G45OTDTMq3gNcLq3A=="],
 

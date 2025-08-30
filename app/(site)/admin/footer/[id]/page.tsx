@@ -3,16 +3,12 @@ import { GalleryForm } from "../_components/GalleryForm";
 import { LinkBoxForm } from "../_components/LinkBoxForm";
 import { HeroForm } from "../_components/HeroForm";
 import { heroComponentSchema } from "@/validators/heroComponentSchema";
-import { z } from "zod";
+import * as z from "zod/mini";
 import { galleryComponentSchema } from "@/validators/galleryComponentSchema";
 import { linkBoxSchema } from "@/validators/linkBoxSchema";
 import { notFound } from "next/navigation";
 
-type FooterComponentEditPageProps = {
-  params: Promise<{
-    id: string;
-  }>;
-};
+type FooterComponentEditPageProps = { params: Promise<{ id: string }> };
 
 type PhotoGalleryValues = z.infer<typeof galleryComponentSchema>;
 
@@ -25,11 +21,7 @@ export default async function FooterComponentEditPage({
 }: FooterComponentEditPageProps) {
   const { id } = await params;
   const images = await db.query.file.findMany({
-    columns: {
-      id: true,
-      name: true,
-      url: true,
-    },
+    columns: { id: true, name: true, url: true },
   });
 
   const component = await db.query.footerComponent.findFirst({

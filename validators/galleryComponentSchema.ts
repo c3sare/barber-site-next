@@ -1,10 +1,6 @@
-import { z } from "zod";
+import * as z from "zod/mini";
 
 export const galleryComponentSchema = z.object({
-  title: z.string().min(1, "Box name is required"),
-  images: z
-    .object({
-      imageId: z.string(),
-    })
-    .array(),
+  title: z.string().check(z.minLength(1, "Box name is required")),
+  images: z.array(z.object({ imageId: z.string() })),
 });

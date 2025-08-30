@@ -5,7 +5,7 @@ import db from "@/lib/drizzle";
 import { adminAction } from "@/lib/safe-action";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
+import * as z from "zod/mini";
 
 export const deleteMenu = adminAction
   .inputSchema(z.number())

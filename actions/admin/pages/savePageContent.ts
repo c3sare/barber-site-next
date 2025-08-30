@@ -2,7 +2,7 @@
 
 import db from "@/lib/drizzle";
 import { adminAction } from "@/lib/safe-action";
-import { z } from "zod";
+import * as z from "zod/mini";
 import lz from "lzutf8";
 import { page } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
@@ -20,10 +20,10 @@ function isValidJson(str: string) {
 export const savePageContent = adminAction
   .inputSchema(
     z.object({
-      id: z.number().int().nonnegative(),
+      id: z.int().check(z.nonnegative()),
       content: z
         .string()
-        .refine(isValidJson, { message: "Content isn't json" }),
+        .check(z.refine(isValidJson, { message: "Content isn't json" })),
     })
   )
   .action(async ({ parsedInput: { id, content } }) => {
@@ -31,14 +31,7 @@ export const savePageContent = adminAction
 
     const data = lz.encodeBase64(lz.compress(content));
 
-    await db
-      .update(page)
-      .set({
-        data,
-      })
-      .where(eq(page.id, id));
+    await db.update(page).set({ data }).where(eq(page.id, id));
 
-    return {
-      success: true,
-    };
+    return { success: true };
   });

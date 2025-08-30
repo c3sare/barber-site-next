@@ -1,10 +1,17 @@
-import { z } from "zod";
+import * as z from "zod/mini";
 
 export const createPageSchema = z.object({
-  name: z.string().min(1, "Name is required").max(255, "Name is too long"),
+  name: z
+    .string()
+    .check(
+      z.minLength(1, "Name is required"),
+      z.maxLength(255, "Name is too long")
+    ),
   slug: z
     .string()
-    .min(1, "Slug is required")
-    .max(255, "Slug is too long")
-    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+    .check(
+      z.minLength(1, "Slug is required"),
+      z.maxLength(255, "Slug is too long"),
+      z.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+    ),
 });

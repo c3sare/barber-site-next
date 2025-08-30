@@ -6,12 +6,13 @@ import { adminAction } from "@/lib/safe-action";
 import { menuItemAddEditSchema } from "@/validators/menuItemAddEditSchema";
 import { eq, max } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
+import * as z from "zod/mini";
 
 export const addEditMenuItem = adminAction
   .inputSchema(
-    menuItemAddEditSchema.and(
-      z.object({ menuId: z.number(), id: z.number().optional().nullable() })
+    z.intersection(
+      menuItemAddEditSchema,
+      z.object({ menuId: z.number(), id: z.nullable(z.optional(z.number())) })
     )
   )
   .action(
@@ -25,13 +26,15 @@ export const addEditMenuItem = adminAction
 
           const order = most.at(0)?.value ?? 0;
 
-          await db.insert(menuItem).values({
-            pageId: null,
-            ...data,
-            menuId,
-            creatorId: userId,
-            order: order + 1,
-          });
+          await db
+            .insert(menuItem)
+            .values({
+              pageId: null,
+              ...data,
+              menuId,
+              creatorId: userId,
+              order: order + 1,
+            });
         } else {
           db.update(menuItem)
             .set({ pageId: null, ...data, creatorId: userId })
@@ -40,14 +43,10 @@ export const addEditMenuItem = adminAction
 
         revalidatePath(`/admin/menu/${menuId}`);
 
-        return {
-          success: true,
-        };
+        return { success: true };
       } catch (error) {
         console.log(error);
-        return {
-          success: false,
-        };
+        return { success: false };
       }
     }
   );

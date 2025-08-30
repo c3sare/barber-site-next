@@ -4,7 +4,7 @@ import { menu } from "@/drizzle/schema";
 import db from "@/lib/drizzle";
 import { adminAction } from "@/lib/safe-action";
 import { eq } from "drizzle-orm";
-import { z } from "zod";
+import * as z from "zod/mini";
 
 export const setHeaderMenu = adminAction
   .inputSchema(z.number())
@@ -19,14 +19,10 @@ export const setHeaderMenu = adminAction
         .set({ usedBy: "HEADER" })
         .where(eq(menu.id, menuId));
 
-      return {
-        success: true,
-      };
+      return { success: true };
     } catch (err) {
       console.error(err);
 
-      return {
-        success: false,
-      };
+      return { success: false };
     }
   });

@@ -5,23 +5,19 @@ import db from "@/lib/drizzle";
 import { adminAction } from "@/lib/safe-action";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
+import * as z from "zod/mini";
 
 const schema = z.object({
   title: z.string(),
-  links: z.array(
-    z.object({
-      url: z.string(),
-      name: z.string(),
-    })
-  ),
+  links: z.array(z.object({ url: z.string(), name: z.string() })),
 });
 
 export const upsertLinkBoxComponent = adminAction
   .inputSchema(
-    schema.and(
-      z.object({ id: z.optional(z.number().nonnegative().nullable()) })
-    )
+    z.object({
+      ...schema.shape,
+      id: z.nullable(z.optional(z.number().check(z.nonnegative()))),
+    })
   )
   .action(async ({ parsedInput: data }) => {
     const { id, ...props } = data;
@@ -29,10 +25,7 @@ export const upsertLinkBoxComponent = adminAction
     if (id) {
       await db
         .update(footerComponent)
-        .set({
-          data: props,
-          imageIds: [],
-        })
+        .set({ data: props, imageIds: [] })
         .where(
           and(
             eq(footerComponent.id, id),
@@ -40,11 +33,9 @@ export const upsertLinkBoxComponent = adminAction
           )
         );
     } else
-      await db.insert(footerComponent).values({
-        component: "LINK_BOX",
-        data: props,
-        imageIds: [],
-      });
+      await db
+        .insert(footerComponent)
+        .values({ component: "LINK_BOX", data: props, imageIds: [] });
 
     revalidatePath("/admin/footer");
 

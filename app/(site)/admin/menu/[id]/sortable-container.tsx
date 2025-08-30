@@ -7,7 +7,7 @@ import { SortableItem } from "./sortable-item";
 import { DndContainer } from "./dnd-container";
 import { FormProvider } from "react-hook-form";
 import { useZodForm } from "@/hooks/useZodForm";
-import { z } from "zod";
+import * as z from "zod/mini";
 import { menuItem } from "@/drizzle/schema";
 import { getPages } from "@/actions/admin/menu/getPages";
 import { changeMenuItemsOrder } from "@/actions/admin/menu/changeMenuItemsOrder";
@@ -24,11 +24,7 @@ export const SortableContainer = ({ menuItems, pages }: Props) => {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const { toast } = useToast();
-  const form = useZodForm({
-    schema: z.object({
-      items: z.array(z.number()),
-    }),
-  });
+  const form = useZodForm({ schema: z.object({ items: z.array(z.number()) }) });
   const [items, setItems] = useState(menuItems);
 
   useEffect(() => {
@@ -54,10 +50,7 @@ export const SortableContainer = ({ menuItems, pages }: Props) => {
       const result = await changeMenuItemsOrder(items.map((item) => item.id));
 
       if (result?.data?.success) {
-        toast({
-          title: "Success",
-          description: "Order was changed",
-        });
+        toast({ title: "Success", description: "Order was changed" });
       } else {
         toast({
           variant: "destructive",

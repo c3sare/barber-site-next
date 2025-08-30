@@ -1,4 +1,4 @@
-import { z } from "zod";
+import * as z from "zod/mini";
 
 export const editImageSchema = z.object({
   id: z.string(),

@@ -2,10 +2,10 @@
 
 import db from "@/lib/drizzle";
 import { action } from "@/lib/safe-action";
-import { z } from "zod";
+import * as z from "zod/mini";
 
 export const getLeftTimeToResendPasscode = action
-  .inputSchema(z.string().email())
+  .inputSchema(z.email())
   .action(async ({ parsedInput: email }) => {
     const user = await db.query.user.findFirst({
       where: (user, { eq }) => eq(user.email, email),

@@ -5,7 +5,7 @@ import db from "@/lib/drizzle";
 import { adminAction } from "@/lib/safe-action";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
+import * as z from "zod/mini";
 
 export const deleteMenuItem = adminAction
   .inputSchema(z.number())
@@ -20,13 +20,9 @@ export const deleteMenuItem = adminAction
 
       if (firstItem) revalidatePath(`/admin/menu/${firstItem.menuId}`);
 
-      return {
-        success: true,
-      };
+      return { success: true };
     } catch (error) {
       console.log(error);
-      return {
-        success: false,
-      };
+      return { success: false };
     }
   });

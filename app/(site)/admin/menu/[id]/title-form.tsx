@@ -6,14 +6,11 @@ import { useToast } from "@/components/ui/use-toast";
 import { useZodForm } from "@/hooks/useZodForm";
 import { useTransition } from "react";
 import { FormProvider } from "react-hook-form";
-import { z } from "zod";
+import * as z from "zod/mini";
 import { useRouter } from "next/navigation";
 import { LoadingButton } from "@/components/loading-button";
 
-type Props = {
-  title: string;
-  id: number;
-};
+type Props = { title: string; id: number };
 
 export const TitleForm = ({ title, id }: Props) => {
   const router = useRouter();
@@ -21,26 +18,21 @@ export const TitleForm = ({ title, id }: Props) => {
   const [isPending, startTransition] = useTransition();
   const form = useZodForm({
     schema: z.object({
-      title: z.string().min(1, "Title is required").default(""),
+      title: z.string().check(
+        z.minLength(1, "Title is required"),
+        z.refine((val) => (val ? val : ""))
+      ),
     }),
-    defaultValues: {
-      title,
-    },
+    defaultValues: { title },
   });
 
   const onSubmit = () =>
     startTransition(
       form.handleSubmit(async (data) => {
-        const result = await updateMenuTitle({
-          id,
-          title: data.title,
-        });
+        const result = await updateMenuTitle({ id, title: data.title });
 
         if (result?.data?.success) {
-          toast({
-            title: "Success",
-            description: "Title was updated",
-          });
+          toast({ title: "Success", description: "Title was updated" });
         } else {
           toast({
             title: "Error",

@@ -4,7 +4,7 @@ import { menuItem } from "@/drizzle/schema";
 import db from "@/lib/drizzle";
 import { adminAction } from "@/lib/safe-action";
 import { eq } from "drizzle-orm";
-import { z } from "zod";
+import * as z from "zod/mini";
 
 export const changeMenuItemsOrder = adminAction
   .inputSchema(z.array(z.number()))
@@ -16,13 +16,9 @@ export const changeMenuItemsOrder = adminAction
         )
       );
 
-      return {
-        success: true,
-      };
+      return { success: true };
     } catch (error) {
       console.error(error);
-      return {
-        success: false,
-      };
+      return { success: false };
     }
   });

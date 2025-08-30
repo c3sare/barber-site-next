@@ -12,6 +12,7 @@ import { useAction } from "next-safe-action/hooks";
 import { useFilesLibraryContext } from "../_context/FilesLibraryContext";
 import { FileLibraryType } from "@/actions/admin/file-library/getFilesFromFilesLibrary";
 import { useToast } from "@/components/ui/use-toast";
+import * as z from "zod/mini";
 
 type FileEditDialogProps = {
   open: boolean;
@@ -43,11 +44,8 @@ export const FileEditDialog: React.FC<FileEditDialogProps> = ({
     },
   });
   const form = useZodForm({
-    schema: editImageSchema.omit({ id: true }),
-    defaultValues: {
-      name: file.name,
-      description: file.desc,
-    },
+    schema: z.omit(editImageSchema, { id: true }),
+    defaultValues: { name: file.name, description: file.desc },
   });
 
   const onSubmit = form.handleSubmit((data) => {

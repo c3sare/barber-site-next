@@ -15,16 +15,8 @@ import { useFieldArray } from "react-hook-form";
 
 type GalleryFormProps = {
   id?: number;
-  images: {
-    id: string;
-    url: string;
-    name: string;
-  }[];
-  defaultValues?: {
-    images: {
-      imageId: string;
-    }[];
-  };
+  images: { id: string; url: string; name: string }[];
+  defaultValues?: { title: string; images: { imageId: string }[] };
 };
 
 export const GalleryForm: React.FC<GalleryFormProps> = ({
@@ -34,10 +26,7 @@ export const GalleryForm: React.FC<GalleryFormProps> = ({
 }) => {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
-  const form = useZodForm({
-    schema: galleryComponentSchema,
-    defaultValues,
-  });
+  const form = useZodForm({ schema: galleryComponentSchema, defaultValues });
   const action = useAction(upsertGalleryBoxComponent, {
     onSuccess: () => {
       startTransition(() => router.push("/admin/footer"));

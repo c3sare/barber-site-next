@@ -7,22 +7,20 @@ import db from "@/lib/drizzle";
 import { actionWithAuth } from "@/lib/safe-action";
 import { bufferToBase64Url } from "@/utils/bufferToBase64Url";
 import { avatarChangeSchema } from "@/validators/avatarChangeSchema";
+import { fileSchema } from "@/validators/fileSchema";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import sharp from "sharp";
 
 export const updateUserAvatar = actionWithAuth
   .inputSchema(avatarChangeSchema)
-  .action(async ({ parsedInput: { image }, ctx: session }) => {
-    const parsedAvatar = image as File;
+  .action(async ({ parsedInput, ctx: session }) => {
+    if (!parsedInput?.image) return { success: false };
+
+    const parsedAvatar: File = fileSchema.parse(parsedInput.image);
 
     const trimmedImage = await sharp(await parsedAvatar.arrayBuffer())
-      .resize({
-        width: 256,
-        height: 256,
-        fit: "cover",
-        position: "center",
-      })
+      .resize({ width: 256, height: 256, fit: "cover", position: "center" })
       .flatten({ background: "#fff" })
       .toFormat("webp")
       .toBuffer();
@@ -33,23 +31,15 @@ export const updateUserAvatar = actionWithAuth
 
     const updateProfile = await db
       .update(user)
-      .set({
-        image: upload.secure_url,
-      })
+      .set({ image: upload.secure_url })
       .where(eq(user.id, session.user.id!));
 
     if (!updateProfile)
       throw new Error("There was a problem with update user!");
 
-    await update({
-      user: {
-        image: upload.secure_url,
-      },
-    });
+    await update({ user: { image: upload.secure_url } });
 
     revalidatePath("/user/settings", "layout");
 
-    return {
-      success: true,
-    };
+    return { success: true };
   });

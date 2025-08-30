@@ -8,7 +8,7 @@ import { useZodForm } from "@/hooks/useZodForm";
 import { linkBoxSchema } from "@/validators/linkBoxSchema";
 import { useAction } from "next-safe-action/hooks";
 import { useFieldArray } from "react-hook-form";
-import { z } from "zod";
+import * as z from "zod/mini";
 import { Card } from "@/components/ui/card";
 import { XIcon } from "lucide-react";
 import { useTransition } from "react";
@@ -31,10 +31,7 @@ export const LinkBoxForm: React.FC<LinkBoxFormProps> = ({
       startTransition(() => router.push("/admin/footer"));
     },
   });
-  const form = useZodForm({
-    schema: linkBoxSchema,
-    defaultValues,
-  });
+  const form = useZodForm({ schema: linkBoxSchema, defaultValues });
   const {
     fields: links,
     append,
@@ -42,9 +39,7 @@ export const LinkBoxForm: React.FC<LinkBoxFormProps> = ({
   } = useFieldArray({
     name: "links",
     control: form.control,
-    rules: {
-      maxLength: 6,
-    },
+    rules: { maxLength: 6 },
   });
 
   const onSubmit = form.handleSubmit((data) => {

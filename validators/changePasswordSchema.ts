@@ -1,4 +1,4 @@
-import { z } from "zod";
+import * as z from "zod/mini";
 import { passwordSchema } from "./passwordSchema";
 
 export const changePasswordSchema = z
@@ -7,7 +7,9 @@ export const changePasswordSchema = z
     newPassword: passwordSchema,
     reNewPassword: z.string(),
   })
-  .refine((obj) => obj.newPassword === obj.reNewPassword, {
-    message: "Passwords don't match",
-    path: ["repassword"],
-  });
+  .check(
+    z.refine((obj) => obj.newPassword === obj.reNewPassword, {
+      message: "Passwords don't match",
+      path: ["repassword"],
+    })
+  );

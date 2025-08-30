@@ -1,7 +1,4 @@
-import { z } from "zod";
-import { zfd } from "zod-form-data";
+import * as z from "zod/mini";
 import { fileSchema } from "./fileSchema";
 
-export const uploadImagesSchema = zfd.formData(
-  z.record(z.string(), fileSchema)
-);
+export const uploadImagesSchema = z.record(z.string(), fileSchema);

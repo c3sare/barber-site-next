@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useZodForm } from "@/hooks/useZodForm";
 import Link from "next/link";
-import { z } from "zod";
+import * as z from "zod/mini";
 import AlternativeLoginOptions from "../(index)/(auth)/_components/AlternativeLoginOptions";
 import { useSearchParams } from "next/navigation";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -23,15 +23,12 @@ const SignInPage = () => {
   const [usedNotExistEmails, setUsedNotExistEmails] = useState<string[]>([]);
   const form = useZodForm({
     schema: z.object({
-      email: z.string().email(),
+      email: z.email(),
       password: z
         .string()
-        .min(8, "Password must be at least 8 characters long"),
+        .check(z.minLength(8, "Password must be at least 8 characters long")),
     }),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+    defaultValues: { email: "", password: "" },
   });
 
   const { toast } = useToast();
@@ -61,11 +58,7 @@ const SignInPage = () => {
 
       const token = await executeRecaptcha("submit");
 
-      const loginData = await loginUser({
-        ...data,
-        callbackUrl,
-        token,
-      });
+      const loginData = await loginUser({ ...data, callbackUrl, token });
 
       if (loginData?.data?.type === "error") {
         const { message } = loginData.data;

@@ -10,19 +10,16 @@ import { generatePasscode } from "@/utils/generatePasscode";
 import { registerSchema } from "@/validators/registerSchema";
 import { render } from "@react-email/components";
 import bcrypt from "bcrypt-edge";
-import { z } from "zod";
+import * as z from "zod/mini";
 
 export const registerUser = action
-  .inputSchema(registerSchema.and(z.object({ captcha: z.string() })))
+  .inputSchema(z.object({ ...registerSchema.shape, captcha: z.string() }))
   .action(
     async ({ parsedInput: { name, email, password, phone, captcha } }) => {
       const isValidCaptcha = await verifyCaptcha(captcha);
 
       if (!isValidCaptcha)
-        return {
-          type: "error",
-          message: "Captcha value isn't valid",
-        } as const;
+        return { type: "error", message: "Captcha value isn't valid" } as const;
 
       const currentUser = await db.query.user.findFirst({
         where: (user, { eq }) => eq(user.email, email),
@@ -40,16 +37,18 @@ export const registerUser = action
 
       const passcode = generatePasscode();
 
-      const createdUser = await db.insert(user).values([
-        {
-          email,
-          name,
-          phone,
-          password: hashedPassword,
-          verifyPasscode: passcode,
-          passcodeCreatedAt: new Date(),
-        },
-      ]);
+      const createdUser = await db
+        .insert(user)
+        .values([
+          {
+            email,
+            name,
+            phone,
+            password: hashedPassword,
+            verifyPasscode: passcode,
+            passcodeCreatedAt: new Date(),
+          },
+        ]);
 
       if (!createdUser) throw new Error("Couldn't create user.");
 

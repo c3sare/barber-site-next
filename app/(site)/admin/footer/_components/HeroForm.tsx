@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { heroComponentSchema } from "@/validators/heroComponentSchema";
 import { useAction } from "next-safe-action/hooks";
 import { upsertHeroBoxComponent } from "@/actions/admin/footer/upsertHeroBoxComponent";
-import { z } from "zod";
+import * as z from "zod/mini";
 import { useState, useTransition } from "react";
 import { FormInput } from "@/components/form/FormInput";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -16,11 +16,7 @@ import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 
 type HeroFormProps = {
-  images: {
-    id: string;
-    url: string;
-    name: string;
-  }[];
+  images: { id: string; url: string; name: string }[];
   id?: number;
   defaultValues?: z.infer<typeof heroComponentSchema>;
 };
@@ -40,10 +36,7 @@ export const HeroForm: React.FC<HeroFormProps> = ({
       startTransition(() => router.push("/admin/footer"));
     },
   });
-  const form = useZodForm({
-    schema: heroComponentSchema,
-    defaultValues,
-  });
+  const form = useZodForm({ schema: heroComponentSchema, defaultValues });
 
   const onSubmit = form.handleSubmit((data) => {
     action.execute({ ...data, id });

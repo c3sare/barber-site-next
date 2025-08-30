@@ -15,16 +15,9 @@ const AvatarChangeForm = () => {
   const action = useAction(updateUserAvatar, {
     onSettled: (data) => {
       if (data?.result?.data?.success) {
-        toast({
-          title: "Success",
-          description: "Avatar was updated",
-        });
+        toast({ title: "Success", description: "Avatar was updated" });
         update();
-      } else
-        toast({
-          title: "Error",
-          description: "Something went wrong",
-        });
+      } else toast({ title: "Error", description: "Something went wrong" });
     },
   });
   const formRef = useRef<HTMLFormElement>(null);

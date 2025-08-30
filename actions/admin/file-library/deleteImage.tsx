@@ -6,10 +6,10 @@ import db from "@/lib/drizzle";
 import { adminAction } from "@/lib/safe-action";
 import { inArray } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
+import * as z from "zod/mini";
 
 export const deleteImage = adminAction
-  .inputSchema(z.string().or(z.array(z.string())))
+  .inputSchema(z.union([z.string(), z.array(z.string())]))
   .action(async ({ parsedInput: input }) => {
     const imageIds = typeof input === "string" ? [input] : input;
 

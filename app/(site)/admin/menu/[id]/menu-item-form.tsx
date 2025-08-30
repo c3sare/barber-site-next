@@ -47,26 +47,23 @@ export const MenuItemForm = ({
       ? {
           name,
           type: pageId ? "page" : "link",
-          pageId: pageId ? pageId : undefined,
-          url: url ? url : undefined,
+          ...(pageId ? { pageId } : { url }),
         }
-      : {
-          name: "",
-          type: "page",
-        },
+      : { name: "", type: "page" },
   });
 
   const currentType = form.watch("type");
 
   const onSubmit = form.handleSubmit((data) =>
     startTransition(async () => {
-      const result = await addEditMenuItem({ ...data, menuId, id });
+      const result = await addEditMenuItem({
+        ...data,
+        menuId,
+        id,
+      } as Parameters<typeof addEditMenuItem>[0]);
 
       if (result?.data?.success) {
-        toast({
-          title: "Success",
-          description: "Operation successful...",
-        });
+        toast({ title: "Success", description: "Operation successful..." });
       } else {
         toast({
           variant: "destructive",

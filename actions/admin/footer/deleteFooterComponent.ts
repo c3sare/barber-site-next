@@ -5,10 +5,10 @@ import db from "@/lib/drizzle";
 import { adminAction } from "@/lib/safe-action";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
+import * as z from "zod/mini";
 
 export const deleteFooterComponent = adminAction
-  .inputSchema(z.number().int().nonnegative())
+  .inputSchema(z.int().check(z.nonnegative()))
   .action(async ({ parsedInput: id }) => {
     await db.delete(footerComponent).where(eq(footerComponent.id, id));
 

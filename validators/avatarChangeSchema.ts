@@ -1,6 +1,6 @@
-import { zfd } from "zod-form-data";
-import { fileSchema } from "./fileSchema";
+import * as z from "zod/mini";
 
-export const avatarChangeSchema = zfd.formData({
-  image: fileSchema,
-});
+export const avatarChangeSchema = z.pipe(
+  z.unknown().check(z.refine((val) => val instanceof FormData)),
+  z.transform((val: FormData) => Object.fromEntries(val))
+);

@@ -7,13 +7,14 @@ import { removeDuplicates } from "@/lib/utils";
 import { galleryComponentSchema } from "@/validators/galleryComponentSchema";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
+import * as z from "zod/mini";
 
 export const upsertGalleryBoxComponent = adminAction
   .inputSchema(
-    galleryComponentSchema.and(
-      z.object({ id: z.number().optional().nullable() })
-    )
+    z.object({
+      ...galleryComponentSchema.shape,
+      id: z.nullable(z.optional(z.number())),
+    })
   )
   .action(async ({ parsedInput: { images, id, title } }) => {
     const imagesWithoutDuplicates = removeDuplicates(
@@ -26,15 +27,10 @@ export const upsertGalleryBoxComponent = adminAction
     if (imagesWithoutDuplicates.length !== checkImages.length)
       throw new Error("Images from from aren't exist.");
 
-    let footerComp: (typeof footerComponent.$inferSelect)[];
-
     if (id) {
-      footerComp = await db
+      await db
         .update(footerComponent)
-        .set({
-          data: { images, title },
-          imageIds: imagesWithoutDuplicates,
-        })
+        .set({ data: { images, title }, imageIds: imagesWithoutDuplicates })
         .where(
           and(
             eq(footerComponent.id, id),
@@ -43,7 +39,7 @@ export const upsertGalleryBoxComponent = adminAction
         )
         .returning();
     } else {
-      footerComp = await db
+      await db
         .insert(footerComponent)
         .values({
           data: { images, title },

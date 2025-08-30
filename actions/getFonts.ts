@@ -1,5 +1,5 @@
 import { cache } from "react";
-import { z } from "zod";
+import * as z from "zod/mini";
 
 const fontsSchema = z.object({
   kind: z.string(),
@@ -10,10 +10,10 @@ const fontsSchema = z.object({
       subsets: z.array(z.string()),
       version: z.string(),
       lastModified: z.string(),
-      files: z.record(z.string(), z.string().url()),
+      files: z.record(z.string(), z.url()),
       category: z.string(),
       kind: z.string(),
-      menu: z.string().url(),
+      menu: z.url(),
     })
   ),
 });

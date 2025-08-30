@@ -8,24 +8,17 @@ import { useToast } from "@/components/ui/use-toast";
 import { useZodForm } from "@/hooks/useZodForm";
 import { fileSchema } from "@/validators/fileSchema";
 import { useAction } from "next-safe-action/hooks";
-import { z } from "zod";
+import * as z from "zod/mini";
 import { useFilesLibraryContext } from "../_context/FilesLibraryContext";
 
-type FileTransferFormProps = {
-  closeForm: () => void;
-};
+type FileTransferFormProps = { closeForm: () => void };
 
 export const FileTransferForm = ({ closeForm }: FileTransferFormProps) => {
   const { addFilesToState } = useFilesLibraryContext();
   const { toast } = useToast();
   const form = useZodForm({
     schema: z.object({
-      files: z
-        .object({
-          id: z.string(),
-          file: fileSchema,
-        })
-        .array(),
+      files: z.array(z.object({ id: z.string(), file: fileSchema })),
     }),
   });
   const action = useAction(uploadImages, {

@@ -12,7 +12,7 @@ import Github from "next-auth/providers/github";
 import Credentials from "next-auth/providers/credentials";
 import { loginSchema } from "./validators/loginSchema";
 import bcrypt from "bcrypt-edge";
-import { z } from "zod";
+import * as z from "zod/mini";
 import { getUserByEmail } from "./actions/auth/getUserByEmail";
 import { getUserById } from "./actions/auth/getUserById";
 
@@ -32,10 +32,7 @@ export const {
     verificationTokensTable: schema.verificationToken,
   }),
   session: { strategy: "jwt" },
-  pages: {
-    signIn: "/login",
-    error: "/login",
-  },
+  pages: { signIn: "/login", error: "/login" },
   events: {
     async linkAccount({ user: userLink }) {
       await db
@@ -107,12 +104,15 @@ export const {
     }),
     Credentials({
       async authorize(credentials) {
-        const validatedFields = loginSchema
-          .and(z.object({ callbackUrl: z.string().optional().nullable() }))
+        const validatedFields = z
+          .extend(
+            loginSchema,
+            z.object({ callbackUrl: z.nullable(z.optional(z.string())) })
+          )
           .safeParse(credentials);
 
         if (validatedFields.success) {
-          const { email, password, callbackUrl } = validatedFields.data;
+          const { email, password } = validatedFields.data;
           const user = await getUserByEmail(email);
 
           if (!user || !user.password) {

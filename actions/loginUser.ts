@@ -7,30 +7,26 @@ import { verifyCaptcha } from "@/lib/verifyCaptcha";
 import { loginSchema } from "@/validators/loginSchema";
 import bcrypt from "bcrypt-edge";
 import { redirect } from "next/navigation";
-import { z } from "zod";
+import * as z from "zod/mini";
 
 export const loginUser = action
   .inputSchema(
-    loginSchema.extend({
+    z.object({
+      ...loginSchema.shape,
       token: z.string(),
-      callbackUrl: z.string().optional().nullable(),
+      callbackUrl: z.nullable(z.optional(z.string())),
     })
   )
   .action(async ({ parsedInput: { email, password, callbackUrl, token } }) => {
     const isValidCaptchaToken = await verifyCaptcha(token);
 
     if (!isValidCaptchaToken) {
-      return {
-        type: "error",
-        message: "Captcha value isn't valid",
-      };
+      return { type: "error", message: "Captcha value isn't valid" };
     }
 
     const user = await db.query.user.findFirst({
       where: (user, { eq }) => eq(user.email, email),
-      with: {
-        accounts: true,
-      },
+      with: { accounts: true },
     });
 
     if (!user)

@@ -1,32 +1,28 @@
-"use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { Resolver, useForm } from "react-hook-form";
-import { ZodSchema, z } from "zod";
+import { useMemo } from "react";
+import { FieldValues, useForm, UseFormProps } from "react-hook-form";
+import * as z from "zod/mini";
 
-type PropsType<Z extends ZodSchema> = Omit<
-  NonNullable<Parameters<typeof useForm<z.infer<Z>>>[0]>,
+type PropsType<TFormValues extends FieldValues> = Omit<
+  UseFormProps<TFormValues>,
   "resolver"
-> & {
-  schema: Z;
-};
+> & { schema: z.ZodMiniType<TFormValues, TFormValues> };
 
-export const useZodForm = <Z extends ZodSchema>({
+export const useZodForm = <TFormValues extends FieldValues>({
   schema,
   ...props
-}: PropsType<Z>) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isError, setIsError] = useState<boolean>(false);
+}: PropsType<TFormValues>) => {
+  const form = useForm<TFormValues>({
+    resolver: zodResolver(schema),
+    ...props,
+  });
 
-  return {
-    ...useForm<z.infer<typeof schema>>({
-      resolver: zodResolver(schema) as Resolver<z.TypeOf<Z>, unknown>,
-      ...props,
-    }),
-    isLoading,
-    setIsLoading,
-    isError,
-    setIsError,
-  };
+  const { isDirty, isLoading, isSubmitting, isValidating } = form.formState;
+
+  const disabledSubmit = useMemo(
+    () => !isDirty || isLoading || isSubmitting || isValidating,
+    [isDirty, isLoading, isSubmitting, isValidating]
+  );
+
+  return { ...form, disabledSubmit };
 };

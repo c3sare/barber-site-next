@@ -1,13 +1,13 @@
 import validator from "validator";
-import { z } from "zod";
+import * as z from "zod/mini";
 
 export const profileInformationsSchema = z.object({
-  name: z.string().trim(),
-  phone: z
-    .string()
-    .trim()
-    .refine((phone) => validator.isMobilePhone(phone, "pl-PL"), {
+  name: z.string().check(z.trim()),
+  phone: z.string().check(
+    z.trim(),
+    z.refine((phone) => validator.isMobilePhone(phone, "pl-PL"), {
       message: "Invalid phone number",
-    }),
-  email: z.string().email(),
+    })
+  ),
+  email: z.email(),
 });

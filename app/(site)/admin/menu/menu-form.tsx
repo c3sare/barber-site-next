@@ -3,7 +3,7 @@
 import { FormInput } from "@/components/form/FormInput";
 import { useZodForm } from "@/hooks/useZodForm";
 import { FormProvider } from "react-hook-form";
-import { z } from "zod";
+import * as z from "zod/mini";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -27,12 +27,12 @@ export const MenuForm = () => {
     schema: z.object({
       title: z
         .string()
-        .min(1, "Title is required")
-        .max(255, "Title is too long"),
+        .check(
+          z.minLength(1, "Title is required"),
+          z.maxLength(255, "Title is too long")
+        ),
     }),
-    defaultValues: {
-      title: "",
-    },
+    defaultValues: { title: "" },
   });
 
   const onSubmit = form.handleSubmit((data) =>
@@ -42,10 +42,7 @@ export const MenuForm = () => {
       setDialogOpen(false);
 
       if (result?.data?.success)
-        toast({
-          title: "Success",
-          description: "Menu was added",
-        });
+        toast({ title: "Success", description: "Menu was added" });
       else
         toast({
           title: "Error",

@@ -8,10 +8,10 @@ import { action } from "@/lib/safe-action";
 import { generatePasscode } from "@/utils/generatePasscode";
 import { render } from "@react-email/components";
 import { eq } from "drizzle-orm";
-import { z } from "zod";
+import * as z from "zod/mini";
 
 export const resendVerifyPasscode = action
-  .inputSchema(z.string().email())
+  .inputSchema(z.email())
   .action(async ({ parsedInput: email }) => {
     const currentUser = await db.query.user.findFirst({
       where: (user, { eq }) => eq(user.email, email),
@@ -32,10 +32,7 @@ export const resendVerifyPasscode = action
 
     const updatedUser = await db
       .update(user)
-      .set({
-        verifyPasscode,
-        passcodeCreatedAt: new Date(),
-      })
+      .set({ verifyPasscode, passcodeCreatedAt: new Date() })
       .where(eq(user.email, email));
 
     if (!updatedUser) throw new Error("No user to update!");

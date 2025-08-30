@@ -5,11 +5,16 @@ import db from "@/lib/drizzle";
 import { adminAction } from "@/lib/safe-action";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
+import * as z from "zod/mini";
 
 const schema = z.object({
-  id: z.number().int().nonnegative(),
-  title: z.string().min(1, "Title is required").max(255, "Title is too long"),
+  id: z.int().check(z.nonnegative()),
+  title: z
+    .string()
+    .check(
+      z.minLength(1, "Title is required"),
+      z.maxLength(255, "Title is too long")
+    ),
 });
 
 export const updateMenuTitle = adminAction

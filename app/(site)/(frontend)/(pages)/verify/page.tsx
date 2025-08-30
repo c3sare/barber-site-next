@@ -2,7 +2,7 @@ import { auth } from "@/auth.config";
 import { Button } from "@/components/ui/button";
 import db from "@/lib/drizzle";
 import { notFound } from "next/navigation";
-import z from "zod";
+import * as z from "zod/mini";
 import Link from "next/link";
 import { PasscodeForm } from "./_components/PasscodeForm";
 
@@ -11,20 +11,13 @@ import { and, eq, isNull } from "drizzle-orm";
 import { Typography } from "@/components/typography";
 
 type VerifyPageProps = {
-  searchParams: Promise<{
-    email?: string;
-    passcode?: string;
-  }>;
+  searchParams: Promise<{ email?: string; passcode?: string }>;
 };
 
 export default async function VerifyPage({ searchParams }: VerifyPageProps) {
   const { email, passcode } = await searchParams;
   const session = await auth();
-  if (
-    !email ||
-    !z.string().email().safeParse(email).success ||
-    session?.user.id
-  )
+  if (!email || !z.email().safeParse(email).success || session?.user.id)
     return notFound();
 
   if (passcode)
@@ -33,9 +26,7 @@ export default async function VerifyPage({ searchParams }: VerifyPageProps) {
   const user = await db.query.user.findFirst({
     where: (user, { eq, and, isNull }) =>
       and(eq(user.email, email), isNull(user.emailVerified)),
-    with: {
-      accounts: true,
-    },
+    with: { accounts: true },
   });
 
   if (!user || user.accounts.length !== 0) return notFound();
@@ -44,10 +35,7 @@ export default async function VerifyPage({ searchParams }: VerifyPageProps) {
     if (user.verifyPasscode === passcode) {
       const user = await db
         .update(userSchema)
-        .set({
-          emailVerified: new Date(),
-          verifyPasscode: null,
-        })
+        .set({ emailVerified: new Date(), verifyPasscode: null })
         .where(
           and(
             eq(userSchema.email, email),
